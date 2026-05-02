@@ -1,0 +1,21 @@
+{
+    "name": "pairdevs/questionhub",
+    "description": "A modern Question & Answer plugin for WordPress.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "PairDevs",
+            "homepage": "https://github.com/PairDevs/QuestionHub"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "QuestionHub\\": "Inc/",
+            "QuestionHub\\Admin\\": "Admin/",
+            "QuestionHub\\Frontend\\": "Frontend/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
