@@ -183,14 +183,24 @@ $archive_url = get_post_type_archive_link( 'questions' );
 
 				<div class="qh-answer-list">
 					<?php foreach ( $comments as $comment ) :
-						$uid       = (int) $comment->user_id;
-						$av        = get_avatar( $comment, 44, '', '', [ 'class' => 'qh-answer-avatar' ] );
-						$cb        = Badge::get( $uid, $post_id );
-						$is_best   = (int) $comment->comment_ID === $best_id;
-						$ans_votes = (int) get_comment_meta( $comment->comment_ID, '_questionhub_answer_votes', true );
-						$can_best  = Permission::can_mark_best_answer( $post_id );
+						$uid        = (int) $comment->user_id;
+						$av         = get_avatar( $comment, 44, '', '', [ 'class' => 'qh-answer-avatar' ] );
+						$cb         = Badge::get( $uid, $post_id );
+						$is_best    = (int) $comment->comment_ID === $best_id;
+						$ans_votes  = (int) get_comment_meta( $comment->comment_ID, '_questionhub_answer_votes', true );
+						$can_best   = Permission::can_mark_best_answer( $post_id );
+						$is_verified = (bool) get_comment_meta( $comment->comment_ID, '_questionhub_verified', true );
+						$is_admin    = current_user_can( 'manage_options' );
 					?>
-					<div class="qh-answer-item <?php echo $is_best ? 'qh-answer-best' : ''; ?>" id="answer-<?php echo esc_attr( $comment->comment_ID ); ?>">
+					<div class="qh-answer-item <?php echo $is_best ? 'qh-answer-best' : ''; ?> <?php echo $is_verified ? 'qh-answer-verified' : ''; ?>" id="answer-<?php echo esc_attr( $comment->comment_ID ); ?>">
+
+						<!-- Verified ribbon — top-right corner -->
+						<?php if ( $is_verified ) : ?>
+						<div class="qh-verified-ribbon" aria-label="<?php esc_attr_e( 'Admin Verified', 'questionhub' ); ?>">
+							<span class="dashicons dashicons-yes"></span>
+							<?php esc_html_e( 'Verified', 'questionhub' ); ?>
+						</div>
+						<?php endif; ?>
 
 						<!-- Accepted banner -->
 						<?php if ( $is_best ) : ?>
@@ -247,6 +257,17 @@ $archive_url = get_post_type_archive_link( 'questions' );
 											data-post-id="<?php echo esc_attr( $post_id ); ?>">
 										<span class="dashicons dashicons-yes-alt"></span>
 										<?php esc_html_e( 'Accept Answer', 'questionhub' ); ?>
+									</button>
+									<?php endif; ?>
+
+									<?php if ( $is_admin ) : ?>
+									<button class="qh-verify-answer-btn <?php echo $is_verified ? 'qh-verify-active' : ''; ?>"
+											data-comment-id="<?php echo esc_attr( $comment->comment_ID ); ?>"
+											title="<?php echo $is_verified ? esc_attr__( 'Remove verification', 'questionhub' ) : esc_attr__( 'Mark as Admin Verified', 'questionhub' ); ?>">
+										<span class="dashicons dashicons-<?php echo $is_verified ? 'dismiss' : 'awards'; ?>"></span>
+										<span class="qh-verify-label">
+											<?php echo $is_verified ? esc_html__( 'Remove Verification', 'questionhub' ) : esc_html__( 'Verify Answer', 'questionhub' ); ?>
+										</span>
 									</button>
 									<?php endif; ?>
 								</div>

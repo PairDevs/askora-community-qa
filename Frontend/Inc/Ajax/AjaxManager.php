@@ -22,6 +22,7 @@ class AjaxManager {
 	protected $best_answer;
 	protected $phone_login;
 	protected $phone_register;
+	protected $verify_answer;
 
 	public function __construct() {
 		$this->submit_question = new SubmitQuestion();
@@ -32,5 +33,6 @@ class AjaxManager {
 		$this->best_answer     = new BestAnswer();
 		$this->phone_login     = new PhoneLogin();
 		$this->phone_register  = new PhoneRegister();
+		$this->verify_answer   = new VerifyAnswer();
 	}
 }

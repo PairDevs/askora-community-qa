@@ -353,6 +353,68 @@
     },
 
     // ============================
+    // Verify Answer (admin only)
+    // ============================
+    initVerifyAnswer: function () {
+      $(document).on('click', '.qh-verify-answer-btn', function () {
+        var $btn       = $(this);
+        var commentId  = $btn.data('comment-id');
+        var $item      = $btn.closest('.qh-answer-item, .questionhub-answer-item');
+
+        $btn.prop('disabled', true);
+
+        $.ajax({
+          url: qh.ajaxUrl,
+          type: 'POST',
+          data: {
+            action:     'questionhub_verify_answer',
+            nonce:      qh.nonce,
+            comment_id: commentId
+          },
+          success: function (res) {
+            if (!res.success) {
+              alert(res.data.message);
+              return;
+            }
+
+            var isNowVerified = res.data.verified;
+
+            if (isNowVerified) {
+              // Add ribbon
+              if (!$item.find('.qh-verified-ribbon').length) {
+                $item.prepend(
+                  '<div class="qh-verified-ribbon">'
+                  + '<span class="dashicons dashicons-yes"></span>'
+                  + 'Verified'
+                  + '</div>'
+                );
+              }
+              $item.addClass('qh-answer-verified');
+              $btn.addClass('qh-verify-active');
+              $btn.find('.dashicons').removeClass('dashicons-awards').addClass('dashicons-dismiss');
+              $btn.find('.qh-verify-label').text('Remove Verification');
+              $btn.attr('title', 'Remove verification');
+            } else {
+              // Remove ribbon
+              $item.find('.qh-verified-ribbon').remove();
+              $item.removeClass('qh-answer-verified');
+              $btn.removeClass('qh-verify-active');
+              $btn.find('.dashicons').removeClass('dashicons-dismiss').addClass('dashicons-awards');
+              $btn.find('.qh-verify-label').text('Verify Answer');
+              $btn.attr('title', 'Mark as Admin Verified');
+            }
+          },
+          error: function () {
+            alert('Something went wrong.');
+          },
+          complete: function () {
+            $btn.prop('disabled', false);
+          }
+        });
+      });
+    },
+
+    // ============================
     // Init All
     // ============================
     init: function () {
@@ -362,6 +424,7 @@
       qh.initSearch();
       qh.initVoting();
       qh.initBestAnswer();
+      qh.initVerifyAnswer();
     }
   };
 
