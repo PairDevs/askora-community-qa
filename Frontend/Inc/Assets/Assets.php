@@ -20,10 +20,14 @@ class Assets {
 	}
 
 	public function enqueue_styles(): void {
+		// Dashicons must be explicitly enqueued on the frontend so badges/icons
+		// display for ALL visitors — not just logged-in/admin-bar users.
+		wp_enqueue_style( 'dashicons' );
+
 		wp_enqueue_style(
 			'questionhub-frontend',
 			QUESTIONHUB_URL . 'assets/css/frontend.css',
-			[],
+			[ 'dashicons' ],
 			QUESTIONHUB_VERSION
 		);
 

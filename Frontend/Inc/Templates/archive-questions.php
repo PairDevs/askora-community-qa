@@ -46,8 +46,38 @@ if ( ! empty( $tax_query ) ) {
 
 $query      = new WP_Query( $query_args );
 $categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => true ] );
-?>
 
+/**
+ * Resolve the "Ask a Question" URL.
+ * Priority: 1. Admin-selected page, 2. Auto-detect page with shortcode, 3. home_url().
+ */
+$ask_url = '';
+$submit_page_id = (int) ( $settings['submit_form_page_id'] ?? 0 );
+if ( $submit_page_id > 0 && 'publish' === get_post_status( $submit_page_id ) ) {
+	$ask_url = get_permalink( $submit_page_id );
+}
+if ( ! $ask_url ) {
+	// Auto-detect: search all pages for the shortcode.
+	global $wpdb;
+	$detected = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		$wpdb->prepare(
+			"SELECT ID FROM {$wpdb->posts}
+			 WHERE post_status = 'publish'
+			 AND post_type = 'page'
+			 AND post_content LIKE %s
+			 LIMIT 1",
+			'%[questionhub_submit_form%'
+		)
+	);
+	if ( $detected ) {
+		$ask_url = get_permalink( (int) $detected );
+	}
+}
+if ( ! $ask_url ) {
+	$ask_url = apply_filters( 'questionhub_ask_url', home_url() );
+}
+
+?>
 <div class="questionhub-archive-page">
 	<!-- Page title bar -->
 	<div class="questionhub-archive-hero">
@@ -70,12 +100,12 @@ $categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => tr
 				);
 				?>
 			</p>
-			<?php if ( is_user_logged_in() ) : ?>
-			<a href="<?php echo esc_url( apply_filters( 'questionhub_ask_url', home_url() ) ); ?>" class="questionhub-button questionhub-button-primary questionhub-ask-hero-btn">
+			<?php // Show button to all users — the form page handles login requirements. ?>
+			<a href="<?php echo esc_url( $ask_url ); ?>" class="questionhub-button questionhub-button-primary questionhub-ask-hero-btn">
 				<span class="dashicons dashicons-edit"></span>
 				<?php esc_html_e( 'Ask a Question', 'questionhub' ); ?>
 			</a>
-			<?php endif; ?>
+
 		</div>
 	</div>
 

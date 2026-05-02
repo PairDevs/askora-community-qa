@@ -604,11 +604,267 @@
 }
 
 /* ──────────────────────────────────────────
-   Settings page
+   Settings Page (Modern)
 ──────────────────────────────────────────── */
-.questionhub-settings-wrap { max-width: 860px; }
-.questionhub-settings-wrap .nav-tab-wrapper { margin-bottom: 20px; }
-.questionhub-settings-wrap .form-table th { width: 220px; }
+.qh-settings-page { max-width: 1200px; }
+
+.qh-settings-hero { margin-bottom: 24px; }
+
+.qh-settings-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Side nav */
+.qh-settings-nav {
+  background: #fff;
+  border: 1px solid #e8ecf4;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  overflow: hidden;
+  position: sticky;
+  top: 32px;
+}
+
+.qh-settings-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #475569 !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s, color 0.15s;
+}
+
+.qh-settings-nav-item:last-child { border-bottom: none; }
+
+.qh-settings-nav-item .dashicons {
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
+  color: #94a3b8;
+}
+
+.qh-settings-nav-item:hover {
+  background: #fafbff;
+  color: #6C63FF !important;
+}
+
+.qh-settings-nav-item:hover .dashicons { color: #6C63FF; }
+
+.qh-settings-nav-item.active {
+  background: #f5f3ff;
+  color: #6C63FF !important;
+  border-left: 3px solid #6C63FF;
+}
+
+.qh-settings-nav-item.active .dashicons { color: #6C63FF; }
+
+/* Main panel */
+.qh-settings-main { display: flex; flex-direction: column; gap: 20px; }
+
+.qh-settings-form { display: flex; flex-direction: column; gap: 20px; }
+
+/* Section */
+.qh-settings-section {
+  background: #fff;
+  border: 1px solid #e8ecf4;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  overflow: hidden;
+}
+
+.qh-settings-section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  border-bottom: 1px solid #f1f5f9;
+  background: #fafbfc;
+}
+
+.qh-settings-section-header > .dashicons {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  color: #6C63FF;
+  flex-shrink: 0;
+}
+
+.qh-settings-section-title {
+  font-size: 0.97rem !important;
+  font-weight: 700 !important;
+  margin: 0 0 2px !important;
+  padding: 0 !important;
+  border: none !important;
+  color: #1e293b !important;
+}
+
+.qh-settings-section-desc {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.qh-settings-fields { display: flex; flex-direction: column; }
+
+/* Field row */
+.qh-field-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 16px 22px;
+  border-bottom: 1px solid #f8fafc;
+}
+
+.qh-field-row:last-child { border-bottom: none; }
+
+.qh-field-label {
+  min-width: 220px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1e293b;
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.qh-field-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.qh-field-control { flex: 1; min-width: 0; }
+
+.qh-field-select {
+  width: 100%;
+  max-width: 360px;
+  padding: 8px 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  color: #1e293b;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  padding-right: 36px;
+}
+
+.qh-field-select:focus { border-color: #6C63FF; box-shadow: 0 0 0 3px rgba(108,99,255,.12); }
+
+.qh-field-number {
+  width: 100px;
+  padding: 8px 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.qh-field-number:focus { border-color: #6C63FF; box-shadow: 0 0 0 3px rgba(108,99,255,.12); }
+
+.qh-field-desc {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 6px 0 0;
+  line-height: 1.5;
+}
+
+/* Toggle row */
+.qh-field-toggle-row {
+  align-items: center;
+}
+
+.qh-field-toggle-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.qh-field-toggle-info .qh-field-label {
+  padding-top: 0;
+  min-width: auto;
+  display: block;
+  font-size: 0.88rem;
+}
+
+.qh-field-toggle-info .qh-field-desc {
+  margin-top: 3px;
+}
+
+/* Toggle switch */
+.qh-toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.qh-toggle input { opacity: 0; width: 0; height: 0; }
+
+.qh-toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: #cbd5e1;
+  border-radius: 999px;
+  transition: background 0.2s;
+}
+
+.qh-toggle-slider::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
+  transition: transform 0.2s;
+}
+
+.qh-toggle input:checked + .qh-toggle-slider { background: #6C63FF; }
+.qh-toggle input:checked + .qh-toggle-slider::before { transform: translateX(20px); }
+.qh-toggle input:focus + .qh-toggle-slider { box-shadow: 0 0 0 3px rgba(108,99,255,.2); }
+
+/* Save button footer */
+.qh-settings-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px 0;
+}
+
+.qh-settings-save-btn {
+  padding: 10px 28px;
+  font-size: 0.92rem;
+}
+
+/* WP settings_errors override */
+.qh-settings-main .notice {
+  border-radius: 8px;
+  border-left-width: 4px;
+  padding: 10px 16px;
+  margin: 0;
+}
 
 /* ──────────────────────────────────────────
    RESPONSIVE
@@ -627,6 +883,18 @@
   .qh-stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .qh-settings-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .qh-settings-nav {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .qh-settings-nav-item { flex: 1; justify-content: center; }
 }
 
 @media (max-width: 600px) {
@@ -640,4 +908,8 @@
   }
 
   .qh-stat-num { font-size: 1.5rem; }
+
+  .qh-field-row { flex-direction: column; gap: 8px; }
+  .qh-field-label { min-width: auto; padding-top: 0; }
+  .qh-field-toggle-row { flex-direction: row; }
 }

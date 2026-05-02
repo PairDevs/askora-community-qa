@@ -296,9 +296,14 @@
             },
             success: function (res) {
               if (res.success) {
-                // Update vote count — both old and new selectors.
-                $btn.find('.questionhub-vote-count, .qh-vote-count').text(res.data.votes);
-                // For question vote on single page: update the standalone count span.
+                // Count span may be a CHILD (old shortcode) or SIBLING (new single-page).
+                // Try children first, then siblings, then the dedicated ID span.
+                var $count = $btn.find('.questionhub-vote-count, .qh-vote-count, .qh-vote-num');
+                if (!$count.length) {
+                  $count = $btn.siblings('.qh-vote-count, .qh-vote-num, .questionhub-vote-count');
+                }
+                $count.text(res.data.votes);
+                // On single-question page the question vote count lives in its own span.
                 if (type === 'question') {
                   $('#qh-question-vote-count').text(res.data.votes);
                 }
