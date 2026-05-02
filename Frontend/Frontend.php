@@ -20,6 +20,7 @@ use QuestionHub\Frontend\Inc\Questions\QuestionService;
 use QuestionHub\Frontend\Inc\Questions\ViewCounter;
 use QuestionHub\Frontend\Inc\Questions\VoteManager;
 use QuestionHub\Frontend\Inc\Comments\AnswerRenderer;
+use QuestionHub\Frontend\Inc\Archive\QuestionArchive;
 
 /**
  * Class Frontend
@@ -36,19 +37,21 @@ class Frontend {
 	protected $view_counter;
 	protected $vote_manager;
 	protected $answer_renderer;
+	protected $archive;
 
 	public function __construct() {
 		$this->initialize();
 	}
 
 	public function initialize(): void {
-		$this->assets          = new Assets();
-		$this->shortcodes      = new Shortcodes();
-		$this->ajax            = new AjaxManager();
-		$this->auth            = new AuthForms();
+		$this->assets           = new Assets();
+		$this->shortcodes       = new Shortcodes();
+		$this->ajax             = new AjaxManager();
+		$this->auth             = new AuthForms();
 		$this->question_service = new QuestionService();
-		$this->view_counter    = new ViewCounter();
-		$this->vote_manager    = new VoteManager();
-		$this->answer_renderer = new AnswerRenderer();
+		$this->view_counter     = new ViewCounter();
+		$this->vote_manager     = new VoteManager();
+		$this->answer_renderer  = new AnswerRenderer();
+		$this->archive          = new QuestionArchive();
 	}
 }

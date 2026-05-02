@@ -27,7 +27,7 @@ class Assets {
 	public function admin_enqueue_styles() {
 		wp_enqueue_style(
 			'questionhub-admin-style',
-			QUESTIONHUB_ADMIN_ASSETS . '/css/admin.css',
+			QUESTIONHUB_URL . 'assets/css/admin.css',
 			[],
 			QUESTIONHUB_VERSION
 		);
@@ -42,7 +42,7 @@ class Assets {
 
 		wp_enqueue_script(
 			'questionhub-admin-script',
-			QUESTIONHUB_ADMIN_ASSETS . '/js/admin.js',
+			QUESTIONHUB_URL . 'assets/js/admin.js',
 			[ 'jquery' ],
 			QUESTIONHUB_VERSION,
 			true
