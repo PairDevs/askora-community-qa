@@ -22,6 +22,7 @@ use QuestionHub\Admin\Inc\Taxonomies\QuestionCategory;
 use QuestionHub\Admin\Inc\Taxonomies\QuestionTag;
 use QuestionHub\Admin\Inc\Columns\QuestionColumns;
 use QuestionHub\Admin\Inc\Notices\AdminNotices;
+use QuestionHub\Admin\Inc\Users\Profile;
 
 /**
  * Class AdminManager
@@ -40,6 +41,7 @@ class AdminManager {
 	protected $tag;
 	protected $columns;
 	protected $notices;
+	protected $profile;
 
 	public function __construct() {
 		$this->set_constants();
@@ -71,6 +73,7 @@ class AdminManager {
 		$this->tag          = new QuestionTag();
 		$this->columns      = new QuestionColumns();
 		$this->notices      = new AdminNotices();
+		$this->profile      = new Profile();
 	}
 
 	/**
