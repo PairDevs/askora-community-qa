@@ -68,7 +68,8 @@ class Shortcodes {
 	/** [questionhub_login] */
 	public function render_login( $atts ): string {
 		if ( is_user_logged_in() ) {
-			return '<p class="questionhub-alert questionhub-alert-info">' . esc_html__( 'You are already logged in.', 'questionhub' ) . '</p>';
+			$logout_url = wp_logout_url( get_permalink() );
+			return '<p class="questionhub-alert questionhub-alert-info">' . esc_html__( 'You are already logged in.', 'questionhub' ) . ' <a href="' . esc_url( $logout_url ) . '">' . esc_html__( 'Log out', 'questionhub' ) . '</a></p>';
 		}
 		$auth = new AuthForms();
 		return $auth->render_login();
@@ -77,7 +78,8 @@ class Shortcodes {
 	/** [questionhub_register] */
 	public function render_register( $atts ): string {
 		if ( is_user_logged_in() ) {
-			return '<p class="questionhub-alert questionhub-alert-info">' . esc_html__( 'You already have an account.', 'questionhub' ) . '</p>';
+			$logout_url = wp_logout_url( get_permalink() );
+			return '<p class="questionhub-alert questionhub-alert-info">' . esc_html__( 'You already have an account.', 'questionhub' ) . ' <a href="' . esc_url( $logout_url ) . '">' . esc_html__( 'Log out', 'questionhub' ) . '</a></p>';
 		}
 		$auth = new AuthForms();
 		return $auth->render_register();
@@ -86,7 +88,8 @@ class Shortcodes {
 	/** [questionhub_auth] */
 	public function render_auth( $atts ): string {
 		if ( is_user_logged_in() ) {
-			return '<p class="questionhub-alert questionhub-alert-info">' . esc_html__( 'You are already logged in.', 'questionhub' ) . '</p>';
+			$logout_url = wp_logout_url( get_permalink() );
+			return '<p class="questionhub-alert questionhub-alert-info">' . esc_html__( 'You are already logged in.', 'questionhub' ) . ' <a href="' . esc_url( $logout_url ) . '">' . esc_html__( 'Log out', 'questionhub' ) . '</a></p>';
 		}
 		$auth = new AuthForms();
 		return $auth->render_combined();
