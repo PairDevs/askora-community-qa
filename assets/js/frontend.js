@@ -66,8 +66,10 @@
         e.preventDefault();
         var $form = $(this);
         var $btn  = $form.find('button[type="submit"]');
-        var $spin = $btn.find('.questionhub-spinner');
-        var $text = $btn.find('.questionhub-btn-text');
+        // Support both old .questionhub-spinner and new .qh-btn-spinner
+        var $spin = $btn.find('.questionhub-spinner, .qh-btn-spinner');
+        var $text = $btn.find('.questionhub-btn-text, .qh-btn-text');
+        // Support both old and new alert IDs
         var $ok   = $('#questionhub-answer-success');
         var $err  = $('#questionhub-answer-error');
 
@@ -92,14 +94,17 @@
               setTimeout(function () { location.reload(); }, 1500);
             } else {
               $err.text(res.data.message).fadeIn();
+              $btn.prop('disabled', false);
+              $text.show(); $spin.hide();
             }
           },
           error: function () {
             $err.text(qh.i18n.error_generic).fadeIn();
-          },
-          complete: function () {
             $btn.prop('disabled', false);
             $text.show(); $spin.hide();
+          },
+          complete: function () {
+            // only re-enable if not already handled above (success reloads)
           }
         });
       });
@@ -262,40 +267,52 @@
     // Voting
     // ============================
     initVoting: function () {
-      $(document).on('click', '.questionhub-vote-btn, .questionhub-vote-answer-btn', function () {
-        if (!QuestionHubData.is_logged_in) {
-          alert(qh.i18n.login_required);
-          return;
-        }
-
-        var $btn  = $(this);
-        var id    = $btn.data('id');
-        var type  = $btn.data('type');
-
-        $btn.prop('disabled', true);
-
-        $.ajax({
-          url: qh.ajaxUrl,
-          type: 'POST',
-          data: {
-            action: 'questionhub_vote',
-            nonce:  qh.nonce,
-            id:     id,
-            type:   type
-          },
-          success: function (res) {
-            if (res.success) {
-              $btn.find('.questionhub-vote-count').text(res.data.votes);
-              $btn.addClass('voted');
-            } else {
-              alert(res.data.message);
-            }
-          },
-          complete: function () {
-            $btn.prop('disabled', false);
+      // Handles old shortcode buttons AND new single-page qh-vote-upbtn buttons.
+      $(document).on(
+        'click',
+        '.questionhub-vote-btn, .questionhub-vote-answer-btn, .qh-vote-upbtn, .qh-vote-answer-btn',
+        function () {
+          if (!QuestionHubData.is_logged_in) {
+            alert(qh.i18n.login_required);
+            return;
           }
-        });
-      });
+
+          var $btn  = $(this);
+          var id    = $btn.data('id');
+          var type  = $btn.data('type');
+
+          if (!id) return; // safety
+
+          $btn.prop('disabled', true);
+
+          $.ajax({
+            url: qh.ajaxUrl,
+            type: 'POST',
+            data: {
+              action: 'questionhub_vote',
+              nonce:  qh.nonce,
+              id:     id,
+              type:   type
+            },
+            success: function (res) {
+              if (res.success) {
+                // Update vote count — both old and new selectors.
+                $btn.find('.questionhub-vote-count, .qh-vote-count').text(res.data.votes);
+                // For question vote on single page: update the standalone count span.
+                if (type === 'question') {
+                  $('#qh-question-vote-count').text(res.data.votes);
+                }
+                $btn.addClass('voted');
+              } else {
+                alert(res.data.message);
+              }
+            },
+            complete: function () {
+              $btn.prop('disabled', false);
+            }
+          });
+        }
+      );
     },
 
     // ============================

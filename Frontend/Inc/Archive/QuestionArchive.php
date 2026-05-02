@@ -27,25 +27,38 @@ class QuestionArchive {
 	}
 
 	/**
-	 * Returns our custom archive template for the questions CPT.
+	 * Returns our custom template for the questions CPT (archive, taxonomy, and single).
 	 *
 	 * @param  string $template Current template path.
 	 * @return string
 	 * @since  1.0.0
 	 */
 	public function override_archive_template( string $template ): string {
-		if ( is_post_type_archive( 'questions' ) || is_tax( 'question_category' ) || is_tax( 'question_tag' ) ) {
-			// Check for theme override first: theme/questionhub/archive-questions.php
-			$theme_file = get_stylesheet_directory() . '/questionhub/archive-questions.php';
+
+		// Single question page.
+		if ( is_singular( 'questions' ) ) {
+			$theme_file  = get_stylesheet_directory() . '/questionhub/single-question.php';
+			$plugin_file = QUESTIONHUB_PATH . 'Frontend/Inc/Templates/single-question.php';
 			if ( file_exists( $theme_file ) ) {
 				return $theme_file;
 			}
-
-			$plugin_file = QUESTIONHUB_PATH . 'Frontend/Inc/Templates/archive-questions.php';
 			if ( file_exists( $plugin_file ) ) {
 				return $plugin_file;
 			}
 		}
+
+		// Archive / taxonomy pages.
+		if ( is_post_type_archive( 'questions' ) || is_tax( 'question_category' ) || is_tax( 'question_tag' ) ) {
+			$theme_file  = get_stylesheet_directory() . '/questionhub/archive-questions.php';
+			$plugin_file = QUESTIONHUB_PATH . 'Frontend/Inc/Templates/archive-questions.php';
+			if ( file_exists( $theme_file ) ) {
+				return $theme_file;
+			}
+			if ( file_exists( $plugin_file ) ) {
+				return $plugin_file;
+			}
+		}
+
 		return $template;
 	}
 }
