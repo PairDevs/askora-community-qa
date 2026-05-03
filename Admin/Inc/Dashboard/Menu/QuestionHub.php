@@ -88,7 +88,7 @@ class QuestionHub {
 		$recents  = $this->get_recent_questions();
 		$settings = get_option( 'questionhub_settings', [] );
 		?>
-		<div class="wrap qh-dash-wrap">
+		<div class="qh-dash-wrap">
 
 			<!-- ══════════ HERO ══════════ -->
 			<div class="qh-hero">

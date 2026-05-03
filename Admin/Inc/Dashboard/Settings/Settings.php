@@ -53,7 +53,7 @@ class Settings {
 			],
 		];
 		?>
-		<div class="wrap qh-dash-wrap qh-settings-page">
+		<div class="qh-dash-wrap qh-settings-page">
 
 			<!-- ══ HEADER ══ -->
 			<div class="qh-hero qh-settings-hero">
