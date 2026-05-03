@@ -344,9 +344,10 @@ class General {
 		$existing = get_option( $this->option_key, [] );
 		$input    = is_array( $input ) ? $input : [];
 
-		// If this is NOT our tab being submitted, just pass the $input through (merged with existing to be safe).
+		// If this is NOT our tab being submitted, pass the $input through unmodified.
+		// The sanitize callback for the correct tab will handle merging it with $existing.
 		if ( ! isset( $_POST['option_page'] ) || 'questionhub_general_group' !== $_POST['option_page'] ) {
-			return wp_parse_args( $input, $existing );
+			return $input;
 		}
 
 		$existing['submit_form_page_id']    = isset( $input['submit_form_page_id'] ) ? absint( $input['submit_form_page_id'] ) : 0;

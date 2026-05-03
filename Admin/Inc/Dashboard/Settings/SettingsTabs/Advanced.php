@@ -95,8 +95,10 @@ class Advanced {
 		$existing = get_option( $this->option_key, [] );
 		$input    = is_array( $input ) ? $input : [];
 
+		// If this is NOT our tab being submitted, pass the $input through unmodified.
+		// The sanitize callback for the correct tab will handle merging it with $existing.
 		if ( ! isset( $_POST['option_page'] ) || 'questionhub_advanced_group' !== $_POST['option_page'] ) {
-			return wp_parse_args( $input, $existing );
+			return $input;
 		}
 
 		$existing['enable_phone_auth']        = isset( $input['enable_phone_auth'] ) ? 1 : 0;
