@@ -335,6 +335,12 @@ class General {
 	 * @since  1.0.0
 	 */
 	public function sanitize( $input ) {
+		if ( ! isset( $_POST['questionhub_nonce'] ) ||
+			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['questionhub_nonce'] ) ), 'questionhub_save_settings' ) ) {
+			add_settings_error( 'questionhub_settings', 'nonce_error', esc_html__( 'Security check failed.', 'questionhub' ), 'error' );
+			return get_option( $this->option_key, [] );
+		}
+
 		$existing = get_option( $this->option_key, [] );
 		$input    = is_array( $input ) ? $input : [];
 

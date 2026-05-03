@@ -99,6 +99,7 @@ class Settings {
 							settings_fields( 'questionhub_advanced_group' );
 							$this->render_advanced_fields();
 						}
+						wp_nonce_field( 'questionhub_save_settings', 'questionhub_nonce' );
 						?>
 
 						<div class="qh-settings-footer">
@@ -281,7 +282,77 @@ class Settings {
 	 * Renders Advanced settings fields with custom markup.
 	 */
 	private function render_advanced_fields() {
-		do_settings_sections( 'questionhub_advanced_settings' );
+		$opts = $this->advanced->get_all();
+		$key  = 'questionhub_settings';
+		?>
+
+		<div class="qh-settings-section">
+			<div class="qh-settings-section-header">
+				<span class="dashicons dashicons-admin-network"></span>
+				<div>
+					<h2 class="qh-settings-section-title"><?php esc_html_e( 'Advanced Configurations', 'questionhub' ); ?></h2>
+					<p class="qh-settings-section-desc"><?php esc_html_e( 'Phone authentication, UI color, and data management.', 'questionhub' ); ?></p>
+				</div>
+			</div>
+			<div class="qh-settings-fields">
+
+				<div class="qh-field-row qh-field-toggle-row">
+					<div class="qh-field-toggle-info">
+						<span class="qh-field-label"><?php esc_html_e( 'Phone Registration/Login', 'questionhub' ); ?></span>
+						<p class="qh-field-desc"><?php esc_html_e( 'Allow users to register and log in with a phone number.', 'questionhub' ); ?></p>
+					</div>
+					<label class="qh-toggle">
+						<input type="checkbox" name="<?php echo esc_attr( $key ); ?>[enable_phone_auth]" id="questionhub_enable_phone_auth" value="1" <?php checked( 1, (int) $opts['enable_phone_auth'] ); ?>>
+						<span class="qh-toggle-slider"></span>
+					</label>
+				</div>
+
+				<div class="qh-field-row qh-field-toggle-row">
+					<div class="qh-field-toggle-info">
+						<span class="qh-field-label"><?php esc_html_e( 'Email Required', 'questionhub' ); ?></span>
+						<p class="qh-field-desc"><?php esc_html_e( 'Require an email address during registration.', 'questionhub' ); ?></p>
+					</div>
+					<label class="qh-toggle">
+						<input type="checkbox" name="<?php echo esc_attr( $key ); ?>[email_required]" id="questionhub_email_required" value="1" <?php checked( 1, (int) $opts['email_required'] ); ?>>
+						<span class="qh-toggle-slider"></span>
+					</label>
+				</div>
+
+				<div class="qh-field-row qh-field-toggle-row">
+					<div class="qh-field-toggle-info">
+						<span class="qh-field-label"><?php esc_html_e( 'Auto-Login After Registration', 'questionhub' ); ?></span>
+						<p class="qh-field-desc"><?php esc_html_e( 'Automatically log users in after successful registration.', 'questionhub' ); ?></p>
+					</div>
+					<label class="qh-toggle">
+						<input type="checkbox" name="<?php echo esc_attr( $key ); ?>[auto_login_after_reg]" id="questionhub_auto_login" value="1" <?php checked( 1, (int) $opts['auto_login_after_reg'] ); ?>>
+						<span class="qh-toggle-slider"></span>
+					</label>
+				</div>
+
+				<div class="qh-field-row">
+					<label class="qh-field-label" for="questionhub_primary_color">
+						<?php esc_html_e( 'Primary Color', 'questionhub' ); ?>
+					</label>
+					<div class="qh-field-control">
+						<input type="color" name="<?php echo esc_attr( $key ); ?>[primary_color]" id="questionhub_primary_color" value="<?php echo esc_attr( $opts['primary_color'] ); ?>" class="qh-field-color">
+						<p class="qh-field-desc"><?php esc_html_e( 'Primary brand color for the frontend UI.', 'questionhub' ); ?></p>
+					</div>
+				</div>
+
+				<div class="qh-field-row qh-field-toggle-row qh-field-danger-row">
+					<div class="qh-field-toggle-info">
+						<span class="qh-field-label"><?php esc_html_e( 'Delete All Data on Uninstall', 'questionhub' ); ?></span>
+						<p class="qh-field-desc"><?php esc_html_e( 'Warning: This action removes all questions, answers, and data when the plugin is deleted. Cannot be undone.', 'questionhub' ); ?></p>
+					</div>
+					<label class="qh-toggle">
+						<input type="checkbox" name="<?php echo esc_attr( $key ); ?>[delete_data_on_uninstall]" id="questionhub_delete_data" value="1" <?php checked( 1, (int) $opts['delete_data_on_uninstall'] ); ?>>
+						<span class="qh-toggle-slider"></span>
+					</label>
+				</div>
+
+			</div>
+		</div>
+		<?php
 	}
 
 	private function get_active_tab() {
