@@ -335,14 +335,13 @@ class General {
 	 * @since  1.0.0
 	 */
 	public function sanitize( $input ) {
-		if ( ! isset( $_POST['questionhub_nonce'] ) ||
-			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['questionhub_nonce'] ) ), 'questionhub_save_settings' ) ) {
-			add_settings_error( 'questionhub_settings', 'nonce_error', esc_html__( 'Security check failed.', 'questionhub' ), 'error' );
-			return get_option( $this->option_key, [] );
-		}
-
 		$existing = get_option( $this->option_key, [] );
 		$input    = is_array( $input ) ? $input : [];
+
+		// If this is NOT our tab being submitted, just pass the $input through (merged with existing to be safe).
+		if ( ! isset( $_POST['option_page'] ) || 'questionhub_general_group' !== $_POST['option_page'] ) {
+			return wp_parse_args( $input, $existing );
+		}
 
 		$existing['submit_form_page_id']    = isset( $input['submit_form_page_id'] ) ? absint( $input['submit_form_page_id'] ) : 0;
 		$existing['question_status']        = isset( $input['question_status'] ) && in_array( $input['question_status'], [ 'pending', 'publish', 'draft' ], true ) ? $input['question_status'] : 'pending';

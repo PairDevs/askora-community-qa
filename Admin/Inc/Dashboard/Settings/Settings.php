@@ -40,12 +40,6 @@ class Settings {
 	}
 
 	public function render_settings_page() {
-		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-			$nonce = isset( $_POST['questionhub_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['questionhub_nonce'] ) ) : '';
-			if ( ! $nonce || ! wp_verify_nonce( $nonce, 'questionhub_save_settings' ) ) {
-				wp_die( esc_html__( 'Nonce verification failed.', 'questionhub' ) );
-			}
-		}
 
 		$active_tab = $this->get_active_tab();
 		$tabs       = [
@@ -105,7 +99,6 @@ class Settings {
 							settings_fields( 'questionhub_advanced_group' );
 							$this->render_advanced_fields();
 						}
-						wp_nonce_field( 'questionhub_save_settings', 'questionhub_nonce' );
 						?>
 
 						<div class="qh-settings-footer">

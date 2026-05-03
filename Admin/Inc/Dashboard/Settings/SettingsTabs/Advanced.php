@@ -89,6 +89,10 @@ class Advanced {
 		$existing = get_option( $this->option_key, [] );
 		$input    = is_array( $input ) ? $input : [];
 
+		if ( ! isset( $_POST['option_page'] ) || 'questionhub_advanced_group' !== $_POST['option_page'] ) {
+			return wp_parse_args( $input, $existing );
+		}
+
 		$existing['enable_phone_auth']        = isset( $input['enable_phone_auth'] ) ? 1 : 0;
 		$existing['email_required']           = isset( $input['email_required'] ) ? 1 : 0;
 		$existing['auto_login_after_reg']     = isset( $input['auto_login_after_reg'] ) ? 1 : 0;
