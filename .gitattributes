@@ -43,3 +43,8 @@ node_modules/           export-ignore
 build/                  export-ignore 
 postcss.config.js       export-ignore
 DEVELOPER_GUIDE.md      export-ignore
+wp-boost.lock.json      export-ignore
+.claude/                export-ignore
+.cursor/                export-ignore
+.gemini/                export-ignore
+.opencode/              export-ignore

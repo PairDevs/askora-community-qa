@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "installedAt": "2026-05-03T16:24:01+00:00",
+    "agents": [
+        "claude_code",
+        "opencode",
+        "cursor",
+        "copilot",
+        "gemini"
+    ],
+    "skills": [
+        "wordpress-router",
+        "wp-abilities-api",
+        "wp-performance",
+        "wp-phpstan",
+        "wp-plugin-development",
+        "wp-plugin-directory-guidelines",
+        "wp-rest-api",
+        "wp-wpcli-and-ops"
+    ],
+    "bundle": {
+        "syncedAt": "2026-05-02T07:28:28+00:00",
+        "sha": "2ec2cd8e9da75ca3576901b65b157d37258a5376",
+        "source": "WordPress/agent-skills@trunk"
+    }
+}

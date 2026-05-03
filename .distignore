@@ -44,3 +44,8 @@ build
 postcss.config.js
 .wordpress-org
 DEVELOPER_GUIDE.md
+wp-boost.lock.json
+.claude
+.cursor
+.gemini
+.opencode
