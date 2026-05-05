@@ -23,6 +23,7 @@ $avatar     = get_avatar( $author_id, 40, '', '', [ 'class' => 'questionhub-avat
 $author     = get_the_author_meta( 'display_name', $author_id );
 $badge      = Badge::get( $author_id, $post_id );
 $best       = (int) get_post_meta( $post_id, '_questionhub_best_answer', true );
+$status     = $status ?? '';
 ?>
 <article class="questionhub-card questionhub-question-card" id="question-<?php echo esc_attr( $post_id ); ?>">
 	<div class="questionhub-card-stats">
@@ -43,6 +44,9 @@ $best       = (int) get_post_meta( $post_id, '_questionhub_best_answer', true );
 	<div class="questionhub-card-body">
 		<h3 class="questionhub-question-title">
 			<a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>"><?php echo esc_html( get_the_title( $post_id ) ); ?></a>
+			<?php if ( ! empty( $status ) ) : ?>
+				<span class="questionhub-status-badge questionhub-status-<?php echo esc_attr( $status ); ?>"><?php echo esc_html( ucfirst( $status ) ); ?></span>
+			<?php endif; ?>
 		</h3>
 
 		<?php if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) : ?>

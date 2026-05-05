@@ -362,6 +362,12 @@ $archive_url = get_post_type_archive_link( 'questions' );
 						<span class="qh-stats-label"><?php esc_html_e( 'Votes', 'questionhub' ); ?></span>
 						<span class="qh-stats-value"><?php echo esc_html( $votes ); ?></span>
 					</li>
+					<?php if ( get_current_user_id() === (int) $post->post_author && $post->post_status !== 'publish' ) : ?>
+					<li>
+						<span class="qh-stats-label"><?php esc_html_e( 'Status', 'questionhub' ); ?></span>
+						<span class="qh-stats-value"><span class="questionhub-status-badge questionhub-status-<?php echo esc_attr( $post->post_status ); ?>"><?php echo esc_html( ucfirst( $post->post_status ) ); ?></span></span>
+					</li>
+					<?php endif; ?>
 				</ul>
 			</div>
 
