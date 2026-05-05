@@ -162,9 +162,9 @@ if ( ! $ask_url ) {
 				 data-orderby="date">
 
 				<div class="questionhub-list-controls questionhub-archive-controls">
-					<div class="questionhub-archive-search-wrap">
+					<div class="questionhub-list-search questionhub-archive-search-wrap">
 						<span class="dashicons dashicons-search"></span>
-						<input type="search" id="questionhub-search-input" class="questionhub-input questionhub-search-input questionhub-archive-search" placeholder="<?php esc_attr_e( 'Search questions…', 'questionhub' ); ?>">
+						<input type="search" class="questionhub-input questionhub-search-input questionhub-archive-search" placeholder="<?php esc_attr_e( 'Search questions…', 'questionhub' ); ?>">
 					</div>
 					<select class="questionhub-sort questionhub-select">
 						<option value="date"><?php esc_html_e( 'Newest', 'questionhub' ); ?></option>

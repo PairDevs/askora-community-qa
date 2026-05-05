@@ -1046,13 +1046,22 @@
   margin-bottom: 16px;
   gap: 12px;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
+}
+
+.questionhub-archive-controls .questionhub-input,
+.questionhub-archive-controls .questionhub-select {
+  height: 42px;
+  line-height: 1.4;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .questionhub-archive-search-wrap {
   position: relative;
   flex: 1;
   min-width: 200px;
+  display: flex;
 }
 
 .questionhub-archive-search-wrap .dashicons {
@@ -1069,6 +1078,12 @@
 
 .questionhub-archive-search {
   padding-left: 36px;
+}
+
+.questionhub-archive-search::-webkit-search-cancel-button,
+.questionhub-archive-search::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 /* Empty state */
