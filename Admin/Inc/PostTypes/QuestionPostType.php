@@ -59,7 +59,7 @@ class QuestionPostType {
 			'query_var'          => true,
 			'rewrite'            => [ 'slug' => 'question' ],
 			'capability_type'    => 'post',
-			'has_archive'        => true,
+			'has_archive'        => 'questions',
 			'hierarchical'       => false,
 			'menu_position'      => 26,
 			'menu_icon'          => 'dashicons-editor-help',
