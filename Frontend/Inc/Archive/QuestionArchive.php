@@ -47,8 +47,20 @@ class QuestionArchive {
 			}
 		}
 
-		// Archive / taxonomy pages.
-		if ( is_post_type_archive( 'questions' ) || is_tax( 'question_category' ) || is_tax( 'question_tag' ) ) {
+		// CPT archive (/questions/) — render the same view as [questionhub_questions] shortcode.
+		if ( is_post_type_archive( 'questions' ) ) {
+			$theme_file  = get_stylesheet_directory() . '/questionhub/archive-shortcode.php';
+			$plugin_file = QUESTIONHUB_PATH . 'Frontend/Inc/Templates/archive-shortcode.php';
+			if ( file_exists( $theme_file ) ) {
+				return $theme_file;
+			}
+			if ( file_exists( $plugin_file ) ) {
+				return $plugin_file;
+			}
+		}
+
+		// Taxonomy pages (category / tag) — keep the richer sidebar layout.
+		if ( is_tax( 'question_category' ) || is_tax( 'question_tag' ) ) {
 			$theme_file  = get_stylesheet_directory() . '/questionhub/archive-questions.php';
 			$plugin_file = QUESTIONHUB_PATH . 'Frontend/Inc/Templates/archive-questions.php';
 			if ( file_exists( $theme_file ) ) {
