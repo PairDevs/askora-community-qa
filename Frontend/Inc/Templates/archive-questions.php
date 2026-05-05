@@ -170,6 +170,7 @@ if ( ! $ask_url ) {
 						<option value="date"><?php esc_html_e( 'Newest', 'questionhub' ); ?></option>
 						<option value="comment_count"><?php esc_html_e( 'Most Answered', 'questionhub' ); ?></option>
 						<option value="meta_value_num"><?php esc_html_e( 'Most Viewed', 'questionhub' ); ?></option>
+						<option value="unanswered"><?php esc_html_e( 'Unanswered', 'questionhub' ); ?></option>
 					</select>
 				</div>
 

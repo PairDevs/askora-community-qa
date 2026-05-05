@@ -117,13 +117,15 @@
       // Load More button.
       $(document).on('click', '.questionhub-load-more', function () {
         var $btn      = $(this);
-        var $wrapper  = $btn.closest('.questionhub-list-wrapper');
-        var $spinner  = $wrapper.find('.questionhub-spinner').first();
-        var page      = parseInt($btn.data('page')) || 2;
-        var maxPages  = parseInt($btn.data('max')) || 1;
-        var category  = $wrapper.data('category') || '';
-        var tag       = $wrapper.data('tag') || '';
-        var orderby   = $wrapper.data('orderby') || 'date';
+        var $wrapper   = $btn.closest('.questionhub-list-wrapper');
+        var $spinner   = $wrapper.find('.questionhub-spinner').first();
+        var page       = parseInt($btn.data('page')) || 2;
+        var maxPages   = parseInt($btn.data('max')) || 1;
+        var category   = $wrapper.data('category') || '';
+        var tag        = $wrapper.data('tag') || '';
+        var orderby    = $wrapper.data('orderby') || 'date';
+        var keyword    = $wrapper.data('keyword') || '';
+        var unanswered = parseInt($wrapper.data('unanswered'), 10) || 0;
 
         $btn.prop('disabled', true).text(qh.i18n.loading);
         $spinner.show();
@@ -132,12 +134,14 @@
           url: qh.ajaxUrl,
           type: 'POST',
           data: {
-            action:   'questionhub_load_questions',
-            nonce:    qh.nonce,
-            page:     page,
-            category: category,
-            tag:      tag,
-            orderby:  orderby
+            action:     'questionhub_load_questions',
+            nonce:      qh.nonce,
+            page:       page,
+            category:   category,
+            tag:        tag,
+            orderby:    orderby,
+            keyword:    keyword,
+            unanswered: unanswered
           },
           success: function (res) {
             if (res.success && res.data.html) {
@@ -160,10 +164,16 @@
         });
       });
 
-      // Sort change.
+      // Sort change. The "unanswered" option is a filter rather than a sort,
+      // so route it to the unanswered flag and keep orderby on the default.
       $(document).on('change', '.questionhub-sort', function () {
         var $wrapper = $(this).closest('.questionhub-list-wrapper');
-        $wrapper.data('orderby', $(this).val()).data('page', 1);
+        var val = $(this).val();
+        if (val === 'unanswered') {
+          $wrapper.data('orderby', 'date').data('unanswered', 1).data('page', 1);
+        } else {
+          $wrapper.data('orderby', val).data('unanswered', 0).data('page', 1);
+        }
         qh.reloadList($wrapper);
       });
 
@@ -188,10 +198,11 @@
     },
 
     reloadList: function ($wrapper) {
-      var $list    = $wrapper.find('.questionhub-questions-list');
-      var category = $wrapper.data('category') || '';
-      var orderby  = $wrapper.data('orderby') || 'date';
-      var keyword  = $wrapper.data('keyword') || '';
+      var $list      = $wrapper.find('.questionhub-questions-list');
+      var category   = $wrapper.data('category') || '';
+      var orderby    = $wrapper.data('orderby') || 'date';
+      var keyword    = $wrapper.data('keyword') || '';
+      var unanswered = parseInt($wrapper.data('unanswered'), 10) || 0;
 
       $list.css('opacity', 0.5);
 
@@ -199,12 +210,13 @@
         url: qh.ajaxUrl,
         type: 'POST',
         data: {
-          action:   'questionhub_load_questions',
-          nonce:    qh.nonce,
-          page:     1,
-          category: category,
-          orderby:  orderby,
-          keyword:  keyword
+          action:     'questionhub_load_questions',
+          nonce:      qh.nonce,
+          page:       1,
+          category:   category,
+          orderby:    orderby,
+          keyword:    keyword,
+          unanswered: unanswered
         },
         success: function (res) {
           if (res.success) {
