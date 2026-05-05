@@ -496,6 +496,7 @@
 .questionhub-ask-btn {
   flex-shrink: 0;
   white-space: nowrap;
+  margin-left: auto;
 }
 
 @media (max-width: 600px) {
@@ -509,9 +510,11 @@
   }
 }
 
-/* ============================================
-   Load More
-   ============================================ */
+.questionhub-list-search {
+  margin-bottom: 10px;
+}
+
+
 .questionhub-load-more-wrap {
   text-align: center;
   margin-top: 24px;

@@ -71,26 +71,13 @@ $categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => tr
 ?>
 <div class="questionhub-wrapper questionhub-list-wrapper" data-page="1" data-category="<?php echo esc_attr( $category ); ?>" data-tag="<?php echo esc_attr( $tag ); ?>" data-orderby="<?php echo esc_attr( $orderby ); ?>">
 
-	<?php if ( $show_ask_btn || $show_search ) : ?>
-	<div class="questionhub-list-header">
-
-		<?php if ( $show_search ) : ?>
-		<div class="questionhub-search-wrap">
-			<span class="dashicons dashicons-search"></span>
-			<input type="search"
-				   id="questionhub-search-input"
-				   class="questionhub-input questionhub-search-input"
-				   placeholder="<?php esc_attr_e( 'Search questions…', 'questionhub' ); ?>">
-		</div>
-		<?php endif; ?>
-
-		<?php if ( $show_ask_btn && $ask_url ) : ?>
-		<a href="<?php echo esc_url( $ask_url ); ?>" class="questionhub-button questionhub-button-primary questionhub-ask-btn">
-			<span class="dashicons dashicons-edit"></span>
-			<?php esc_html_e( 'Ask a Question', 'questionhub' ); ?>
-		</a>
-		<?php endif; ?>
-
+	<?php if ( $show_search ) : ?>
+	<div class="questionhub-search-wrap questionhub-list-search">
+		<span class="dashicons dashicons-search"></span>
+		<input type="search"
+			   id="questionhub-search-input"
+			   class="questionhub-input questionhub-search-input"
+			   placeholder="<?php esc_attr_e( 'Search questions…', 'questionhub' ); ?>">
 	</div>
 	<?php endif; ?>
 
@@ -105,10 +92,17 @@ $categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => tr
 		<?php endif; ?>
 
 		<select class="questionhub-sort questionhub-select">
-			<option value="date"          <?php selected( $orderby, 'date' ); ?>><?php esc_html_e( 'Newest', 'questionhub' ); ?></option>
-			<option value="comment_count" <?php selected( $orderby, 'comment_count' ); ?>><?php esc_html_e( 'Most Answered', 'questionhub' ); ?></option>
-			<option value="meta_value_num"<?php selected( $orderby, 'meta_value_num' ); ?>><?php esc_html_e( 'Most Viewed', 'questionhub' ); ?></option>
+			<option value="date"           <?php selected( $orderby, 'date' ); ?>><?php esc_html_e( 'Newest', 'questionhub' ); ?></option>
+			<option value="comment_count"  <?php selected( $orderby, 'comment_count' ); ?>><?php esc_html_e( 'Most Answered', 'questionhub' ); ?></option>
+			<option value="meta_value_num" <?php selected( $orderby, 'meta_value_num' ); ?>><?php esc_html_e( 'Most Viewed', 'questionhub' ); ?></option>
 		</select>
+
+		<?php if ( $show_ask_btn && $ask_url ) : ?>
+		<a href="<?php echo esc_url( $ask_url ); ?>" class="questionhub-button questionhub-button-primary questionhub-ask-btn">
+			<span class="dashicons dashicons-edit"></span>
+			<?php esc_html_e( 'Ask a Question', 'questionhub' ); ?>
+		</a>
+		<?php endif; ?>
 	</div>
 
 	<div class="questionhub-questions-list">
