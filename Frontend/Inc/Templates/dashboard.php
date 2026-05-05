@@ -41,7 +41,7 @@ $my_questions = new WP_Query( [
 			<?php
 			while ( $my_questions->have_posts() ) {
 				$my_questions->the_post();
-				\QuestionHub\Frontend\Inc\Helpers\Template::load( 'question-card.php', [ 'post_id' => get_the_ID() ] );
+				\QuestionHub\Frontend\Inc\Helpers\Template::load( 'question-card.php', [ 'post_id' => get_the_ID(), 'status' => get_post_status() ] );
 			}
 			wp_reset_postdata();
 			?>

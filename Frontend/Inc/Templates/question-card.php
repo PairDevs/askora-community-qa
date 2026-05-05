@@ -23,7 +23,7 @@ $avatar     = get_avatar( $author_id, 40, '', '', [ 'class' => 'questionhub-avat
 $author     = get_the_author_meta( 'display_name', $author_id );
 $badge      = Badge::get( $author_id, $post_id );
 $best       = (int) get_post_meta( $post_id, '_questionhub_best_answer', true );
-$status     = get_post_status( $post_id );
+$status     = $status ?? '';
 ?>
 <article class="questionhub-card questionhub-question-card" id="question-<?php echo esc_attr( $post_id ); ?>">
 	<div class="questionhub-card-stats">
