@@ -51,10 +51,12 @@ class Shortcodes {
 	/** [questionhub_questions] */
 	public function render_question_list( $atts ): string {
 		$atts = shortcode_atts( [
-			'category' => '',
-			'tag'      => '',
-			'orderby'  => 'date',
-			'per_page' => '',
+			'category'     => '',
+			'tag'          => '',
+			'orderby'      => 'date',
+			'per_page'     => '',
+			'show_ask_btn' => 'true',
+			'show_search'  => 'true',
 		], $atts, 'questionhub_questions' );
 
 		return Template::get( 'question-list.php', [ 'atts' => $atts ] );

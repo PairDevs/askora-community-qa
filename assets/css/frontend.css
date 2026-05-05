@@ -459,6 +459,57 @@
 }
 
 /* ============================================
+   List Header (search + ask button bar)
+   ============================================ */
+.questionhub-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.questionhub-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 180px;
+}
+
+.questionhub-search-wrap .dashicons {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--questionhub-text-muted);
+  pointer-events: none;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.questionhub-search-wrap .questionhub-search-input {
+  padding-left: 36px;
+  width: 100%;
+}
+
+.questionhub-ask-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .questionhub-list-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .questionhub-ask-btn {
+    justify-content: center;
+  }
+}
+
+/* ============================================
    Load More
    ============================================ */
 .questionhub-load-more-wrap {
