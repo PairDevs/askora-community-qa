@@ -57,7 +57,7 @@ class QuestionPostType {
 			'show_ui'            => true,
 			'show_in_menu'       => true,
 			'query_var'          => true,
-			'rewrite'            => [ 'slug' => 'questions' ],
+			'rewrite'            => [ 'slug' => 'question' ],
 			'capability_type'    => 'post',
 			'has_archive'        => true,
 			'hierarchical'       => false,
