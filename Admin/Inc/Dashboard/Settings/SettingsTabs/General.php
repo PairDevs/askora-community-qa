@@ -68,6 +68,7 @@ class General {
 		return [
 			'question_status'        => 'pending',
 			'submit_form_page_id'    => 0,
+			'questions_list_page_id' => 0,
 			'allow_guest_replies'    => 0,
 			'require_login_to_ask'   => 1,
 			'require_login_to_reply' => 1,
@@ -102,6 +103,15 @@ class General {
 			'submit_form_page_id',
 			esc_html__( 'Ask a Question Page', 'questionhub' ),
 			[ $this, 'render_submit_form_page' ],
+			'questionhub_general_settings',
+			'questionhub_general_section'
+		);
+
+		// Questions list page.
+		add_settings_field(
+			'questions_list_page_id',
+			esc_html__( 'Questions List Page', 'questionhub' ),
+			[ $this, 'render_questions_list_page' ],
 			'questionhub_general_settings',
 			'questionhub_general_section'
 		);
@@ -315,6 +325,24 @@ class General {
 	}
 
 	/**
+	 * Renders Questions List Page selector.
+	 *
+	 * @since 1.0.0
+	 */
+	public function render_questions_list_page() {
+		$options = $this->get_all();
+		$page_id = (int) ( $options['questions_list_page_id'] ?? 0 );
+		wp_dropdown_pages( [
+			'name'              => esc_attr( $this->option_key ) . '[questions_list_page_id]',
+			'id'                => 'questionhub_questions_list_page_id',
+			'selected'          => $page_id,
+			'show_option_none'  => __( '— Select a Page —', 'questionhub' ),
+			'option_none_value' => '0',
+		] );
+		echo '<p class="description">' . esc_html__( 'Select the page containing the [questionhub_questions] shortcode. Used for the "All Questions" breadcrumb link on single question pages.', 'questionhub' ) . '</p>';
+	}
+
+	/**
 	 * Renders questions per page field.
 	 *
 	 * @since 1.0.0
@@ -351,6 +379,7 @@ class General {
 		}
 
 		$existing['submit_form_page_id']    = isset( $input['submit_form_page_id'] ) ? absint( $input['submit_form_page_id'] ) : 0;
+		$existing['questions_list_page_id'] = isset( $input['questions_list_page_id'] ) ? absint( $input['questions_list_page_id'] ) : 0;
 		$existing['question_status']        = isset( $input['question_status'] ) && in_array( $input['question_status'], [ 'pending', 'publish', 'draft' ], true ) ? $input['question_status'] : 'pending';
 		$existing['allow_guest_replies']    = isset( $input['allow_guest_replies'] ) ? 1 : 0;
 		$existing['require_login_to_ask']   = isset( $input['require_login_to_ask'] ) ? 1 : 0;

@@ -155,6 +155,26 @@ class Settings {
 				</div>
 
 				<div class="qh-field-row">
+					<label class="qh-field-label" for="questionhub_questions_list_page_id">
+						<?php esc_html_e( 'Questions List Page', 'questionhub' ); ?>
+						<span class="qh-field-badge qh-badge-member">Important</span>
+					</label>
+					<div class="qh-field-control">
+						<?php
+						wp_dropdown_pages( [
+							'name'              => esc_attr( $key ) . '[questions_list_page_id]',
+							'id'                => 'questionhub_questions_list_page_id',
+							'selected'          => (int) ( $opts['questions_list_page_id'] ?? 0 ),
+							'show_option_none'  => __( '— Select a Page —', 'questionhub' ),
+							'option_none_value' => '0',
+							'class'             => 'qh-field-select',
+						] );
+						?>
+						<p class="qh-field-desc"><?php esc_html_e( 'Page that contains [questionhub_questions]. Used for the "All Questions" breadcrumb link on single question pages.', 'questionhub' ); ?></p>
+					</div>
+				</div>
+
+				<div class="qh-field-row">
 					<label class="qh-field-label" for="questionhub_question_status">
 						<?php esc_html_e( 'Default Question Status', 'questionhub' ); ?>
 					</label>

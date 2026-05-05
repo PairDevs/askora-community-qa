@@ -35,8 +35,13 @@ $can_vote   = $enable_voting && is_user_logged_in();
 $has_voted  = $can_vote ? (new \QuestionHub\Frontend\Inc\Questions\VoteManager())->has_voted_question( $post_id, get_current_user_id() ) : false;
 $can_reply  = Permission::can_reply();
 
-// Breadcrumb back link.
-$archive_url = get_post_type_archive_link( 'questions' );
+// Breadcrumb back link — use admin-configured Questions List Page, fallback to CPT archive.
+$questions_list_page_id = (int) ( $settings['questions_list_page_id'] ?? 0 );
+if ( $questions_list_page_id > 0 && 'publish' === get_post_status( $questions_list_page_id ) ) {
+	$archive_url = get_permalink( $questions_list_page_id );
+} else {
+	$archive_url = get_post_type_archive_link( 'questions' );
+}
 ?>
 
 <div class="qh-single-page">
