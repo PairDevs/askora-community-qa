@@ -1,0 +1,10 @@
+{
+  "name": "questionhub",
+  "version": "1.0.0",
+  "description": "A modern Question & Answer plugin for WordPress with frontend question submission, AJAX replies, phone number login, search, views, badges, and beautiful UI.",
+  "author": "PairDevs",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "bundle": "rm -f ../questionhub.zip && zip -r ../questionhub.zip . -x 'node_modules/*' '.git/*' '.github/*' '.claude/*' '.cursor/*' '.gemini/*' '.opencode/*' '.blueprint/*' '.gitignore' '.DS_Store' '**/.DS_Store' 'languages/*' 'docs/*' 'composer.lock' '.gitattributes' '.distignore' 'composer.lock' '.gitattributes' '.distignore' 'wp-boost.lock.json' 'package-lock.json' '*.md' '*.zip' '*.log'"
+  }
+}
