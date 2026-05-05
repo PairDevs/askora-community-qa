@@ -173,12 +173,25 @@
         $wrapper.data('category', $(this).val()).data('page', 1);
         qh.reloadList($wrapper);
       });
+
+      // Inline search in list wrapper (show_search="true").
+      var listSearchTimeout;
+      $(document).on('input', '.questionhub-list-search .questionhub-search-input', function () {
+        var $input   = $(this);
+        var $wrapper = $input.closest('.questionhub-list-wrapper');
+        clearTimeout(listSearchTimeout);
+        listSearchTimeout = setTimeout(function () {
+          $wrapper.data('keyword', $input.val()).data('page', 1);
+          qh.reloadList($wrapper);
+        }, 350);
+      });
     },
 
     reloadList: function ($wrapper) {
       var $list    = $wrapper.find('.questionhub-questions-list');
       var category = $wrapper.data('category') || '';
       var orderby  = $wrapper.data('orderby') || 'date';
+      var keyword  = $wrapper.data('keyword') || '';
 
       $list.css('opacity', 0.5);
 
@@ -190,7 +203,8 @@
           nonce:    qh.nonce,
           page:     1,
           category: category,
-          orderby:  orderby
+          orderby:  orderby,
+          keyword:  keyword
         },
         success: function (res) {
           if (res.success) {

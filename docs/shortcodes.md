@@ -10,15 +10,23 @@
 ---
 
 ## [questionhub_questions]
-**Purpose:** Lists published questions with sort/filter controls.
+**Purpose:** Lists published questions with sort/filter controls, an optional inline search bar, and an optional "Ask a Question" button.
 **Attributes:**
 - `category` — term ID to pre-filter by category (default: `""`)
 - `tag` — tag slug to pre-filter (default: `""`)
 - `orderby` — `date` | `comment_count` | `meta_value_num` (default: `date`)
 - `per_page` — number of questions per page (default: from settings)
+- `show_ask_btn` — `true` | `false` — show "Ask a Question" button in the filter bar (default: `true`). URL resolves from the **Ask a Question Page** setting, auto-detected page with `[questionhub_submit_form]`, or `home_url()`.
+- `show_search` — `true` | `false` — show a live keyword search field above the filter bar (default: `true`). Typing debounces 350ms and reloads the list via AJAX.
 
-**Example:** `[questionhub_questions orderby="comment_count" per_page="5"]`
-**Output:** Responsive question card grid with load-more and AJAX filter/sort.
+**Examples:**
+```
+[questionhub_questions]
+[questionhub_questions orderby="comment_count" per_page="5"]
+[questionhub_questions show_ask_btn="false"]
+[questionhub_questions show_search="false" show_ask_btn="false"]
+```
+**Output:** Responsive question card list with load-more, AJAX filter/sort, live search, and Ask button.
 
 ---
 

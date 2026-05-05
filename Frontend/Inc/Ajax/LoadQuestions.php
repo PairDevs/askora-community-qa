@@ -33,6 +33,7 @@ class LoadQuestions {
 		$category = absint( $_POST['category'] ?? 0 );
 		$tag      = Sanitizer::text( $_POST['tag'] ?? '' );
 		$orderby  = Sanitizer::text( $_POST['orderby'] ?? 'date' );
+		$keyword  = Sanitizer::text( $_POST['keyword'] ?? '' );
 
 		// Whitelist orderby values.
 		$allowed_orderby = [ 'date', 'comment_count', 'meta_value_num' ];
@@ -69,6 +70,11 @@ class LoadQuestions {
 				'field'    => 'slug',
 				'terms'    => $tag,
 			];
+		}
+
+		// Keyword search.
+		if ( $keyword ) {
+			$args['s'] = $keyword;
 		}
 
 		// Unanswered filter.
