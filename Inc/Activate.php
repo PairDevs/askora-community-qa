@@ -53,7 +53,62 @@ class Activate {
 			update_option( 'questionhub_settings', $defaults );
 		}
 
+		// Auto-create draft pages with shortcodes (first activation only).
+		if ( ! get_option( 'questionhub_pages' ) ) {
+			self::create_pages();
+		}
+
 		// Register CPT and flush rewrite rules.
 		flush_rewrite_rules();
+	}
+
+	/**
+	 * Create draft pages with plugin shortcodes.
+	 *
+	 * @since 1.0.0
+	 */
+	private static function create_pages() {
+		$pages = [
+			'questions'    => [
+				'title'     => __( 'Questions', 'questionhub' ),
+				'shortcode' => '[questionhub_questions]',
+			],
+			'ask_question' => [
+				'title'     => __( 'Ask a Question', 'questionhub' ),
+				'shortcode' => '[questionhub_submit_form]',
+			],
+			'auth'         => [
+				'title'     => __( 'Login / Register', 'questionhub' ),
+				'shortcode' => '[questionhub_auth]',
+			],
+			'dashboard'    => [
+				'title'     => __( 'My Dashboard', 'questionhub' ),
+				'shortcode' => '[questionhub_dashboard]',
+			],
+		];
+
+		$created = [];
+
+		foreach ( $pages as $slug => $page ) {
+			if ( get_page_by_path( $slug ) ) {
+				continue;
+			}
+
+			$id = wp_insert_post( [
+				'post_title'   => $page['title'],
+				'post_name'    => $slug,
+				'post_content' => $page['shortcode'],
+				'post_status'  => 'draft',
+				'post_type'    => 'page',
+			] );
+
+			if ( ! is_wp_error( $id ) ) {
+				$created[ $slug ] = (int) $id;
+			}
+		}
+
+		if ( ! empty( $created ) ) {
+			update_option( 'questionhub_pages', $created );
+		}
 	}
 }
