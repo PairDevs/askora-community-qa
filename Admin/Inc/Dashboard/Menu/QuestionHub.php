@@ -49,16 +49,11 @@ class QuestionHub {
 		$total           = $total_published + $total_pending + $total_draft;
 
 		// Total approved answers (comments).
-		global $wpdb;
-		$total_answers = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$wpdb->prepare(
-				"SELECT COUNT(*) FROM {$wpdb->comments} c
-				 INNER JOIN {$wpdb->posts} p ON c.comment_post_ID = p.ID
-				 WHERE p.post_type = %s AND c.comment_approved = %s",
-				'questions',
-				'1'
-			)
-		);
+		$total_answers = (int) get_comments( [
+			'post_type' => 'questions',
+			'status'    => 'approve',
+			'count'     => true,
+		] );
 
 		// Total registered users.
 		$user_count = count_users();
@@ -370,7 +365,7 @@ class QuestionHub {
 								?>
 								<div class="qh-settings-row">
 									<span class="qh-settings-label"><?php echo esc_html( $row['label'] ); ?></span>
-									<span class="qh-settings-val <?php echo $row['active'] ? 'qh-val-on' : 'qh-val-off'; ?>">
+									<span class="qh-settings-val <?php echo esc_attr( $row['active'] ? 'qh-val-on' : 'qh-val-off' ); ?>">
 										<?php echo esc_html( $row['value'] ); ?>
 									</span>
 								</div>

@@ -2,13 +2,13 @@
 Contributors: pairdevs
 Tags: question answer, Q&A, forum, community, questions
 Requires at least: 6.0
-Tested up to: 6.7
+Tested up to: 6.9
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A modern Question & Answer plugin for WordPress with frontend question submission, AJAX replies, phone number login, search, views, badges, and beautiful UI.
+A modern Q&A plugin for WordPress with frontend question submission, AJAX replies, phone login, search, views, badges, and beautiful UI.
 
 == Description ==
 

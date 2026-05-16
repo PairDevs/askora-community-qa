@@ -37,7 +37,9 @@ class ViewCounter {
 		$post_id    = get_the_ID();
 		$cookie_key = 'questionhub_viewed_' . $post_id;
 
-		if ( isset( $_COOKIE[ $cookie_key ] ) ) {
+		$questionhub_viewed_cookie = isset( $_COOKIE[ $cookie_key ] ) ? sanitize_text_field( wp_unslash( $_COOKIE[ $cookie_key ] ) ) : '';
+
+		if ( '1' === $questionhub_viewed_cookie ) {
 			return;
 		}
 

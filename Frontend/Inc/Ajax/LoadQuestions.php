@@ -9,7 +9,6 @@
 namespace QuestionHub\Frontend\Inc\Ajax;
 
 use QuestionHub\Frontend\Inc\Helpers\Response;
-use QuestionHub\Frontend\Inc\Helpers\Sanitizer;
 use QuestionHub\Frontend\Inc\Helpers\Template;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,11 +28,11 @@ class LoadQuestions {
 		$settings = get_option( 'questionhub_settings', [] );
 		$per_page = isset( $settings['questions_per_page'] ) ? absint( $settings['questions_per_page'] ) : 10;
 
-		$page     = absint( $_POST['page'] ?? 1 );
-		$category = absint( $_POST['category'] ?? 0 );
-		$tag      = Sanitizer::text( $_POST['tag'] ?? '' );
-		$orderby  = Sanitizer::text( $_POST['orderby'] ?? 'date' );
-		$keyword  = Sanitizer::text( $_POST['keyword'] ?? '' );
+		$page     = isset( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 1;
+		$category = isset( $_POST['category'] ) ? absint( wp_unslash( $_POST['category'] ) ) : 0;
+		$tag      = isset( $_POST['tag'] ) ? sanitize_text_field( wp_unslash( $_POST['tag'] ) ) : '';
+		$orderby  = isset( $_POST['orderby'] ) ? sanitize_text_field( wp_unslash( $_POST['orderby'] ) ) : 'date';
+		$keyword  = isset( $_POST['keyword'] ) ? sanitize_text_field( wp_unslash( $_POST['keyword'] ) ) : '';
 
 		// Whitelist orderby values.
 		$allowed_orderby = [ 'date', 'comment_count', 'meta_value_num' ];
@@ -78,7 +77,7 @@ class LoadQuestions {
 		}
 
 		// Unanswered filter.
-		if ( ! empty( $_POST['unanswered'] ) ) {
+		if ( isset( $_POST['unanswered'] ) && absint( wp_unslash( $_POST['unanswered'] ) ) ) {
 			$args['comment_count'] = 0;
 		}
 

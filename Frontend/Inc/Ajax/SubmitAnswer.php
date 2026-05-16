@@ -10,7 +10,6 @@ namespace QuestionHub\Frontend\Inc\Ajax;
 
 use QuestionHub\Frontend\Inc\Helpers\Permission;
 use QuestionHub\Frontend\Inc\Helpers\Response;
-use QuestionHub\Frontend\Inc\Helpers\Sanitizer;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -30,8 +29,8 @@ class SubmitAnswer {
 			Response::die_error( __( 'You must be logged in to submit an answer.', 'questionhub' ) );
 		}
 
-		$post_id = absint( $_POST['post_id'] ?? 0 );
-		$content = Sanitizer::html( $_POST['content'] ?? '' );
+		$post_id = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
+		$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
 
 		if ( ! $post_id || empty( trim( $content ) ) ) {
 			Response::die_error( __( 'Answer content is required.', 'questionhub' ) );

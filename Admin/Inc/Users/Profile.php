@@ -11,7 +11,6 @@
 namespace QuestionHub\Admin\Inc\Users;
 
 use QuestionHub\Frontend\Inc\Auth\UserMeta;
-use QuestionHub\Frontend\Inc\Helpers\Sanitizer;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -58,8 +57,12 @@ class Profile {
 			return;
 		}
 
+		if ( ! isset( $_POST['questionhub_user_phone_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['questionhub_user_phone_nonce'] ) ), 'questionhub_save_user_phone' ) ) {
+			return;
+		}
+
 		if ( isset( $_POST['questionhub_phone'] ) ) {
-			$phone = Sanitizer::phone( wp_unslash( $_POST['questionhub_phone'] ) );
+			$phone = preg_replace( '/[^0-9+\-() ]/', '', sanitize_text_field( wp_unslash( $_POST['questionhub_phone'] ) ) );
 			
 			// Only update if it's unique or belongs to this user.
 			$existing_user = UserMeta::find_user_by_phone( $phone );

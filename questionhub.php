@@ -4,18 +4,17 @@
  * Plugin URI:  https://github.com/PairDevs/QuestionHub
  * Description: A modern Question & Answer plugin for WordPress with frontend question submission, AJAX replies, phone number login, search, views, badges, and beautiful UI.
  * Version:     1.0.0
- * Author:      PairDevs
- * Author URI:  https://github.com/PairDevs/QuestionHub
+ * Author:      Md Abul Bashar
+ * Author URI:  https://github.com/hmbashar
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: questionhub
- * Domain Path: /languages
  * Requires at least: 6.0
  * Requires PHP: 7.4
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit;
 }
 
@@ -28,7 +27,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package QuestionHub
  * @since   1.0.0
  */
-final class QuestionHub {
+final class QuestionHub
+{
 
 	/**
 	 * Singleton instance.
@@ -42,7 +42,8 @@ final class QuestionHub {
 	 *
 	 * @since 1.0.0
 	 */
-	private function __construct() {
+	private function __construct()
+	{
 		$this->define_constants();
 		$this->include_files();
 		$this->init_hooks();
@@ -54,8 +55,9 @@ final class QuestionHub {
 	 * @since  1.0.0
 	 * @return QuestionHub
 	 */
-	public static function get_instance() {
-		if ( null === self::$instance ) {
+	public static function get_instance()
+	{
+		if (null === self::$instance) {
 			self::$instance = new self();
 		}
 		return self::$instance;
@@ -66,13 +68,14 @@ final class QuestionHub {
 	 *
 	 * @since 1.0.0
 	 */
-	private function define_constants() {
-		define( 'QUESTIONHUB_VERSION',  '1.0.0' );
-		define( 'QUESTIONHUB_FILE',     __FILE__ );
-		define( 'QUESTIONHUB_PATH',     plugin_dir_path( __FILE__ ) );
-		define( 'QUESTIONHUB_URL',      plugin_dir_url( __FILE__ ) );
-		define( 'QUESTIONHUB_BASENAME', plugin_basename( __FILE__ ) );
-		define( 'QUESTIONHUB_NAME',     'QuestionHub' );
+	private function define_constants()
+	{
+		define('QUESTIONHUB_VERSION', '1.0.0');
+		define('QUESTIONHUB_FILE', __FILE__);
+		define('QUESTIONHUB_PATH', plugin_dir_path(__FILE__));
+		define('QUESTIONHUB_URL', plugin_dir_url(__FILE__));
+		define('QUESTIONHUB_BASENAME', plugin_basename(__FILE__));
+		define('QUESTIONHUB_NAME', 'QuestionHub');
 	}
 
 	/**
@@ -80,8 +83,9 @@ final class QuestionHub {
 	 *
 	 * @since 1.0.0
 	 */
-	private function include_files() {
-		if ( file_exists( QUESTIONHUB_PATH . 'vendor/autoload.php' ) ) {
+	private function include_files()
+	{
+		if (file_exists(QUESTIONHUB_PATH . 'vendor/autoload.php')) {
 			require_once QUESTIONHUB_PATH . 'vendor/autoload.php';
 		}
 	}
@@ -91,12 +95,12 @@ final class QuestionHub {
 	 *
 	 * @since 1.0.0
 	 */
-	private function init_hooks() {
-		add_action( 'plugins_loaded', [ $this, 'plugin_loaded' ] );
-		add_action( 'init',           [ $this, 'register_textdomain' ] );
+	private function init_hooks()
+	{
+		add_action('plugins_loaded', [$this, 'plugin_loaded']);
 
-		register_activation_hook( QUESTIONHUB_FILE,   [ $this, 'activate' ] );
-		register_deactivation_hook( QUESTIONHUB_FILE, [ $this, 'deactivate' ] );
+		register_activation_hook(QUESTIONHUB_FILE, [$this, 'activate']);
+		register_deactivation_hook(QUESTIONHUB_FILE, [$this, 'deactivate']);
 	}
 
 	/**
@@ -105,8 +109,9 @@ final class QuestionHub {
 	 *
 	 * @since 1.0.0
 	 */
-	public function plugin_loaded() {
-		if ( class_exists( 'QuestionHub\\Manager' ) ) {
+	public function plugin_loaded()
+	{
+		if (class_exists('QuestionHub\\Manager')) {
 			new \QuestionHub\Manager();
 		}
 
@@ -115,28 +120,17 @@ final class QuestionHub {
 		 *
 		 * @since 1.0.0
 		 */
-		do_action( 'questionhub_loaded' );
+		do_action('questionhub_loaded');
 	}
 
-	/**
-	 * Loads the plugin text domain.
-	 *
-	 * @since 1.0.0
-	 */
-	public function register_textdomain() {
-		load_plugin_textdomain(
-			'questionhub',
-			false,
-			dirname( plugin_basename( __FILE__ ) ) . '/languages'
-		);
-	}
 
 	/**
 	 * Plugin activation handler.
 	 *
 	 * @since 1.0.0
 	 */
-	public function activate() {
+	public function activate()
+	{
 		\QuestionHub\Activate::activate();
 	}
 
@@ -145,7 +139,8 @@ final class QuestionHub {
 	 *
 	 * @since 1.0.0
 	 */
-	public function deactivate() {
+	public function deactivate()
+	{
 		\QuestionHub\Deactivate::deactivate();
 	}
 }
@@ -156,8 +151,9 @@ final class QuestionHub {
  * @since  1.0.0
  * @return QuestionHub
  */
-if ( ! function_exists( 'questionhub_initialize' ) ) {
-	function questionhub_initialize() {
+if (!function_exists('questionhub_initialize')) {
+	function questionhub_initialize()
+	{
 		return QuestionHub::get_instance();
 	}
 

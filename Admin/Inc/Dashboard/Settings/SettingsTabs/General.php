@@ -317,8 +317,8 @@ class General {
 		wp_dropdown_pages( [
 			'name'              => esc_attr( $this->option_key ) . '[submit_form_page_id]',
 			'id'                => 'questionhub_submit_form_page_id',
-			'selected'          => $page_id,
-			'show_option_none'  => __( '— Select a Page —', 'questionhub' ),
+			'selected'          => wp_kses_post($page_id),
+			'show_option_none'  => esc_html__( '— Select a Page —', 'questionhub' ),
 			'option_none_value' => '0',
 		] );
 		echo '<p class="description">' . esc_html__( 'Select the page containing the [questionhub_submit_form] shortcode. Used for the \'Ask a Question\' button.', 'questionhub' ) . '</p>';
@@ -335,8 +335,8 @@ class General {
 		wp_dropdown_pages( [
 			'name'              => esc_attr( $this->option_key ) . '[questions_list_page_id]',
 			'id'                => 'questionhub_questions_list_page_id',
-			'selected'          => $page_id,
-			'show_option_none'  => __( '— Select a Page —', 'questionhub' ),
+			'selected'          => wp_kses_post($page_id),
+			'show_option_none'  => esc_html__( '— Select a Page —', 'questionhub' ),
 			'option_none_value' => '0',
 		] );
 		echo '<p class="description">' . esc_html__( 'Select the page containing the [questionhub_questions] shortcode. Used for the "All Questions" breadcrumb link on single question pages.', 'questionhub' ) . '</p>';
@@ -374,7 +374,7 @@ class General {
 
 		// If this is NOT our tab being submitted, pass the $input through unmodified.
 		// The sanitize callback for the correct tab will handle merging it with $existing.
-		if ( ! isset( $_POST['option_page'] ) || 'questionhub_general_group' !== $_POST['option_page'] ) {
+		if ( ! isset( $_POST['option_page'] ) || 'questionhub_general_group' !== sanitize_text_field( wp_unslash( $_POST['option_page'] ) ) ) {
 			return $input;
 		}
 

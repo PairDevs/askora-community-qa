@@ -10,7 +10,6 @@ namespace QuestionHub\Frontend\Inc\Ajax;
 
 use QuestionHub\Frontend\Inc\Auth\PhoneRegister as PhoneRegisterHandler;
 use QuestionHub\Frontend\Inc\Helpers\Response;
-use QuestionHub\Frontend\Inc\Helpers\Sanitizer;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -28,11 +27,11 @@ class PhoneRegister {
 
 		do_action( 'questionhub_auth_before_register' );
 
-		$name     = Sanitizer::text( $_POST['name'] ?? '' );
-		$phone    = Sanitizer::phone( $_POST['phone'] ?? '' );
-		$password = $_POST['password'] ?? '';
-		$confirm  = $_POST['confirm_password'] ?? '';
-		$email    = isset( $_POST['email'] ) ? Sanitizer::email( $_POST['email'] ) : '';
+		$name     = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+		$phone    = isset( $_POST['phone'] ) ? preg_replace( '/[^0-9+\-() ]/', '', sanitize_text_field( wp_unslash( $_POST['phone'] ) ) ) : '';
+		$password = isset( $_POST['password'] ) ? sanitize_text_field( wp_unslash( $_POST['password'] ) ) : '';
+		$confirm  = isset( $_POST['confirm_password'] ) ? sanitize_text_field( wp_unslash( $_POST['confirm_password'] ) ) : '';
+		$email    = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
 
 		if ( $password !== $confirm ) {
 			Response::die_error( __( 'Passwords do not match.', 'questionhub' ) );

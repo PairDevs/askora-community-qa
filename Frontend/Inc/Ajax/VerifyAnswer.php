@@ -31,7 +31,7 @@ class VerifyAnswer {
 			Response::die_error( __( 'Only administrators can verify answers.', 'questionhub' ) );
 		}
 
-		$comment_id = absint( $_POST['comment_id'] ?? 0 );
+		$comment_id = isset( $_POST['comment_id'] ) ? absint( wp_unslash( $_POST['comment_id'] ) ) : 0;
 
 		if ( ! $comment_id || ! get_comment( $comment_id ) ) {
 			Response::die_error( __( 'Invalid answer ID.', 'questionhub' ) );

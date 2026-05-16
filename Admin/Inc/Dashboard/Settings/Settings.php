@@ -79,7 +79,7 @@ class Settings {
 				<nav class="qh-settings-nav">
 					<?php foreach ( $tabs as $slug => $tab ) : ?>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=questionhub_settings&tab=' . $slug ) ); ?>"
-					   class="qh-settings-nav-item <?php echo $slug === $active_tab ? 'active' : ''; ?>">
+					   class="qh-settings-nav-item <?php echo esc_attr( $slug === $active_tab ? 'active' : '' ); ?>">
 						<span class="dashicons <?php echo esc_attr( $tab['icon'] ); ?>"></span>
 						<?php echo esc_html( $tab['label'] ); ?>
 					</a>
@@ -145,7 +145,7 @@ class Settings {
 							'name'              => esc_attr( $key ) . '[submit_form_page_id]',
 							'id'                => 'questionhub_submit_form_page_id',
 							'selected'          => (int) ( $opts['submit_form_page_id'] ?? 0 ),
-							'show_option_none'  => __( '— Select a Page —', 'questionhub' ),
+							'show_option_none'  => esc_html__( '— Select a Page —', 'questionhub' ),
 							'option_none_value' => '0',
 							'class'             => 'qh-field-select',
 						] );
@@ -165,7 +165,7 @@ class Settings {
 							'name'              => esc_attr( $key ) . '[questions_list_page_id]',
 							'id'                => 'questionhub_questions_list_page_id',
 							'selected'          => (int) ( $opts['questions_list_page_id'] ?? 0 ),
-							'show_option_none'  => __( '— Select a Page —', 'questionhub' ),
+							'show_option_none'  => esc_html__( '— Select a Page —', 'questionhub' ),
 							'option_none_value' => '0',
 							'class'             => 'qh-field-select',
 						] );

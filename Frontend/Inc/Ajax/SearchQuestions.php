@@ -9,7 +9,6 @@
 namespace QuestionHub\Frontend\Inc\Ajax;
 
 use QuestionHub\Frontend\Inc\Helpers\Response;
-use QuestionHub\Frontend\Inc\Helpers\Sanitizer;
 use QuestionHub\Frontend\Inc\Helpers\Template;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,8 +25,8 @@ class SearchQuestions {
 	public function handle(): void {
 		check_ajax_referer( 'questionhub_nonce', 'nonce' );
 
-		$keyword  = Sanitizer::text( $_POST['keyword'] ?? '' );
-		$category = absint( $_POST['category'] ?? 0 );
+		$keyword  = isset( $_POST['keyword'] ) ? sanitize_text_field( wp_unslash( $_POST['keyword'] ) ) : '';
+		$category = isset( $_POST['category'] ) ? absint( wp_unslash( $_POST['category'] ) ) : 0;
 
 		$args = [
 			'post_type'      => 'questions',

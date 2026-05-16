@@ -10,71 +10,67 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$settings   = get_option( 'questionhub_settings', [] );
-$per_page   = isset( $settings['questions_per_page'] ) ? absint( $settings['questions_per_page'] ) : 10;
+$questionhub_settings   = get_option( 'questionhub_settings', [] );
+$questionhub_per_page   = isset( $questionhub_settings['questions_per_page'] ) ? absint( $questionhub_settings['questions_per_page'] ) : 10;
 
 // Detect taxonomy filtering from URL.
-$tax_query  = [];
+$questionhub_tax_query  = [];
 if ( is_tax( 'question_category' ) ) {
-	$current_term = get_queried_object();
-	$tax_query[]  = [
+	$questionhub_current_term = get_queried_object();
+	$questionhub_tax_query[]  = [
 		'taxonomy' => 'question_category',
 		'field'    => 'term_id',
-		'terms'    => $current_term->term_id,
+		'terms'    => $questionhub_current_term->term_id,
 	];
 } elseif ( is_tax( 'question_tag' ) ) {
-	$current_term = get_queried_object();
-	$tax_query[]  = [
+	$questionhub_current_term = get_queried_object();
+	$questionhub_tax_query[]  = [
 		'taxonomy' => 'question_tag',
 		'field'    => 'term_id',
-		'terms'    => $current_term->term_id,
+		'terms'    => $questionhub_current_term->term_id,
 	];
 }
 
-$query_args = [
+$questionhub_query_args = [
 	'post_type'      => 'questions',
 	'post_status'    => 'publish',
-	'posts_per_page' => $per_page,
+	'posts_per_page' => $questionhub_per_page,
 	'paged'          => max( 1, get_query_var( 'paged' ) ),
 	'orderby'        => 'date',
 	'order'          => 'DESC',
 ];
 
-if ( ! empty( $tax_query ) ) {
-	$query_args['tax_query'] = $tax_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+if ( ! empty( $questionhub_tax_query ) ) {
+	$questionhub_query_args['tax_query'] = $questionhub_tax_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 }
 
-$query      = new WP_Query( $query_args );
-$categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => true ] );
+$questionhub_query      = new WP_Query( $questionhub_query_args );
+$questionhub_categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => true ] );
 
 /**
  * Resolve the "Ask a Question" URL.
  * Priority: 1. Admin-selected page, 2. Auto-detect page with shortcode, 3. home_url().
  */
-$ask_url = '';
-$submit_page_id = (int) ( $settings['submit_form_page_id'] ?? 0 );
-if ( $submit_page_id > 0 && 'publish' === get_post_status( $submit_page_id ) ) {
-	$ask_url = get_permalink( $submit_page_id );
+$questionhub_ask_url = '';
+$questionhub_submit_page_id = (int) ( $questionhub_settings['submit_form_page_id'] ?? 0 );
+if ( $questionhub_submit_page_id > 0 && 'publish' === get_post_status( $questionhub_submit_page_id ) ) {
+	$questionhub_ask_url = get_permalink( $questionhub_submit_page_id );
 }
-if ( ! $ask_url ) {
-	// Auto-detect: search all pages for the shortcode.
-	global $wpdb;
-	$detected = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-		$wpdb->prepare(
-			"SELECT ID FROM {$wpdb->posts}
-			 WHERE post_status = 'publish'
-			 AND post_type = 'page'
-			 AND post_content LIKE %s
-			 LIMIT 1",
-			'%[questionhub_submit_form%'
-		)
-	);
-	if ( $detected ) {
-		$ask_url = get_permalink( (int) $detected );
+if ( ! $questionhub_ask_url ) {
+	$questionhub_detected_pages = get_posts( [
+		'post_type'      => 'page',
+		'post_status'    => 'publish',
+		'posts_per_page' => 1,
+		's'              => 'questionhub_submit_form',
+		'fields'         => 'ids',
+	] );
+
+	if ( ! empty( $questionhub_detected_pages ) ) {
+		$questionhub_ask_url = get_permalink( (int) $questionhub_detected_pages[0] );
 	}
 }
-if ( ! $ask_url ) {
-	$ask_url = apply_filters( 'questionhub_ask_url', home_url() );
+if ( ! $questionhub_ask_url ) {
+	$questionhub_ask_url = apply_filters( 'questionhub_ask_url', home_url() );
 }
 
 ?>
@@ -95,24 +91,23 @@ if ( ! $ask_url ) {
 				<?php
 				printf(
 					/* translators: %d: total number of questions */
-					esc_html( _n( '%d question', '%d questions', $query->found_posts, 'questionhub' ) ),
-					esc_html( $query->found_posts )
+					esc_html( _n( '%d question', '%d questions', $questionhub_query->found_posts, 'questionhub' ) ),
+					esc_html( $questionhub_query->found_posts )
 				);
 				?>
 			</p>
 			<?php // Show button to all users — the form page handles login requirements. ?>
-			<a href="<?php echo esc_url( $ask_url ); ?>" class="questionhub-button questionhub-button-primary questionhub-ask-hero-btn">
+			<a href="<?php echo esc_url( $questionhub_ask_url ); ?>" class="questionhub-button questionhub-button-primary questionhub-ask-hero-btn">
 				<span class="dashicons dashicons-edit"></span>
 				<?php esc_html_e( 'Ask a Question', 'questionhub' ); ?>
 			</a>
-
 		</div>
 	</div>
 
 	<div class="questionhub-archive-body">
 		<!-- Sidebar filters -->
 		<aside class="questionhub-archive-sidebar">
-			<?php if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) : ?>
+			<?php if ( ! empty( $questionhub_categories ) && ! is_wp_error( $questionhub_categories ) ) : ?>
 			<div class="questionhub-sidebar-widget">
 				<h4 class="questionhub-sidebar-title"><?php esc_html_e( 'Categories', 'questionhub' ); ?></h4>
 				<ul class="questionhub-cat-list">
@@ -122,11 +117,11 @@ if ( ! $ask_url ) {
 							<span class="questionhub-cat-count"><?php echo esc_html( wp_count_posts( 'questions' )->publish ); ?></span>
 						</a>
 					</li>
-					<?php foreach ( $categories as $cat ) : ?>
+					<?php foreach ( $questionhub_categories as $questionhub_cat ) : ?>
 					<li>
-						<a href="<?php echo esc_url( get_term_link( $cat ) ); ?>" class="questionhub-cat-link <?php echo ( is_tax() && get_queried_object_id() === $cat->term_id ) ? 'active' : ''; ?>">
-							<?php echo esc_html( $cat->name ); ?>
-							<span class="questionhub-cat-count"><?php echo esc_html( $cat->count ); ?></span>
+						<a href="<?php echo esc_url( get_term_link( $questionhub_cat ) ); ?>" class="questionhub-cat-link <?php echo ( is_tax() && get_queried_object_id() === $questionhub_cat->term_id ) ? 'active' : ''; ?>">
+							<?php echo esc_html( $questionhub_cat->name ); ?>
+							<span class="questionhub-cat-count"><?php echo esc_html( $questionhub_cat->count ); ?></span>
 						</a>
 					</li>
 					<?php endforeach; ?>
@@ -136,15 +131,15 @@ if ( ! $ask_url ) {
 
 			<!-- Popular Tags -->
 			<?php
-			$tags = get_terms( [ 'taxonomy' => 'question_tag', 'hide_empty' => true, 'number' => 20, 'orderby' => 'count', 'order' => 'DESC' ] );
-			if ( ! empty( $tags ) && ! is_wp_error( $tags ) ) :
+			$questionhub_tags = get_terms( [ 'taxonomy' => 'question_tag', 'hide_empty' => true, 'number' => 20, 'orderby' => 'count', 'order' => 'DESC' ] );
+			if ( ! empty( $questionhub_tags ) && ! is_wp_error( $questionhub_tags ) ) :
 			?>
 			<div class="questionhub-sidebar-widget">
 				<h4 class="questionhub-sidebar-title"><?php esc_html_e( 'Popular Tags', 'questionhub' ); ?></h4>
 				<div class="questionhub-tag-cloud">
-					<?php foreach ( $tags as $tag ) : ?>
-					<a href="<?php echo esc_url( get_term_link( $tag ) ); ?>" class="questionhub-tag <?php echo ( is_tax( 'question_tag' ) && get_queried_object_id() === $tag->term_id ) ? 'active' : ''; ?>">
-						<?php echo esc_html( $tag->name ); ?>
+					<?php foreach ( $questionhub_tags as $questionhub_tag ) : ?>
+					<a href="<?php echo esc_url( get_term_link( $questionhub_tag ) ); ?>" class="questionhub-tag <?php echo ( is_tax( 'question_tag' ) && get_queried_object_id() === $questionhub_tag->term_id ) ? 'active' : ''; ?>">
+						<?php echo esc_html( $questionhub_tag->name ); ?>
 					</a>
 					<?php endforeach; ?>
 				</div>
@@ -177,9 +172,9 @@ if ( ! $ask_url ) {
 				<!-- Questions list -->
 				<div class="questionhub-questions-list">
 					<?php
-					if ( $query->have_posts() ) {
-						while ( $query->have_posts() ) {
-							$query->the_post();
+					if ( $questionhub_query->have_posts() ) {
+						while ( $questionhub_query->have_posts() ) {
+							$questionhub_query->the_post();
 							\QuestionHub\Frontend\Inc\Helpers\Template::load( 'question-card.php', [ 'post_id' => get_the_ID() ] );
 						}
 						wp_reset_postdata();
@@ -194,9 +189,9 @@ if ( ! $ask_url ) {
 				</div>
 
 				<!-- Load more / pagination -->
-				<?php if ( $query->max_num_pages > 1 ) : ?>
+				<?php if ( $questionhub_query->max_num_pages > 1 ) : ?>
 				<div class="questionhub-load-more-wrap">
-					<button class="questionhub-button questionhub-load-more" data-page="2" data-max="<?php echo esc_attr( $query->max_num_pages ); ?>">
+					<button class="questionhub-button questionhub-load-more" data-page="2" data-max="<?php echo esc_attr( $questionhub_query->max_num_pages ); ?>">
 						<?php esc_html_e( 'Load More', 'questionhub' ); ?>
 					</button>
 					<span class="questionhub-spinner" style="display:none;"></span>

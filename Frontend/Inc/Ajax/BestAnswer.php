@@ -24,8 +24,8 @@ class BestAnswer {
 	public function handle(): void {
 		check_ajax_referer( 'questionhub_nonce', 'nonce' );
 
-		$post_id    = absint( $_POST['post_id'] ?? 0 );
-		$comment_id = absint( $_POST['comment_id'] ?? 0 );
+		$post_id    = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
+		$comment_id = isset( $_POST['comment_id'] ) ? absint( wp_unslash( $_POST['comment_id'] ) ) : 0;
 
 		if ( ! Permission::can_mark_best_answer( $post_id ) ) {
 			Response::die_error( __( 'You are not allowed to mark the best answer.', 'questionhub' ) );

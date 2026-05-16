@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => true ] );
+$questionhub_categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => true ] );
 ?>
 <div class="questionhub-wrapper questionhub-search-wrapper">
 	<form class="questionhub-search-form questionhub-form" id="questionhub-search-form" role="search">
@@ -19,11 +19,11 @@ $categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => tr
 				<input type="search" id="questionhub-search-input" class="questionhub-input questionhub-search-input" name="keyword" placeholder="<?php esc_attr_e( 'Search questions…', 'questionhub' ); ?>" autocomplete="off">
 			</div>
 
-			<?php if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) : ?>
+			<?php if ( ! empty( $questionhub_categories ) && ! is_wp_error( $questionhub_categories ) ) : ?>
 			<select class="questionhub-select questionhub-search-category" name="category">
 				<option value=""><?php esc_html_e( 'All Categories', 'questionhub' ); ?></option>
-				<?php foreach ( $categories as $cat ) : ?>
-					<option value="<?php echo esc_attr( $cat->term_id ); ?>"><?php echo esc_html( $cat->name ); ?></option>
+				<?php foreach ( $questionhub_categories as $questionhub_cat ) : ?>
+					<option value="<?php echo esc_attr( $questionhub_cat->term_id ); ?>"><?php echo esc_html( $questionhub_cat->name ); ?></option>
 				<?php endforeach; ?>
 			</select>
 			<?php endif; ?>

@@ -14,10 +14,10 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-$settings = get_option( 'questionhub_settings', [] );
-$delete   = isset( $settings['delete_data_on_uninstall'] ) ? (bool) $settings['delete_data_on_uninstall'] : false;
+$questionhub_settings = get_option( 'questionhub_settings', [] );
+$questionhub_delete   = isset( $questionhub_settings['delete_data_on_uninstall'] ) ? (bool) $questionhub_settings['delete_data_on_uninstall'] : false;
 
-if ( ! $delete ) {
+if ( ! $questionhub_delete ) {
 	return;
 }
 
@@ -27,37 +27,40 @@ global $wpdb;
 delete_option( 'questionhub_settings' );
 delete_option( 'questionhub_version' );
 
-// Remove transients.
+// Remove transients — no WP API exists for bulk-deleting transients by prefix.
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_questionhub_%'" );
 $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_timeout_questionhub_%'" );
+// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+wp_cache_flush(); // Clear object cache after bulk transient deletion.
 
 // Remove post meta.
-$meta_keys = [
+$questionhub_meta_keys = [
 	'_questionhub_views',
 	'_questionhub_votes',
 	'_questionhub_voted_users',
 	'_questionhub_best_answer',
 	'_questionhub_status',
 ];
-foreach ( $meta_keys as $key ) {
-	$wpdb->delete( $wpdb->postmeta, [ 'meta_key' => $key ] ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+foreach ( $questionhub_meta_keys as $questionhub_key ) {
+	delete_post_meta_by_key( $questionhub_key );
 }
 
 // Remove comment meta.
-$comment_meta_keys = [
+$questionhub_comment_meta_keys = [
 	'_questionhub_answer_votes',
 	'_questionhub_answer_voted_users',
 	'_questionhub_is_best_answer',
 ];
-foreach ( $comment_meta_keys as $key ) {
-	$wpdb->delete( $wpdb->commentmeta, [ 'meta_key' => $key ] ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+foreach ( $questionhub_comment_meta_keys as $questionhub_key ) {
+	delete_metadata( 'comment', 0, $questionhub_key, '', true );
 }
 
 // Remove user meta.
-$user_meta_keys = [
+$questionhub_user_meta_keys = [
 	'_questionhub_phone_number',
 	'_questionhub_phone_verified',
 ];
-foreach ( $user_meta_keys as $key ) {
-	$wpdb->delete( $wpdb->usermeta, [ 'meta_key' => $key ] ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+foreach ( $questionhub_user_meta_keys as $questionhub_key ) {
+	delete_metadata( 'user', 0, $questionhub_key, '', true );
 }

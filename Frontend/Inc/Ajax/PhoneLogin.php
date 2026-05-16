@@ -10,7 +10,6 @@ namespace QuestionHub\Frontend\Inc\Ajax;
 
 use QuestionHub\Frontend\Inc\Auth\PhoneLogin as PhoneLoginHandler;
 use QuestionHub\Frontend\Inc\Helpers\Response;
-use QuestionHub\Frontend\Inc\Helpers\Sanitizer;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -28,8 +27,8 @@ class PhoneLogin {
 
 		do_action( 'questionhub_auth_before_login' );
 
-		$phone    = Sanitizer::phone( $_POST['phone'] ?? '' );
-		$password = $_POST['password'] ?? '';
+		$phone    = isset( $_POST['phone'] ) ? preg_replace( '/[^0-9+\-() ]/', '', sanitize_text_field( wp_unslash( $_POST['phone'] ) ) ) : '';
+		$password = isset( $_POST['password'] ) ? sanitize_text_field( wp_unslash( $_POST['password'] ) ) : '';
 
 		$handler = new PhoneLoginHandler();
 		$result  = $handler->login( $phone, $password );

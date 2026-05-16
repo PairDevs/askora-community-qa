@@ -10,7 +10,6 @@ namespace QuestionHub\Frontend\Inc\Ajax;
 
 use QuestionHub\Frontend\Inc\Questions\QuestionService;
 use QuestionHub\Frontend\Inc\Helpers\Response;
-use QuestionHub\Frontend\Inc\Helpers\Sanitizer;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -29,10 +28,10 @@ class SubmitQuestion {
 			Response::die_error( __( 'You must be logged in to ask a question.', 'questionhub' ) );
 		}
 
-		$title   = Sanitizer::text( $_POST['title'] ?? '' );
-		$content = Sanitizer::html( $_POST['content'] ?? '' );
-		$cats    = isset( $_POST['categories'] ) ? array_map( 'absint', (array) $_POST['categories'] ) : [];
-		$tags    = Sanitizer::text( $_POST['tags'] ?? '' );
+		$title   = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : '';
+		$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
+		$cats    = isset( $_POST['categories'] ) ? array_map( 'absint', wp_unslash( (array) $_POST['categories'] ) ) : [];
+		$tags    = isset( $_POST['tags'] ) ? sanitize_text_field( wp_unslash( $_POST['tags'] ) ) : '';
 
 		if ( empty( $title ) ) {
 			Response::die_error( __( 'Question title is required.', 'questionhub' ) );

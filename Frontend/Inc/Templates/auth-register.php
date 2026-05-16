@@ -8,8 +8,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings       = get_option( 'questionhub_settings', [] );
-$email_required = ! empty( $settings['email_required'] );
+$questionhub_settings       = get_option( 'questionhub_settings', [] );
+$questionhub_email_required = ! empty( $questionhub_settings['email_required'] );
 ?>
 <div class="questionhub-wrapper questionhub-auth-wrapper">
 	<div class="questionhub-card questionhub-auth-form questionhub-register-form">
@@ -33,8 +33,8 @@ $email_required = ! empty( $settings['email_required'] );
 			</div>
 
 			<div class="questionhub-form-group">
-				<label for="questionhub-reg-email"><?php esc_html_e( 'Email Address', 'questionhub' ); ?> <?php echo $email_required ? '<span class="required">*</span>' : '<span class="questionhub-optional">(' . esc_html__( 'optional', 'questionhub' ) . ')</span>'; ?></label>
-				<input type="email" id="questionhub-reg-email" name="email" class="questionhub-input" placeholder="<?php esc_attr_e( 'you@example.com', 'questionhub' ); ?>" <?php echo $email_required ? 'required' : ''; ?> autocomplete="email">
+				<label for="questionhub-reg-email"><?php esc_html_e( 'Email Address', 'questionhub' ); ?> <?php echo wp_kses_post( $questionhub_email_required ? '<span class="required">*</span>' : '<span class="questionhub-optional">(' . esc_html__( 'optional', 'questionhub' ) . ')</span>' ); ?></label>
+				<input type="email" id="questionhub-reg-email" name="email" class="questionhub-input" placeholder="<?php esc_attr_e( 'you@example.com', 'questionhub' ); ?>" <?php echo esc_attr( $questionhub_email_required ? 'required' : '' ); ?> autocomplete="email">
 			</div>
 
 			<div class="questionhub-form-group">

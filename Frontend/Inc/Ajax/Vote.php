@@ -28,8 +28,8 @@ class Vote {
 			Response::die_error( __( 'You must be logged in to vote.', 'questionhub' ) );
 		}
 
-		$type       = sanitize_key( $_POST['type'] ?? 'question' );
-		$id         = absint( $_POST['id'] ?? 0 );
+		$type       = isset( $_POST['type'] ) ? sanitize_key( wp_unslash( $_POST['type'] ) ) : 'question';
+		$id         = isset( $_POST['id'] ) ? absint( wp_unslash( $_POST['id'] ) ) : 0;
 		$user_id    = get_current_user_id();
 		$manager    = new VoteManager();
 

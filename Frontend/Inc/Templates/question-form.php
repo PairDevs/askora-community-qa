@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => false ] );
+$questionhub_categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => false ] );
 ?>
 <div class="questionhub-wrapper questionhub-submit-form-wrapper">
 	<div class="questionhub-card questionhub-form-card">
@@ -30,13 +30,13 @@ $categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => fa
 				<textarea id="questionhub-content" name="content" class="questionhub-textarea" rows="6" placeholder="<?php esc_attr_e( 'Provide more details about your question…', 'questionhub' ); ?>"></textarea>
 			</div>
 
-			<?php if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) : ?>
+			<?php if ( ! empty( $questionhub_categories ) && ! is_wp_error( $questionhub_categories ) ) : ?>
 			<div class="questionhub-form-group">
 				<label for="questionhub-category"><?php esc_html_e( 'Category', 'questionhub' ); ?></label>
 				<select id="questionhub-category" name="categories[]" class="questionhub-select">
 					<option value=""><?php esc_html_e( '— Select Category —', 'questionhub' ); ?></option>
-					<?php foreach ( $categories as $cat ) : ?>
-						<option value="<?php echo esc_attr( $cat->term_id ); ?>"><?php echo esc_html( $cat->name ); ?></option>
+					<?php foreach ( $questionhub_categories as $questionhub_cat ) : ?>
+						<option value="<?php echo esc_attr( $questionhub_cat->term_id ); ?>"><?php echo esc_html( $questionhub_cat->name ); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>

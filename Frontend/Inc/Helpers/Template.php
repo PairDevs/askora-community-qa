@@ -37,9 +37,15 @@ class Template {
 			return;
 		}
 
-		if ( ! empty( $data ) ) {
+		$questionhub_template_data = [];
+
+		foreach ( (array) $data as $questionhub_key => $questionhub_value ) {
+			$questionhub_template_data[ 'questionhub_' . ltrim( (string) $questionhub_key, '_' ) ] = $questionhub_value;
+		}
+
+		if ( ! empty( $questionhub_template_data ) ) {
 			// phpcs:ignore WordPress.PHP.DontExtract.extract_extract
-			extract( $data, EXTR_SKIP );
+			extract( $questionhub_template_data, EXTR_SKIP );
 		}
 
 		include $file;
