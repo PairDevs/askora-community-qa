@@ -52,9 +52,26 @@ class Badge {
 			$type = 'member';
 		}
 
-		$def   = self::$types[ $type ] ?? self::$types['member'];
-		$label = __( $def['label'], 'askora-community-qa' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
-		$icon  = $def['icon'];
+		$icon = ( self::$types[ $type ] ?? self::$types['member'] )['icon'];
+
+		// Literal strings required by gettext — no variable text parameters.
+		switch ( $type ) {
+			case 'admin':
+				$label = __( 'Admin', 'askora-community-qa' );
+				break;
+			case 'moderator':
+				$label = __( 'Moderator', 'askora-community-qa' );
+				break;
+			case 'author':
+				$label = __( 'Author', 'askora-community-qa' );
+				break;
+			case 'guest':
+				$label = __( 'Guest', 'askora-community-qa' );
+				break;
+			default:
+				$label = __( 'Member', 'askora-community-qa' );
+				break;
+		}
 
 		/**
 		 * Filters the badge label.
