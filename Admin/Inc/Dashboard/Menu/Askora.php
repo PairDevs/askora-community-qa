@@ -21,6 +21,7 @@ class Askora {
 
 	public function __construct() {
 		add_action( 'admin_menu', [ $this, 'add_menu_page' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_dashboard_script' ] );
 	}
 
 	public function add_menu_page() {
@@ -32,6 +33,39 @@ class Askora {
 			[ $this, 'render_home_page' ],
 			'dashicons-editor-help',
 			25
+		);
+	}
+
+	/**
+	 * Enqueues the inline JS for the dashboard shortcode copy button.
+	 *
+	 * Only loaded on the Askora dashboard page.
+	 *
+	 * @param string $hook Current admin page hook suffix.
+	 * @since 1.0.0
+	 */
+	public function enqueue_dashboard_script( $hook ) {
+		if ( 'toplevel_page_askora_home' !== $hook ) {
+			return;
+		}
+
+		wp_add_inline_script(
+			'jquery',
+			'(function(){
+				document.querySelectorAll(".qh-shortcode-code[data-copy]").forEach(function(el){
+					el.style.cursor = "pointer";
+					el.addEventListener("click", function(){
+						var text = el.getAttribute("data-copy");
+						if (navigator.clipboard) {
+							navigator.clipboard.writeText(text).then(function(){
+								var orig = el.textContent;
+								el.textContent = "✓ Copied!";
+								setTimeout(function(){ el.textContent = orig; }, 1200);
+							});
+						}
+					});
+				});
+			})();'
 		);
 	}
 
@@ -393,23 +427,6 @@ class Askora {
 
 		</div><!-- .qh-dash-wrap -->
 
-		<script>
-		(function(){
-			document.querySelectorAll('.qh-shortcode-code[data-copy]').forEach(function(el){
-				el.style.cursor = 'pointer';
-				el.addEventListener('click', function(){
-					var text = el.getAttribute('data-copy');
-					if (navigator.clipboard) {
-						navigator.clipboard.writeText(text).then(function(){
-							var orig = el.textContent;
-							el.textContent = '✓ Copied!';
-							setTimeout(function(){ el.textContent = orig; }, 1200);
-						});
-					}
-				});
-			});
-		})();
-		</script>
 		<?php
 	}
 }
