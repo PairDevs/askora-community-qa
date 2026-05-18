@@ -2,11 +2,11 @@
 /**
  * Template loader helper.
  *
- * @package QuestionHub\Frontend\Inc\Helpers
+ * @package ASKORA\Frontend\Inc\Helpers
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Helpers;
+namespace ASKORA\Frontend\Inc\Helpers;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Template
  *
  * Loads plugin templates with theme override support.
- * Override in theme: {theme}/questionhub/{template}.php
+ * Override in theme: {theme}/askora-community-qa/{template}.php
  */
 class Template {
 
@@ -28,8 +28,8 @@ class Template {
 	 * @since 1.0.0
 	 */
 	public static function load( $template, $data = [] ) {
-		$theme_file  = get_stylesheet_directory() . '/questionhub/' . $template;
-		$plugin_file = QUESTIONHUB_PATH . 'Frontend/Inc/Templates/' . $template;
+		$theme_file  = get_stylesheet_directory() . '/askora-community-qa/' . $template;
+		$plugin_file = ASKORA_PATH . 'Frontend/Inc/Templates/' . $template;
 
 		$file = file_exists( $theme_file ) ? $theme_file : $plugin_file;
 
@@ -37,15 +37,15 @@ class Template {
 			return;
 		}
 
-		$questionhub_template_data = [];
+		$askora_template_data = [];
 
-		foreach ( (array) $data as $questionhub_key => $questionhub_value ) {
-			$questionhub_template_data[ 'questionhub_' . ltrim( (string) $questionhub_key, '_' ) ] = $questionhub_value;
+		foreach ( (array) $data as $askora_key => $askora_value ) {
+			$askora_template_data[ 'askora_' . ltrim( (string) $askora_key, '_' ) ] = $askora_value;
 		}
 
-		if ( ! empty( $questionhub_template_data ) ) {
+		if ( ! empty( $askora_template_data ) ) {
 			// phpcs:ignore WordPress.PHP.DontExtract.extract_extract
-			extract( $questionhub_template_data, EXTR_SKIP );
+			extract( $askora_template_data, EXTR_SKIP );
 		}
 
 		include $file;

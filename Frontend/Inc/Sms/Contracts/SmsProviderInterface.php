@@ -2,11 +2,11 @@
 /**
  * SMS provider interface — future Pro feature.
  *
- * @package QuestionHub\Frontend\Inc\Sms\Contracts
+ * @package ASKORA\Frontend\Inc\Sms\Contracts
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Sms\Contracts;
+namespace ASKORA\Frontend\Inc\Sms\Contracts;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

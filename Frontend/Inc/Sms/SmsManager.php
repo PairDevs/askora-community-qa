@@ -2,14 +2,14 @@
 /**
  * SMS manager — resolves active SMS provider.
  *
- * @package QuestionHub\Frontend\Inc\Sms
+ * @package ASKORA\Frontend\Inc\Sms
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Sms;
+namespace ASKORA\Frontend\Inc\Sms;
 
-use QuestionHub\Frontend\Inc\Sms\Contracts\SmsProviderInterface;
-use QuestionHub\Frontend\Inc\Sms\Providers\NullSmsProvider;
+use ASKORA\Frontend\Inc\Sms\Contracts\SmsProviderInterface;
+use ASKORA\Frontend\Inc\Sms\Providers\NullSmsProvider;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -20,7 +20,7 @@ class SmsManager {
 	private SmsProviderInterface $provider;
 
 	public function __construct() {
-		$provider_key   = apply_filters( 'questionhub_sms_provider', 'null' );
+		$provider_key   = apply_filters( 'askora_sms_provider', 'null' );
 		$this->provider = $this->resolve( $provider_key );
 	}
 

@@ -2,11 +2,11 @@
 /**
  * Admin filter hooks.
  *
- * @package QuestionHub\Admin\Inc\Hooks
+ * @package ASKORA\Admin\Inc\Hooks
  * @since   1.0.0
  */
 
-namespace QuestionHub\Admin\Inc\Hooks;
+namespace ASKORA\Admin\Inc\Hooks;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

@@ -2,11 +2,11 @@
 /**
  * Permission helper.
  *
- * @package QuestionHub\Frontend\Inc\Helpers
+ * @package ASKORA\Frontend\Inc\Helpers
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Helpers;
+namespace ASKORA\Frontend\Inc\Helpers;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -25,7 +25,7 @@ class Permission {
 	 * @return array
 	 */
 	private static function settings() {
-		return get_option( 'questionhub_settings', [] );
+		return get_option( 'askora_settings', [] );
 	}
 
 	public static function can_submit_question() {

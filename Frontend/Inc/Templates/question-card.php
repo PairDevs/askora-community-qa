@@ -3,73 +3,73 @@
  * Template: question-card.php
  * Single question card used in list views.
  *
- * @package QuestionHub
- * @var int $questionhub_post_id Post ID.
+ * @package ASKORA
+ * @var int $askora_post_id Post ID.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-use QuestionHub\Frontend\Inc\Comments\Badge;
-use QuestionHub\Frontend\Inc\Questions\ViewCounter;
+use ASKORA\Frontend\Inc\Comments\Badge;
+use ASKORA\Frontend\Inc\Questions\ViewCounter;
 
-$questionhub_post       = get_post( $questionhub_post_id );
-$questionhub_author_id  = (int) $questionhub_post->post_author;
-$questionhub_views      = ViewCounter::get( $questionhub_post_id );
-$questionhub_votes      = (int) get_post_meta( $questionhub_post_id, '_questionhub_votes', true );
-$questionhub_answers    = get_comments_number( $questionhub_post_id );
-$questionhub_categories = get_the_terms( $questionhub_post_id, 'question_category' );
-$questionhub_tags       = get_the_terms( $questionhub_post_id, 'question_tag' );
-$questionhub_avatar     = get_avatar( $questionhub_author_id, 40, '', '', [ 'class' => 'questionhub-avatar' ] );
-$questionhub_author     = get_the_author_meta( 'display_name', $questionhub_author_id );
-$questionhub_badge      = Badge::get( $questionhub_author_id, $questionhub_post_id );
-$questionhub_best       = (int) get_post_meta( $questionhub_post_id, '_questionhub_best_answer', true );
-$questionhub_status     = $questionhub_status ?? '';
+$askora_post       = get_post( $askora_post_id );
+$askora_author_id  = (int) $askora_post->post_author;
+$askora_views      = ViewCounter::get( $askora_post_id );
+$askora_votes      = (int) get_post_meta( $askora_post_id, '_askora_votes', true );
+$askora_answers    = get_comments_number( $askora_post_id );
+$askora_categories = get_the_terms( $askora_post_id, 'question_category' );
+$askora_tags       = get_the_terms( $askora_post_id, 'question_tag' );
+$askora_avatar     = get_avatar( $askora_author_id, 40, '', '', [ 'class' => 'askora-avatar' ] );
+$askora_author     = get_the_author_meta( 'display_name', $askora_author_id );
+$askora_badge      = Badge::get( $askora_author_id, $askora_post_id );
+$askora_best       = (int) get_post_meta( $askora_post_id, '_askora_best_answer', true );
+$askora_status     = $askora_status ?? '';
 ?>
-<article class="questionhub-card questionhub-question-card" id="question-<?php echo esc_attr( $questionhub_post_id ); ?>">
-	<div class="questionhub-card-stats">
-		<div class="questionhub-stat questionhub-stat-votes">
-			<span class="questionhub-stat-count"><?php echo esc_html( $questionhub_votes ); ?></span>
-			<span class="questionhub-stat-label"><?php esc_html_e( 'votes', 'questionhub' ); ?></span>
+<article class="askora-card askora-question-card" id="question-<?php echo esc_attr( $askora_post_id ); ?>">
+	<div class="askora-card-stats">
+		<div class="askora-stat askora-stat-votes">
+			<span class="askora-stat-count"><?php echo esc_html( $askora_votes ); ?></span>
+			<span class="askora-stat-label"><?php esc_html_e( 'votes', 'askora-community-qa' ); ?></span>
 		</div>
-		<div class="questionhub-stat questionhub-stat-answers <?php echo esc_attr( $questionhub_best ? 'has-best' : '' ); ?>">
-			<span class="questionhub-stat-count"><?php echo esc_html( $questionhub_answers ); ?></span>
-			<span class="questionhub-stat-label"><?php esc_html_e( 'answers', 'questionhub' ); ?></span>
+		<div class="askora-stat askora-stat-answers <?php echo esc_attr( $askora_best ? 'has-best' : '' ); ?>">
+			<span class="askora-stat-count"><?php echo esc_html( $askora_answers ); ?></span>
+			<span class="askora-stat-label"><?php esc_html_e( 'answers', 'askora-community-qa' ); ?></span>
 		</div>
-		<div class="questionhub-stat questionhub-stat-views">
-			<span class="questionhub-stat-count"><?php echo esc_html( $questionhub_views ); ?></span>
-			<span class="questionhub-stat-label"><?php esc_html_e( 'views', 'questionhub' ); ?></span>
+		<div class="askora-stat askora-stat-views">
+			<span class="askora-stat-count"><?php echo esc_html( $askora_views ); ?></span>
+			<span class="askora-stat-label"><?php esc_html_e( 'views', 'askora-community-qa' ); ?></span>
 		</div>
 	</div>
 
-	<div class="questionhub-card-body">
-		<h3 class="questionhub-question-title">
-			<a href="<?php echo esc_url( get_permalink( $questionhub_post_id ) ); ?>"><?php echo esc_html( get_the_title( $questionhub_post_id ) ); ?></a>
-			<?php if ( ! empty( $questionhub_status ) ) : ?>
-				<span class="questionhub-status-badge questionhub-status-<?php echo esc_attr( $questionhub_status ); ?>"><?php echo esc_html( ucfirst( $questionhub_status ) ); ?></span>
+	<div class="askora-card-body">
+		<h3 class="askora-question-title">
+			<a href="<?php echo esc_url( get_permalink( $askora_post_id ) ); ?>"><?php echo esc_html( get_the_title( $askora_post_id ) ); ?></a>
+			<?php if ( ! empty( $askora_status ) ) : ?>
+				<span class="askora-status-badge askora-status-<?php echo esc_attr( $askora_status ); ?>"><?php echo esc_html( ucfirst( $askora_status ) ); ?></span>
 			<?php endif; ?>
 		</h3>
 
-		<?php if ( ! empty( $questionhub_categories ) && ! is_wp_error( $questionhub_categories ) ) : ?>
-		<div class="questionhub-card-categories">
-			<?php foreach ( $questionhub_categories as $questionhub_cat ) : ?>
-				<a href="<?php echo esc_url( get_term_link( $questionhub_cat ) ); ?>" class="questionhub-tag questionhub-category-tag"><?php echo esc_html( $questionhub_cat->name ); ?></a>
+		<?php if ( ! empty( $askora_categories ) && ! is_wp_error( $askora_categories ) ) : ?>
+		<div class="askora-card-categories">
+			<?php foreach ( $askora_categories as $askora_cat ) : ?>
+				<a href="<?php echo esc_url( get_term_link( $askora_cat ) ); ?>" class="askora-tag askora-category-tag"><?php echo esc_html( $askora_cat->name ); ?></a>
 			<?php endforeach; ?>
 		</div>
 		<?php endif; ?>
 
-		<?php if ( ! empty( $questionhub_tags ) && ! is_wp_error( $questionhub_tags ) ) : ?>
-		<div class="questionhub-card-tags">
-			<?php foreach ( $questionhub_tags as $questionhub_tag_term ) : ?>
-				<a href="<?php echo esc_url( get_term_link( $questionhub_tag_term ) ); ?>" class="questionhub-tag"><?php echo esc_html( $questionhub_tag_term->name ); ?></a>
+		<?php if ( ! empty( $askora_tags ) && ! is_wp_error( $askora_tags ) ) : ?>
+		<div class="askora-card-tags">
+			<?php foreach ( $askora_tags as $askora_tag_term ) : ?>
+				<a href="<?php echo esc_url( get_term_link( $askora_tag_term ) ); ?>" class="askora-tag"><?php echo esc_html( $askora_tag_term->name ); ?></a>
 			<?php endforeach; ?>
 		</div>
 		<?php endif; ?>
 
-		<div class="questionhub-card-meta">
-			<?php echo wp_kses_post( $questionhub_avatar ); ?>
-			<span class="questionhub-meta-author"><?php echo esc_html( $questionhub_author ); ?></span>
-			<?php echo wp_kses_post( $questionhub_badge ); ?>
-			<span class="questionhub-meta-date"><?php echo esc_html( human_time_diff( get_post_time( 'U', false, $questionhub_post_id ), current_time( 'U' ) ) . ' ' . __( 'ago', 'questionhub' ) ); ?></span>
+		<div class="askora-card-meta">
+			<?php echo wp_kses_post( $askora_avatar ); ?>
+			<span class="askora-meta-author"><?php echo esc_html( $askora_author ); ?></span>
+			<?php echo wp_kses_post( $askora_badge ); ?>
+			<span class="askora-meta-date"><?php echo esc_html( human_time_diff( get_post_time( 'U', false, $askora_post_id ), current_time( 'U' ) ) . ' ' . __( 'ago', 'askora-community-qa' ) ); ?></span>
 		</div>
 	</div>
 </article>

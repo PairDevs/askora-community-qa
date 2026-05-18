@@ -2,11 +2,11 @@
 /**
  * Admin action hooks.
  *
- * @package QuestionHub\Admin\Inc\Hooks
+ * @package ASKORA\Admin\Inc\Hooks
  * @since   1.0.0
  */
 
-namespace QuestionHub\Admin\Inc\Hooks;
+namespace ASKORA\Admin\Inc\Hooks;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -29,7 +29,7 @@ class ActionHooks {
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_row_meta' ], 10, 2 );
 
 		// Plugin action links (Settings).
-		add_filter( 'plugin_action_links_' . QUESTIONHUB_BASENAME, [ $this, 'plugin_action_links' ] );
+		add_filter( 'plugin_action_links_' . ASKORA_BASENAME, [ $this, 'plugin_action_links' ] );
 
 		// Custom footer text on plugin pages.
 		add_filter( 'admin_footer_text', [ $this, 'custom_admin_footer' ] );
@@ -44,10 +44,10 @@ class ActionHooks {
 	 * @since  1.0.0
 	 */
 	public function plugin_row_meta( $links, $file ) {
-		if ( QUESTIONHUB_BASENAME === $file ) {
+		if ( ASKORA_BASENAME === $file ) {
 			$row_meta = [
-				'docs'    => '<a href="https://github.com/PairDevs/QuestionHub" target="_blank">' . esc_html__( 'Documentation', 'questionhub' ) . '</a>',
-				'support' => '<a href="https://wordpress.org/support/plugin/questionhub" target="_blank">' . esc_html__( 'Support', 'questionhub' ) . '</a>',
+				'docs'    => '<a href="https://github.com/PairDevs/askora-community-qa" target="_blank">' . esc_html__( 'Documentation', 'askora-community-qa' ) . '</a>',
+				'support' => '<a href="https://wordpress.org/support/plugin/askora-community-qa" target="_blank">' . esc_html__( 'Support', 'askora-community-qa' ) . '</a>',
 			];
 			return array_merge( $links, $row_meta );
 		}
@@ -64,28 +64,28 @@ class ActionHooks {
 	public function plugin_action_links( $links ) {
 		$settings_link = sprintf(
 			'<a href="%s">%s</a>',
-			esc_url( admin_url( 'admin.php?page=questionhub_settings' ) ),
-			esc_html__( 'Settings', 'questionhub' )
+			esc_url( admin_url( 'admin.php?page=askora_settings' ) ),
+			esc_html__( 'Settings', 'askora-community-qa' )
 		);
 		array_unshift( $links, $settings_link );
 		return $links;
 	}
 
 	/**
-	 * Customises admin footer text on QuestionHub pages.
+	 * Customises admin footer text on Askora pages.
 	 *
 	 * @param  string $footer_text Default footer text.
 	 * @return string
 	 * @since  1.0.0
 	 */
 	public function custom_admin_footer( $footer_text ) {
-		$qh_pages = [ 'questionhub_home', 'questionhub_settings' ];
+		$askora_pages = [ 'askora_home', 'askora_settings' ];
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( isset( $_GET['page'] ) && in_array( sanitize_text_field( wp_unslash( $_GET['page'] ) ), $qh_pages, true ) ) {
+		if ( isset( $_GET['page'] ) && in_array( sanitize_text_field( wp_unslash( $_GET['page'] ) ), $askora_pages, true ) ) {
 			return sprintf(
 				/* translators: %s: plugin name */
-				esc_html__( 'Thank you for using %s!', 'questionhub' ),
-				'<strong>' . esc_html( QUESTIONHUB_NAME ) . '</strong>'
+				esc_html__( 'Thank you for using %s!', 'askora-community-qa' ),
+				'<strong>' . esc_html( ASKORA_NAME ) . '</strong>'
 			);
 		}
 		return $footer_text;

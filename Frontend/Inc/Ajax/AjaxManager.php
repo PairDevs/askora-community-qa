@@ -2,11 +2,11 @@
 /**
  * AJAX manager — registers all wp_ajax_* actions.
  *
- * @package QuestionHub\Frontend\Inc\Ajax
+ * @package ASKORA\Frontend\Inc\Ajax
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Ajax;
+namespace ASKORA\Frontend\Inc\Ajax;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

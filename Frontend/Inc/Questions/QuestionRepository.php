@@ -2,11 +2,11 @@
 /**
  * Question repository — data access layer.
  *
- * @package QuestionHub\Frontend\Inc\Questions
+ * @package ASKORA\Frontend\Inc\Questions
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Questions;
+namespace ASKORA\Frontend\Inc\Questions;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -21,7 +21,7 @@ class QuestionRepository {
 	 * @return array { posts: WP_Post[], total: int, pages: int }
 	 */
 	public function get_questions( array $args = [] ): array {
-		$settings = get_option( 'questionhub_settings', [] );
+		$settings = get_option( 'askora_settings', [] );
 		$per_page = isset( $settings['questions_per_page'] ) ? absint( $settings['questions_per_page'] ) : 10;
 
 		$defaults = [
@@ -41,7 +41,7 @@ class QuestionRepository {
 		 * @param array $query_args WP_Query arguments.
 		 * @since 1.0.0
 		 */
-		$query_args = apply_filters( 'questionhub_questions_query_args', $query_args );
+		$query_args = apply_filters( 'askora_questions_query_args', $query_args );
 
 		$query = new \WP_Query( $query_args );
 
@@ -70,9 +70,9 @@ class QuestionRepository {
 	 * @return int|\WP_Error Post ID on success.
 	 */
 	public function create_question( array $data ) {
-		$settings       = get_option( 'questionhub_settings', [] );
+		$settings       = get_option( 'askora_settings', [] );
 		$default_status = isset( $settings['question_status'] ) ? $settings['question_status'] : 'pending';
-		$status         = apply_filters( 'questionhub_question_status', $default_status );
+		$status         = apply_filters( 'askora_question_status', $default_status );
 
 		$post_data = [
 			'post_title'   => sanitize_text_field( $data['title'] ?? '' ),
@@ -111,8 +111,8 @@ class QuestionRepository {
 	 * @since 1.0.0
 	 */
 	public function increment_views( int $post_id ): void {
-		$current = (int) get_post_meta( $post_id, '_questionhub_views', true );
-		update_post_meta( $post_id, '_questionhub_views', $current + 1 );
+		$current = (int) get_post_meta( $post_id, '_askora_views', true );
+		update_post_meta( $post_id, '_askora_views', $current + 1 );
 	}
 
 	/**
@@ -122,7 +122,7 @@ class QuestionRepository {
 	 * @return int
 	 */
 	public function get_views( int $post_id ): int {
-		return (int) get_post_meta( $post_id, '_questionhub_views', true );
+		return (int) get_post_meta( $post_id, '_askora_views', true );
 	}
 
 	/**
@@ -132,6 +132,6 @@ class QuestionRepository {
 	 * @return int
 	 */
 	public function get_votes( int $post_id ): int {
-		return (int) get_post_meta( $post_id, '_questionhub_votes', true );
+		return (int) get_post_meta( $post_id, '_askora_votes', true );
 	}
 }

@@ -2,14 +2,14 @@
 /**
  * AJAX: Load Questions (pagination / load-more / filter).
  *
- * @package QuestionHub\Frontend\Inc\Ajax
+ * @package ASKORA\Frontend\Inc\Ajax
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Ajax;
+namespace ASKORA\Frontend\Inc\Ajax;
 
-use QuestionHub\Frontend\Inc\Helpers\Response;
-use QuestionHub\Frontend\Inc\Helpers\Template;
+use ASKORA\Frontend\Inc\Helpers\Response;
+use ASKORA\Frontend\Inc\Helpers\Template;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class LoadQuestions {
 
 	public function __construct() {
-		add_action( 'wp_ajax_questionhub_load_questions',        [ $this, 'handle' ] );
-		add_action( 'wp_ajax_nopriv_questionhub_load_questions', [ $this, 'handle' ] );
+		add_action( 'wp_ajax_askora_load_questions',        [ $this, 'handle' ] );
+		add_action( 'wp_ajax_nopriv_askora_load_questions', [ $this, 'handle' ] );
 	}
 
 	public function handle(): void {
-		check_ajax_referer( 'questionhub_nonce', 'nonce' );
+		check_ajax_referer( 'askora_nonce', 'nonce' );
 
-		$settings = get_option( 'questionhub_settings', [] );
+		$settings = get_option( 'askora_settings', [] );
 		$per_page = isset( $settings['questions_per_page'] ) ? absint( $settings['questions_per_page'] ) : 10;
 
 		$page     = isset( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 1;
@@ -43,14 +43,14 @@ class LoadQuestions {
 		$args = [
 			'post_type'      => 'questions',
 			'post_status'    => 'publish',
-			'posts_per_page' => apply_filters( 'questionhub_questions_per_page', $per_page ),
+			'posts_per_page' => apply_filters( 'askora_questions_per_page', $per_page ),
 			'paged'          => $page,
 			'orderby'        => $orderby,
 			'order'          => 'DESC',
 		];
 
 		if ( 'meta_value_num' === $orderby ) {
-			$args['meta_key'] = '_questionhub_views'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			$args['meta_key'] = '_askora_views'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 		}
 
 		if ( $category ) {

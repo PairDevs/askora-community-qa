@@ -3,11 +3,11 @@
  * Questions archive template handler.
  * Intercepts the CPT archive URL and renders our styled template.
  *
- * @package QuestionHub\Frontend\Inc\Archive
+ * @package ASKORA\Frontend\Inc\Archive
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Archive;
+namespace ASKORA\Frontend\Inc\Archive;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -37,8 +37,8 @@ class QuestionArchive {
 
 		// Single question page.
 		if ( is_singular( 'questions' ) ) {
-			$theme_file  = get_stylesheet_directory() . '/questionhub/single-question.php';
-			$plugin_file = QUESTIONHUB_PATH . 'Frontend/Inc/Templates/single-question.php';
+			$theme_file  = get_stylesheet_directory() . '/askora-community-qa/single-question.php';
+			$plugin_file = ASKORA_PATH . 'Frontend/Inc/Templates/single-question.php';
 			if ( file_exists( $theme_file ) ) {
 				return $theme_file;
 			}
@@ -49,8 +49,8 @@ class QuestionArchive {
 
 		// Archive / taxonomy pages.
 		if ( is_post_type_archive( 'questions' ) || is_tax( 'question_category' ) || is_tax( 'question_tag' ) ) {
-			$theme_file  = get_stylesheet_directory() . '/questionhub/archive-questions.php';
-			$plugin_file = QUESTIONHUB_PATH . 'Frontend/Inc/Templates/archive-questions.php';
+			$theme_file  = get_stylesheet_directory() . '/askora-community-qa/archive-questions.php';
+			$plugin_file = ASKORA_PATH . 'Frontend/Inc/Templates/archive-questions.php';
 			if ( file_exists( $theme_file ) ) {
 				return $theme_file;
 			}

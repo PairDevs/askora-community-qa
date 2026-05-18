@@ -2,14 +2,14 @@
 /**
  * AJAX: Search Questions.
  *
- * @package QuestionHub\Frontend\Inc\Ajax
+ * @package ASKORA\Frontend\Inc\Ajax
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Ajax;
+namespace ASKORA\Frontend\Inc\Ajax;
 
-use QuestionHub\Frontend\Inc\Helpers\Response;
-use QuestionHub\Frontend\Inc\Helpers\Template;
+use ASKORA\Frontend\Inc\Helpers\Response;
+use ASKORA\Frontend\Inc\Helpers\Template;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,12 +18,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 class SearchQuestions {
 
 	public function __construct() {
-		add_action( 'wp_ajax_questionhub_search_questions',        [ $this, 'handle' ] );
-		add_action( 'wp_ajax_nopriv_questionhub_search_questions', [ $this, 'handle' ] );
+		add_action( 'wp_ajax_askora_search_questions',        [ $this, 'handle' ] );
+		add_action( 'wp_ajax_nopriv_askora_search_questions', [ $this, 'handle' ] );
 	}
 
 	public function handle(): void {
-		check_ajax_referer( 'questionhub_nonce', 'nonce' );
+		check_ajax_referer( 'askora_nonce', 'nonce' );
 
 		$keyword  = isset( $_POST['keyword'] ) ? sanitize_text_field( wp_unslash( $_POST['keyword'] ) ) : '';
 		$category = isset( $_POST['category'] ) ? absint( wp_unslash( $_POST['category'] ) ) : 0;

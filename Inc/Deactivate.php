@@ -2,11 +2,11 @@
 /**
  * Plugin deactivation class.
  *
- * @package QuestionHub
+ * @package ASKORA
  * @since   1.0.0
  */
 
-namespace QuestionHub;
+namespace ASKORA;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

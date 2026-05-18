@@ -2,11 +2,11 @@
 /**
  * OTP service stub — future Pro feature.
  *
- * @package QuestionHub\Frontend\Inc\Sms
+ * @package ASKORA\Frontend\Inc\Sms
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Sms;
+namespace ASKORA\Frontend\Inc\Sms;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -26,7 +26,7 @@ class OtpService {
 	 */
 	public static function generate( string $phone ): bool {
 		// Future Pro implementation.
-		return apply_filters( 'questionhub_enable_otp_login', false );
+		return apply_filters( 'askora_enable_otp_login', false );
 	}
 
 	/**

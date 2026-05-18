@@ -1,19 +1,19 @@
 {
-    "name": "pairdevs/questionhub",
+    "name": "pairdevs/askora-community-qa",
     "description": "A modern Question & Answer plugin for WordPress.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "PairDevs",
-            "homepage": "https://github.com/PairDevs/QuestionHub"
+            "homepage": "https://github.com/PairDevs/askora-community-qa"
         }
     ],
     "autoload": {
         "psr-4": {
-            "QuestionHub\\": "Inc/",
-            "QuestionHub\\Admin\\": "Admin/",
-            "QuestionHub\\Frontend\\": "Frontend/"
+            "ASKORA\\": "Inc/",
+            "ASKORA\\Admin\\": "Admin/",
+            "ASKORA\\Frontend\\": "Frontend/"
         }
     },
     "minimum-stability": "stable",

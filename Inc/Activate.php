@@ -2,11 +2,11 @@
 /**
  * Plugin activation class.
  *
- * @package QuestionHub
+ * @package ASKORA
  * @since   1.0.0
  */
 
-namespace QuestionHub;
+namespace ASKORA;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -29,10 +29,10 @@ class Activate {
 	 */
 	public static function activate() {
 		// Store plugin version.
-		update_option( 'questionhub_version', QUESTIONHUB_VERSION );
+		update_option( 'askora_version', ASKORA_VERSION );
 
 		// Set default settings if they don't exist.
-		if ( ! get_option( 'questionhub_settings' ) ) {
+		if ( ! get_option( 'askora_settings' ) ) {
 			$defaults = [
 				// General.
 				'question_status'         => 'pending',
@@ -50,11 +50,11 @@ class Activate {
 				'primary_color'           => '#6C63FF',
 				'delete_data_on_uninstall' => 0,
 			];
-			update_option( 'questionhub_settings', $defaults );
+			update_option( 'askora_settings', $defaults );
 		}
 
 		// Auto-create draft pages with shortcodes (first activation only).
-		if ( ! get_option( 'questionhub_pages' ) ) {
+		if ( ! get_option( 'askora_pages' ) ) {
 			self::create_pages();
 		}
 
@@ -70,20 +70,20 @@ class Activate {
 	private static function create_pages() {
 		$pages = [
 			'questions'    => [
-				'title'     => __( 'Questions', 'questionhub' ),
-				'shortcode' => '[questionhub_questions]',
+				'title'     => __( 'Questions', 'askora-community-qa' ),
+				'shortcode' => '[askora_questions]',
 			],
 			'ask_question' => [
-				'title'     => __( 'Ask a Question', 'questionhub' ),
-				'shortcode' => '[questionhub_submit_form]',
+				'title'     => __( 'Ask a Question', 'askora-community-qa' ),
+				'shortcode' => '[askora_submit_form]',
 			],
 			'auth'         => [
-				'title'     => __( 'Login / Register', 'questionhub' ),
-				'shortcode' => '[questionhub_auth]',
+				'title'     => __( 'Login / Register', 'askora-community-qa' ),
+				'shortcode' => '[askora_auth]',
 			],
 			'dashboard'    => [
-				'title'     => __( 'My Dashboard', 'questionhub' ),
-				'shortcode' => '[questionhub_dashboard]',
+				'title'     => __( 'My Dashboard', 'askora-community-qa' ),
+				'shortcode' => '[askora_dashboard]',
 			],
 		];
 
@@ -108,7 +108,7 @@ class Activate {
 		}
 
 		if ( ! empty( $created ) ) {
-			update_option( 'questionhub_pages', $created );
+			update_option( 'askora_pages', $created );
 		}
 	}
 }

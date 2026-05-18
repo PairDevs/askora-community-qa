@@ -2,14 +2,14 @@
 /**
  * AJAX: Phone Register.
  *
- * @package QuestionHub\Frontend\Inc\Ajax
+ * @package ASKORA\Frontend\Inc\Ajax
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Ajax;
+namespace ASKORA\Frontend\Inc\Ajax;
 
-use QuestionHub\Frontend\Inc\Auth\PhoneRegister as PhoneRegisterHandler;
-use QuestionHub\Frontend\Inc\Helpers\Response;
+use ASKORA\Frontend\Inc\Auth\PhoneRegister as PhoneRegisterHandler;
+use ASKORA\Frontend\Inc\Helpers\Response;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class PhoneRegister {
 
 	public function __construct() {
-		add_action( 'wp_ajax_nopriv_questionhub_phone_register', [ $this, 'handle' ] );
-		add_action( 'wp_ajax_questionhub_phone_register',        [ $this, 'handle' ] );
+		add_action( 'wp_ajax_nopriv_askora_phone_register', [ $this, 'handle' ] );
+		add_action( 'wp_ajax_askora_phone_register',        [ $this, 'handle' ] );
 	}
 
 	public function handle(): void {
-		check_ajax_referer( 'questionhub_nonce', 'nonce' );
+		check_ajax_referer( 'askora_nonce', 'nonce' );
 
-		do_action( 'questionhub_auth_before_register' );
+		do_action( 'askora_auth_before_register' );
 
 		$name     = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 		$phone    = isset( $_POST['phone'] ) ? preg_replace( '/[^0-9+\-() ]/', '', sanitize_text_field( wp_unslash( $_POST['phone'] ) ) ) : '';
@@ -34,7 +34,7 @@ class PhoneRegister {
 		$email    = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
 
 		if ( $password !== $confirm ) {
-			Response::die_error( __( 'Passwords do not match.', 'questionhub' ) );
+			Response::die_error( __( 'Passwords do not match.', 'askora-community-qa' ) );
 		}
 
 		$handler = new PhoneRegisterHandler();
@@ -44,14 +44,14 @@ class PhoneRegister {
 			Response::die_error( $result->get_error_message() );
 		}
 
-		$settings = get_option( 'questionhub_settings', [] );
+		$settings = get_option( 'askora_settings', [] );
 		if ( ! empty( $settings['auto_login_after_reg'] ) ) {
 			wp_set_current_user( $result );
 			wp_set_auth_cookie( $result, true );
 		}
 
-		Response::success( __( 'Account created successfully.', 'questionhub' ), [
-			'redirect' => apply_filters( 'questionhub_register_redirect', home_url(), $result ),
+		Response::success( __( 'Account created successfully.', 'askora-community-qa' ), [
+			'redirect' => apply_filters( 'askora_register_redirect', home_url(), $result ),
 		] );
 	}
 }

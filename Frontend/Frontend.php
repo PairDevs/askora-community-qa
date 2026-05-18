@@ -2,25 +2,25 @@
 /**
  * Frontend orchestrator — mirrors PrimeKit's Frontend.php exactly.
  *
- * @package QuestionHub\Frontend
+ * @package ASKORA\Frontend
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend;
+namespace ASKORA\Frontend;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use QuestionHub\Frontend\Inc\Assets\Assets;
-use QuestionHub\Frontend\Inc\Shortcodes\Shortcodes;
-use QuestionHub\Frontend\Inc\Ajax\AjaxManager;
-use QuestionHub\Frontend\Inc\Auth\AuthForms;
-use QuestionHub\Frontend\Inc\Questions\QuestionService;
-use QuestionHub\Frontend\Inc\Questions\ViewCounter;
-use QuestionHub\Frontend\Inc\Questions\VoteManager;
-use QuestionHub\Frontend\Inc\Comments\AnswerRenderer;
-use QuestionHub\Frontend\Inc\Archive\QuestionArchive;
+use ASKORA\Frontend\Inc\Assets\Assets;
+use ASKORA\Frontend\Inc\Shortcodes\Shortcodes;
+use ASKORA\Frontend\Inc\Ajax\AjaxManager;
+use ASKORA\Frontend\Inc\Auth\AuthForms;
+use ASKORA\Frontend\Inc\Questions\QuestionService;
+use ASKORA\Frontend\Inc\Questions\ViewCounter;
+use ASKORA\Frontend\Inc\Questions\VoteManager;
+use ASKORA\Frontend\Inc\Comments\AnswerRenderer;
+use ASKORA\Frontend\Inc\Archive\QuestionArchive;
 
 /**
  * Class Frontend

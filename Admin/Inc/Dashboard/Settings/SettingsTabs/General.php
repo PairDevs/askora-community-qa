@@ -2,11 +2,11 @@
 /**
  * General settings tab.
  *
- * @package QuestionHub\Admin\Inc\Dashboard\Settings\SettingsTabs
+ * @package ASKORA\Admin\Inc\Dashboard\Settings\SettingsTabs
  * @since   1.0.0
  */
 
-namespace QuestionHub\Admin\Inc\Dashboard\Settings\SettingsTabs;
+namespace ASKORA\Admin\Inc\Dashboard\Settings\SettingsTabs;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -24,7 +24,7 @@ class General {
 	 *
 	 * @var string
 	 */
-	protected $option_key = 'questionhub_settings';
+	protected $option_key = 'askora_settings';
 
 	/**
 	 * Constructor.
@@ -86,106 +86,106 @@ class General {
 	 */
 	public function register_settings() {
 		register_setting(
-			'questionhub_general_group',
+			'askora_general_group',
 			$this->option_key,
 			[ $this, 'sanitize' ]
 		);
 
 		add_settings_section(
-			'questionhub_general_section',
-			esc_html__( 'General Settings', 'questionhub' ),
+			'askora_general_section',
+			esc_html__( 'General Settings', 'askora-community-qa' ),
 			[ $this, 'section_info' ],
-			'questionhub_general_settings'
+			'askora_general_settings'
 		);
 
 		// Submit form page.
 		add_settings_field(
 			'submit_form_page_id',
-			esc_html__( 'Ask a Question Page', 'questionhub' ),
+			esc_html__( 'Ask a Question Page', 'askora-community-qa' ),
 			[ $this, 'render_submit_form_page' ],
-			'questionhub_general_settings',
-			'questionhub_general_section'
+			'askora_general_settings',
+			'askora_general_section'
 		);
 
 		// Questions list page.
 		add_settings_field(
 			'questions_list_page_id',
-			esc_html__( 'Questions List Page', 'questionhub' ),
+			esc_html__( 'Questions List Page', 'askora-community-qa' ),
 			[ $this, 'render_questions_list_page' ],
-			'questionhub_general_settings',
-			'questionhub_general_section'
+			'askora_general_settings',
+			'askora_general_section'
 		);
 
 		// Question default status.
 		add_settings_field(
 			'question_status',
-			esc_html__( 'Default Question Status', 'questionhub' ),
+			esc_html__( 'Default Question Status', 'askora-community-qa' ),
 			[ $this, 'render_question_status' ],
-			'questionhub_general_settings',
-			'questionhub_general_section'
+			'askora_general_settings',
+			'askora_general_section'
 		);
 
 		// Allow guest replies.
 		add_settings_field(
 			'allow_guest_replies',
-			esc_html__( 'Allow Guest Replies', 'questionhub' ),
+			esc_html__( 'Allow Guest Replies', 'askora-community-qa' ),
 			[ $this, 'render_guest_replies' ],
-			'questionhub_general_settings',
-			'questionhub_general_section'
+			'askora_general_settings',
+			'askora_general_section'
 		);
 
 		// Require login to ask.
 		add_settings_field(
 			'require_login_to_ask',
-			esc_html__( 'Require Login to Ask', 'questionhub' ),
+			esc_html__( 'Require Login to Ask', 'askora-community-qa' ),
 			[ $this, 'render_require_login_ask' ],
-			'questionhub_general_settings',
-			'questionhub_general_section'
+			'askora_general_settings',
+			'askora_general_section'
 		);
 
 		// Require login to reply.
 		add_settings_field(
 			'require_login_to_reply',
-			esc_html__( 'Require Login to Reply', 'questionhub' ),
+			esc_html__( 'Require Login to Reply', 'askora-community-qa' ),
 			[ $this, 'render_require_login_reply' ],
-			'questionhub_general_settings',
-			'questionhub_general_section'
+			'askora_general_settings',
+			'askora_general_section'
 		);
 
 		// Enable voting.
 		add_settings_field(
 			'enable_voting',
-			esc_html__( 'Enable Voting', 'questionhub' ),
+			esc_html__( 'Enable Voting', 'askora-community-qa' ),
 			[ $this, 'render_enable_voting' ],
-			'questionhub_general_settings',
-			'questionhub_general_section'
+			'askora_general_settings',
+			'askora_general_section'
 		);
 
 		// Enable best answer.
 		add_settings_field(
 			'enable_best_answer',
-			esc_html__( 'Enable Best Answer', 'questionhub' ),
+			esc_html__( 'Enable Best Answer', 'askora-community-qa' ),
 			[ $this, 'render_enable_best_answer' ],
-			'questionhub_general_settings',
-			'questionhub_general_section'
+			'askora_general_settings',
+			'askora_general_section'
 		);
 
 		// Enable views.
 		add_settings_field(
 			'enable_question_views',
-			esc_html__( 'Enable Question Views', 'questionhub' ),
+			esc_html__( 'Enable Question Views', 'askora-community-qa' ),
 			[ $this, 'render_enable_views' ],
-			'questionhub_general_settings',
-			'questionhub_general_section'
+			'askora_general_settings',
+			'askora_general_section'
 		);
 
 		// Questions per page.
 		add_settings_field(
 			'questions_per_page',
-			esc_html__( 'Questions Per Page', 'questionhub' ),
+			esc_html__( 'Questions Per Page', 'askora-community-qa' ),
 			[ $this, 'render_questions_per_page' ],
-			'questionhub_general_settings',
-			'questionhub_general_section'
+			'askora_general_settings',
+			'askora_general_section'
 		);
 	}
 
@@ -195,7 +195,7 @@ class General {
 	 * @since 1.0.0
 	 */
 	public function section_info() {
-		echo '<p>' . esc_html__( 'Configure general Q&A behavior for QuestionHub.', 'questionhub' ) . '</p>';
+		echo '<p>' . esc_html__( 'Configure general Q&A behavior for Askora Community Q&A.', 'askora-community-qa' ) . '</p>';
 	}
 
 	/**
@@ -207,12 +207,12 @@ class General {
 		$options = $this->get_all();
 		$value   = $options['question_status'];
 		?>
-		<select name="<?php echo esc_attr( $this->option_key ); ?>[question_status]" id="questionhub_question_status">
-			<option value="pending" <?php selected( $value, 'pending' ); ?>><?php esc_html_e( 'Pending Review', 'questionhub' ); ?></option>
-			<option value="publish" <?php selected( $value, 'publish' ); ?>><?php esc_html_e( 'Publish Immediately', 'questionhub' ); ?></option>
-			<option value="draft"   <?php selected( $value, 'draft' ); ?>><?php esc_html_e( 'Save as Draft', 'questionhub' ); ?></option>
+		<select name="<?php echo esc_attr( $this->option_key ); ?>[question_status]" id="askora_question_status">
+			<option value="pending" <?php selected( $value, 'pending' ); ?>><?php esc_html_e( 'Pending Review', 'askora-community-qa' ); ?></option>
+			<option value="publish" <?php selected( $value, 'publish' ); ?>><?php esc_html_e( 'Publish Immediately', 'askora-community-qa' ); ?></option>
+			<option value="draft"   <?php selected( $value, 'draft' ); ?>><?php esc_html_e( 'Save as Draft', 'askora-community-qa' ); ?></option>
 		</select>
-		<p class="description"><?php esc_html_e( 'Status assigned to newly submitted questions.', 'questionhub' ); ?></p>
+		<p class="description"><?php esc_html_e( 'Status assigned to newly submitted questions.', 'askora-community-qa' ); ?></p>
 		<?php
 	}
 
@@ -225,8 +225,8 @@ class General {
 		$options = $this->get_all();
 		?>
 		<label>
-			<input type="checkbox" name="<?php echo esc_attr( $this->option_key ); ?>[allow_guest_replies]" id="questionhub_allow_guest_replies" value="1" <?php checked( 1, (int) $options['allow_guest_replies'] ); ?>>
-			<?php esc_html_e( 'Allow non-logged-in users to submit replies.', 'questionhub' ); ?>
+			<input type="checkbox" name="<?php echo esc_attr( $this->option_key ); ?>[allow_guest_replies]" id="askora_allow_guest_replies" value="1" <?php checked( 1, (int) $options['allow_guest_replies'] ); ?>>
+			<?php esc_html_e( 'Allow non-logged-in users to submit replies.', 'askora-community-qa' ); ?>
 		</label>
 		<?php
 	}
@@ -240,8 +240,8 @@ class General {
 		$options = $this->get_all();
 		?>
 		<label>
-			<input type="checkbox" name="<?php echo esc_attr( $this->option_key ); ?>[require_login_to_ask]" id="questionhub_require_login_ask" value="1" <?php checked( 1, (int) $options['require_login_to_ask'] ); ?>>
-			<?php esc_html_e( 'Users must be logged in to ask a question.', 'questionhub' ); ?>
+			<input type="checkbox" name="<?php echo esc_attr( $this->option_key ); ?>[require_login_to_ask]" id="askora_require_login_ask" value="1" <?php checked( 1, (int) $options['require_login_to_ask'] ); ?>>
+			<?php esc_html_e( 'Users must be logged in to ask a question.', 'askora-community-qa' ); ?>
 		</label>
 		<?php
 	}
@@ -255,8 +255,8 @@ class General {
 		$options = $this->get_all();
 		?>
 		<label>
-			<input type="checkbox" name="<?php echo esc_attr( $this->option_key ); ?>[require_login_to_reply]" id="questionhub_require_login_reply" value="1" <?php checked( 1, (int) $options['require_login_to_reply'] ); ?>>
-			<?php esc_html_e( 'Users must be logged in to submit a reply.', 'questionhub' ); ?>
+			<input type="checkbox" name="<?php echo esc_attr( $this->option_key ); ?>[require_login_to_reply]" id="askora_require_login_reply" value="1" <?php checked( 1, (int) $options['require_login_to_reply'] ); ?>>
+			<?php esc_html_e( 'Users must be logged in to submit a reply.', 'askora-community-qa' ); ?>
 		</label>
 		<?php
 	}
@@ -270,8 +270,8 @@ class General {
 		$options = $this->get_all();
 		?>
 		<label>
-			<input type="checkbox" name="<?php echo esc_attr( $this->option_key ); ?>[enable_voting]" id="questionhub_enable_voting" value="1" <?php checked( 1, (int) $options['enable_voting'] ); ?>>
-			<?php esc_html_e( 'Enable upvoting for questions and answers.', 'questionhub' ); ?>
+			<input type="checkbox" name="<?php echo esc_attr( $this->option_key ); ?>[enable_voting]" id="askora_enable_voting" value="1" <?php checked( 1, (int) $options['enable_voting'] ); ?>>
+			<?php esc_html_e( 'Enable upvoting for questions and answers.', 'askora-community-qa' ); ?>
 		</label>
 		<?php
 	}
@@ -285,8 +285,8 @@ class General {
 		$options = $this->get_all();
 		?>
 		<label>
-			<input type="checkbox" name="<?php echo esc_attr( $this->option_key ); ?>[enable_best_answer]" id="questionhub_enable_best_answer" value="1" <?php checked( 1, (int) $options['enable_best_answer'] ); ?>>
-			<?php esc_html_e( 'Allow marking one reply as the Best Answer.', 'questionhub' ); ?>
+			<input type="checkbox" name="<?php echo esc_attr( $this->option_key ); ?>[enable_best_answer]" id="askora_enable_best_answer" value="1" <?php checked( 1, (int) $options['enable_best_answer'] ); ?>>
+			<?php esc_html_e( 'Allow marking one reply as the Best Answer.', 'askora-community-qa' ); ?>
 		</label>
 		<?php
 	}
@@ -300,8 +300,8 @@ class General {
 		$options = $this->get_all();
 		?>
 		<label>
-			<input type="checkbox" name="<?php echo esc_attr( $this->option_key ); ?>[enable_question_views]" id="questionhub_enable_views" value="1" <?php checked( 1, (int) $options['enable_question_views'] ); ?>>
-			<?php esc_html_e( 'Track and display question view counts.', 'questionhub' ); ?>
+			<input type="checkbox" name="<?php echo esc_attr( $this->option_key ); ?>[enable_question_views]" id="askora_enable_views" value="1" <?php checked( 1, (int) $options['enable_question_views'] ); ?>>
+			<?php esc_html_e( 'Track and display question view counts.', 'askora-community-qa' ); ?>
 		</label>
 		<?php
 	}
@@ -316,12 +316,12 @@ class General {
 		$page_id = (int) ( $options['submit_form_page_id'] ?? 0 );
 		wp_dropdown_pages( [
 			'name'              => esc_attr( $this->option_key ) . '[submit_form_page_id]',
-			'id'                => 'questionhub_submit_form_page_id',
+			'id'                => 'askora_submit_form_page_id',
 			'selected'          => wp_kses_post($page_id),
-			'show_option_none'  => esc_html__( '— Select a Page —', 'questionhub' ),
+			'show_option_none'  => esc_html__( '— Select a Page —', 'askora-community-qa' ),
 			'option_none_value' => '0',
 		] );
-		echo '<p class="description">' . esc_html__( 'Select the page containing the [questionhub_submit_form] shortcode. Used for the \'Ask a Question\' button.', 'questionhub' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Select the page containing the [askora_submit_form] shortcode. Used for the \'Ask a Question\' button.', 'askora-community-qa' ) . '</p>';
 	}
 
 	/**
@@ -334,12 +334,12 @@ class General {
 		$page_id = (int) ( $options['questions_list_page_id'] ?? 0 );
 		wp_dropdown_pages( [
 			'name'              => esc_attr( $this->option_key ) . '[questions_list_page_id]',
-			'id'                => 'questionhub_questions_list_page_id',
+			'id'                => 'askora_questions_list_page_id',
 			'selected'          => wp_kses_post($page_id),
-			'show_option_none'  => esc_html__( '— Select a Page —', 'questionhub' ),
+			'show_option_none'  => esc_html__( '— Select a Page —', 'askora-community-qa' ),
 			'option_none_value' => '0',
 		] );
-		echo '<p class="description">' . esc_html__( 'Select the page containing the [questionhub_questions] shortcode. Used for the "All Questions" breadcrumb link on single question pages.', 'questionhub' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Select the page containing the [askora_questions] shortcode. Used for the "All Questions" breadcrumb link on single question pages.', 'askora-community-qa' ) . '</p>';
 	}
 
 	/**
@@ -350,8 +350,8 @@ class General {
 	public function render_questions_per_page() {
 		$options = $this->get_all();
 		?>
-		<input type="number" name="<?php echo esc_attr( $this->option_key ); ?>[questions_per_page]" id="questionhub_questions_per_page" value="<?php echo esc_attr( (int) $options['questions_per_page'] ); ?>" min="1" max="100" class="small-text">
-		<p class="description"><?php esc_html_e( 'Number of questions to display per page.', 'questionhub' ); ?></p>
+		<input type="number" name="<?php echo esc_attr( $this->option_key ); ?>[questions_per_page]" id="askora_questions_per_page" value="<?php echo esc_attr( (int) $options['questions_per_page'] ); ?>" min="1" max="100" class="small-text">
+		<p class="description"><?php esc_html_e( 'Number of questions to display per page.', 'askora-community-qa' ); ?></p>
 		<?php
 	}
 
@@ -363,9 +363,9 @@ class General {
 	 * @since  1.0.0
 	 */
 	public function sanitize( $input ) {
-		if ( ! isset( $_POST['questionhub_nonce'] ) ||
-			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['questionhub_nonce'] ) ), 'questionhub_save_settings' ) ) {
-			add_settings_error( 'questionhub_settings', 'nonce_error', esc_html__( 'Security check failed.', 'questionhub' ), 'error' );
+		if ( ! isset( $_POST['askora_nonce'] ) ||
+			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['askora_nonce'] ) ), 'askora_save_settings' ) ) {
+			add_settings_error( 'askora_settings', 'nonce_error', esc_html__( 'Security check failed.', 'askora-community-qa' ), 'error' );
 			return get_option( $this->option_key, [] );
 		}
 
@@ -374,7 +374,7 @@ class General {
 
 		// If this is NOT our tab being submitted, pass the $input through unmodified.
 		// The sanitize callback for the correct tab will handle merging it with $existing.
-		if ( ! isset( $_POST['option_page'] ) || 'questionhub_general_group' !== sanitize_text_field( wp_unslash( $_POST['option_page'] ) ) ) {
+		if ( ! isset( $_POST['option_page'] ) || 'askora_general_group' !== sanitize_text_field( wp_unslash( $_POST['option_page'] ) ) ) {
 			return $input;
 		}
 
@@ -389,7 +389,7 @@ class General {
 		$existing['enable_question_views']  = isset( $input['enable_question_views'] ) ? 1 : 0;
 		$existing['questions_per_page']     = isset( $input['questions_per_page'] ) ? absint( $input['questions_per_page'] ) : 10;
 
-		add_settings_error( 'questionhub_settings', 'settings_saved', esc_html__( 'General settings saved.', 'questionhub' ), 'updated' );
+		add_settings_error( 'askora_settings', 'settings_saved', esc_html__( 'General settings saved.', 'askora-community-qa' ), 'updated' );
 
 		return $existing;
 	}

@@ -1,5 +1,5 @@
 /**
- * QuestionHub Admin JavaScript
+ * Askora Community Q&A Admin JavaScript
  */
 /* global jQuery */
 (function ($) {

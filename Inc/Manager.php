@@ -4,18 +4,18 @@
  *
  * Bootstraps Admin and Frontend layers — mirrors PrimeKit's Manager pattern.
  *
- * @package QuestionHub
+ * @package ASKORA
  * @since   1.0.0
  */
 
-namespace QuestionHub;
+namespace ASKORA;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use QuestionHub\Admin\AdminManager;
-use QuestionHub\Frontend\Frontend;
+use ASKORA\Admin\AdminManager;
+use ASKORA\Frontend\Frontend;
 
 /**
  * Class Manager
@@ -57,10 +57,10 @@ class Manager {
 		$this->frontend      = new Frontend();
 
 		/**
-		 * Fires after all QuestionHub modules are loaded.
+		 * Fires after all Askora Community Q&A modules are loaded.
 		 *
 		 * @since 1.0.0
 		 */
-		do_action( 'questionhub_modules_loaded' );
+		do_action( 'askora_modules_loaded' );
 	}
 }

@@ -2,13 +2,13 @@
 /**
  * Null SMS provider — no-op default for free version.
  *
- * @package QuestionHub\Frontend\Inc\Sms\Providers
+ * @package ASKORA\Frontend\Inc\Sms\Providers
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Sms\Providers;
+namespace ASKORA\Frontend\Inc\Sms\Providers;
 
-use QuestionHub\Frontend\Inc\Sms\Contracts\SmsProviderInterface;
+use ASKORA\Frontend\Inc\Sms\Contracts\SmsProviderInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

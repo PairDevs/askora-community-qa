@@ -2,13 +2,13 @@
 /**
  * Answer renderer — renders answers and the answer form.
  *
- * @package QuestionHub\Frontend\Inc\Comments
+ * @package ASKORA\Frontend\Inc\Comments
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Comments;
+namespace ASKORA\Frontend\Inc\Comments;
 
-use QuestionHub\Frontend\Inc\Helpers\Template;
+use ASKORA\Frontend\Inc\Helpers\Template;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -30,11 +30,11 @@ class AnswerRenderer {
 	 */
 	public function override_comments_template( $template ) {
 		if ( is_singular( 'questions' ) ) {
-			$custom = get_stylesheet_directory() . '/questionhub/answers-template.php';
+			$custom = get_stylesheet_directory() . '/askora-community-qa/answers-template.php';
 			if ( file_exists( $custom ) ) {
 				return $custom;
 			}
-			$plugin = QUESTIONHUB_PATH . 'Frontend/Inc/Templates/answers-template.php';
+			$plugin = ASKORA_PATH . 'Frontend/Inc/Templates/answers-template.php';
 			if ( file_exists( $plugin ) ) {
 				return $plugin;
 			}
@@ -50,8 +50,8 @@ class AnswerRenderer {
 	 * @since 1.0.0
 	 */
 	public static function render_list( int $post_id ): string {
-		$settings  = get_option( 'questionhub_settings', [] );
-		$best_id   = (int) get_post_meta( $post_id, '_questionhub_best_answer', true );
+		$settings  = get_option( 'askora_settings', [] );
+		$best_id   = (int) get_post_meta( $post_id, '_askora_best_answer', true );
 		$comments  = get_comments( [
 			'post_id' => $post_id,
 			'status'  => 'approve',
@@ -61,7 +61,7 @@ class AnswerRenderer {
 
 		ob_start();
 		if ( ! empty( $comments ) ) {
-			echo '<div class="questionhub-answer-list">';
+			echo '<div class="askora-answer-list">';
 			foreach ( $comments as $comment ) {
 				Template::load( 'answer-item.php', [
 					'comment'    => $comment,

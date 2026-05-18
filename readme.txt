@@ -1,4 +1,4 @@
-=== QuestionHub ===
+=== Askora Community Q&A ===
 Contributors: pairdevs
 Tags: question answer, Q&A, forum, community, questions
 Requires at least: 6.0
@@ -12,7 +12,7 @@ A modern Q&A plugin for WordPress with frontend question submission, AJAX replie
 
 == Description ==
 
-QuestionHub is a powerful, modern Q&A plugin for WordPress. It enables your community to ask questions, browse answers, reply with rich interactions, and discover helpful content — all through a beautiful AJAX-powered frontend.
+Askora Community Q&A is a powerful, modern Q&A plugin for WordPress. It enables your community to ask questions, browse answers, reply with rich interactions, and discover helpful content — all through a beautiful AJAX-powered frontend.
 
 **Free Features:**
 
@@ -36,20 +36,20 @@ QuestionHub is a powerful, modern Q&A plugin for WordPress. It enables your comm
 
 **Available Shortcodes:**
 
-* `[questionhub_submit_form]` — Question submission form
-* `[questionhub_questions]` — Question list with AJAX pagination
-* `[questionhub_search]` — AJAX live search
-* `[questionhub_login]` — Phone login form
-* `[questionhub_register]` — Phone registration form
-* `[questionhub_auth]` — Combined login/register form
-* `[questionhub_popular_questions]` — Most upvoted questions
-* `[questionhub_unanswered_questions]` — Questions with no answers
+* `[askora_submit_form]` — Question submission form
+* `[askora_questions]` — Question list with AJAX pagination
+* `[askora_search]` — AJAX live search
+* `[askora_login]` — Phone login form
+* `[askora_register]` — Phone registration form
+* `[askora_auth]` — Combined login/register form
+* `[askora_popular_questions]` — Most upvoted questions
+* `[askora_unanswered_questions]` — Questions with no answers
 
 == Installation ==
 
-1. Upload the plugin files to `/wp-content/plugins/questionhub/`, or install the plugin through the WordPress plugins screen.
+1. Upload the plugin files to `/wp-content/plugins/askora-community-qa/`, or install the plugin through the WordPress plugins screen.
 2. Activate the plugin through the **Plugins** screen in WordPress.
-3. Go to **QuestionHub → Settings** to configure the plugin.
+3. Go to **Askora → Settings** to configure the plugin.
 4. Create pages and add shortcodes as needed.
 5. Flush permalinks: go to **Settings → Permalinks** and click **Save Changes**.
 
@@ -57,7 +57,7 @@ QuestionHub is a powerful, modern Q&A plugin for WordPress. It enables your comm
 
 = Do users need an email to register? =
 
-No. QuestionHub supports phone number registration and login without requiring an email address. An email is optional.
+No. Askora Community Q&A supports phone number registration and login without requiring an email address. An email is optional.
 
 = Can guests ask questions? =
 
@@ -65,15 +65,15 @@ By default, users must be logged in to ask a question. You can configure reply p
 
 = How do I show questions on a page? =
 
-Add the `[questionhub_questions]` shortcode to any page or post.
+Add the `[askora_questions]` shortcode to any page or post.
 
 = Can I override templates in my theme? =
 
-Yes. Create a folder `questionhub/` in your active theme and copy any template file from `Frontend/Inc/Templates/` into it. The plugin will load your theme version automatically.
+Yes. Create a folder `askora-community-qa/` in your active theme and copy any template file from `Frontend/Inc/Templates/` into it. The plugin will load your theme version automatically.
 
 = Is it translation-ready? =
 
-Yes. All strings use the `questionhub` text domain and a `.pot` file is included in the `languages/` folder.
+Yes. All strings use the `askora-community-qa` text domain and a `.pot` file is included in the `languages/` folder.
 
 == Screenshots ==
 

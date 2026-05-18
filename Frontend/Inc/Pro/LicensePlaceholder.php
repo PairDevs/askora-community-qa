@@ -2,11 +2,11 @@
 /**
  * License placeholder — future Pro feature.
  *
- * @package QuestionHub\Frontend\Inc\Pro
+ * @package ASKORA\Frontend\Inc\Pro
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Pro;
+namespace ASKORA\Frontend\Inc\Pro;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

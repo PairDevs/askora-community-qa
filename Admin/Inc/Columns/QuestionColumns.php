@@ -2,11 +2,11 @@
 /**
  * Custom admin columns for the Questions CPT.
  *
- * @package QuestionHub\Admin\Inc\Columns
+ * @package ASKORA\Admin\Inc\Columns
  * @since   1.0.0
  */
 
-namespace QuestionHub\Admin\Inc\Columns;
+namespace ASKORA\Admin\Inc\Columns;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -42,9 +42,9 @@ class QuestionColumns {
 		foreach ( $columns as $key => $label ) {
 			$new[ $key ] = $label;
 			if ( 'author' === $key ) {
-				$new['questionhub_views']   = esc_html__( 'Views', 'questionhub' );
-				$new['questionhub_replies'] = esc_html__( 'Replies', 'questionhub' );
-				$new['questionhub_votes']   = esc_html__( 'Votes', 'questionhub' );
+				$new['askora_views']   = esc_html__( 'Views', 'askora-community-qa' );
+				$new['askora_replies'] = esc_html__( 'Replies', 'askora-community-qa' );
+				$new['askora_votes']   = esc_html__( 'Votes', 'askora-community-qa' );
 			}
 		}
 		return $new;
@@ -59,18 +59,18 @@ class QuestionColumns {
 	 */
 	public function render_column( $column, $post_id ) {
 		switch ( $column ) {
-			case 'questionhub_views':
-				$views = (int) get_post_meta( $post_id, '_questionhub_views', true );
+			case 'askora_views':
+				$views = (int) get_post_meta( $post_id, '_askora_views', true );
 				echo '<strong>' . esc_html( $views ) . '</strong>';
 				break;
 
-			case 'questionhub_replies':
+			case 'askora_replies':
 				$count = get_comments_number( $post_id );
 				echo '<strong>' . esc_html( $count ) . '</strong>';
 				break;
 
-			case 'questionhub_votes':
-				$votes = (int) get_post_meta( $post_id, '_questionhub_votes', true );
+			case 'askora_votes':
+				$votes = (int) get_post_meta( $post_id, '_askora_votes', true );
 				echo '<strong>' . esc_html( $votes ) . '</strong>';
 				break;
 		}
@@ -84,8 +84,8 @@ class QuestionColumns {
 	 * @since  1.0.0
 	 */
 	public function sortable_columns( $columns ) {
-		$columns['questionhub_views'] = 'questionhub_views';
-		$columns['questionhub_votes'] = 'questionhub_votes';
+		$columns['askora_views'] = 'askora_views';
+		$columns['askora_votes'] = 'askora_votes';
 		return $columns;
 	}
 }

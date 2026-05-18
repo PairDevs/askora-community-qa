@@ -2,11 +2,11 @@
 /**
  * Question Category taxonomy registration.
  *
- * @package QuestionHub\Admin\Inc\Taxonomies
+ * @package ASKORA\Admin\Inc\Taxonomies
  * @since   1.0.0
  */
 
-namespace QuestionHub\Admin\Inc\Taxonomies;
+namespace ASKORA\Admin\Inc\Taxonomies;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -35,17 +35,17 @@ class QuestionCategory {
 	 */
 	public function register() {
 		$labels = [
-			'name'              => esc_html_x( 'Question Categories', 'taxonomy general name', 'questionhub' ),
-			'singular_name'     => esc_html_x( 'Question Category', 'taxonomy singular name', 'questionhub' ),
-			'search_items'      => esc_html__( 'Search Categories', 'questionhub' ),
-			'all_items'         => esc_html__( 'All Categories', 'questionhub' ),
-			'parent_item'       => esc_html__( 'Parent Category', 'questionhub' ),
-			'parent_item_colon' => esc_html__( 'Parent Category:', 'questionhub' ),
-			'edit_item'         => esc_html__( 'Edit Category', 'questionhub' ),
-			'update_item'       => esc_html__( 'Update Category', 'questionhub' ),
-			'add_new_item'      => esc_html__( 'Add New Category', 'questionhub' ),
-			'new_item_name'     => esc_html__( 'New Category Name', 'questionhub' ),
-			'menu_name'         => esc_html__( 'Categories', 'questionhub' ),
+			'name'              => esc_html_x( 'Question Categories', 'taxonomy general name', 'askora-community-qa' ),
+			'singular_name'     => esc_html_x( 'Question Category', 'taxonomy singular name', 'askora-community-qa' ),
+			'search_items'      => esc_html__( 'Search Categories', 'askora-community-qa' ),
+			'all_items'         => esc_html__( 'All Categories', 'askora-community-qa' ),
+			'parent_item'       => esc_html__( 'Parent Category', 'askora-community-qa' ),
+			'parent_item_colon' => esc_html__( 'Parent Category:', 'askora-community-qa' ),
+			'edit_item'         => esc_html__( 'Edit Category', 'askora-community-qa' ),
+			'update_item'       => esc_html__( 'Update Category', 'askora-community-qa' ),
+			'add_new_item'      => esc_html__( 'Add New Category', 'askora-community-qa' ),
+			'new_item_name'     => esc_html__( 'New Category Name', 'askora-community-qa' ),
+			'menu_name'         => esc_html__( 'Categories', 'askora-community-qa' ),
 		];
 
 		$args = [

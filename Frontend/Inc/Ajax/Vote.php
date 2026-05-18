@@ -2,14 +2,14 @@
 /**
  * AJAX: Vote on question or answer.
  *
- * @package QuestionHub\Frontend\Inc\Ajax
+ * @package ASKORA\Frontend\Inc\Ajax
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Ajax;
+namespace ASKORA\Frontend\Inc\Ajax;
 
-use QuestionHub\Frontend\Inc\Questions\VoteManager;
-use QuestionHub\Frontend\Inc\Helpers\Response;
+use ASKORA\Frontend\Inc\Questions\VoteManager;
+use ASKORA\Frontend\Inc\Helpers\Response;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Vote {
 
 	public function __construct() {
-		add_action( 'wp_ajax_questionhub_vote', [ $this, 'handle' ] );
+		add_action( 'wp_ajax_askora_vote', [ $this, 'handle' ] );
 	}
 
 	public function handle(): void {
-		check_ajax_referer( 'questionhub_nonce', 'nonce' );
+		check_ajax_referer( 'askora_nonce', 'nonce' );
 
 		if ( ! is_user_logged_in() ) {
-			Response::die_error( __( 'You must be logged in to vote.', 'questionhub' ) );
+			Response::die_error( __( 'You must be logged in to vote.', 'askora-community-qa' ) );
 		}
 
 		$type       = isset( $_POST['type'] ) ? sanitize_key( wp_unslash( $_POST['type'] ) ) : 'question';

@@ -2,11 +2,11 @@
 /**
  * Admin assets enqueue.
  *
- * @package QuestionHub\Admin\Assets
+ * @package ASKORA\Admin\Assets
  * @since   1.0.0
  */
 
-namespace QuestionHub\Admin\Assets;
+namespace ASKORA\Admin\Assets;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -26,34 +26,34 @@ class Assets {
 
 	public function admin_enqueue_styles() {
 		wp_enqueue_style(
-			'questionhub-admin-style',
-			QUESTIONHUB_URL . 'assets/css/admin.css',
+			'askora-admin-style',
+			ASKORA_URL . 'assets/css/admin.css',
 			[],
-			QUESTIONHUB_VERSION
+			ASKORA_VERSION
 		);
 	}
 
 	public function admin_enqueue_scripts( $hook_suffix ) {
-		// Only load on QuestionHub admin pages.
+		// Only load on Askora admin pages.
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( ! isset( $_GET['page'] ) || false === strpos( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'questionhub' ) ) {
+		if ( ! isset( $_GET['page'] ) || false === strpos( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'askora-community-qa' ) ) {
 			return;
 		}
 
 		wp_enqueue_script(
-			'questionhub-admin-script',
-			QUESTIONHUB_URL . 'assets/js/admin.js',
+			'askora-admin-script',
+			ASKORA_URL . 'assets/js/admin.js',
 			[ 'jquery' ],
-			QUESTIONHUB_VERSION,
+			ASKORA_VERSION,
 			true
 		);
 
 		wp_localize_script(
-			'questionhub-admin-script',
-			'QuestionHubAdmin',
+			'askora-admin-script',
+			'AskoraAdmin',
 			[
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce'    => wp_create_nonce( 'questionhub_admin_nonce' ),
+				'nonce'    => wp_create_nonce( 'askora_admin_nonce' ),
 			]
 		);
 	}

@@ -2,11 +2,11 @@
 /**
  * Auth provider interface.
  *
- * @package QuestionHub\Frontend\Inc\Auth\Contracts
+ * @package ASKORA\Frontend\Inc\Auth\Contracts
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Auth\Contracts;
+namespace ASKORA\Frontend\Inc\Auth\Contracts;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

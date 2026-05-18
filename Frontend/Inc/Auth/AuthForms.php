@@ -2,13 +2,13 @@
 /**
  * Auth form renderer.
  *
- * @package QuestionHub\Frontend\Inc\Auth
+ * @package ASKORA\Frontend\Inc\Auth
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Auth;
+namespace ASKORA\Frontend\Inc\Auth;
 
-use QuestionHub\Frontend\Inc\Helpers\Template;
+use ASKORA\Frontend\Inc\Helpers\Template;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

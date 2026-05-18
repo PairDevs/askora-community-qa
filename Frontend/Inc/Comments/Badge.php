@@ -2,11 +2,11 @@
 /**
  * Badge renderer — role-based badges for Q&A participants.
  *
- * @package QuestionHub\Frontend\Inc\Comments
+ * @package ASKORA\Frontend\Inc\Comments
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Comments;
+namespace ASKORA\Frontend\Inc\Comments;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -53,7 +53,7 @@ class Badge {
 		}
 
 		$def   = self::$types[ $type ] ?? self::$types['member'];
-		$label = __( $def['label'], 'questionhub' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+		$label = __( $def['label'], 'askora-community-qa' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 		$icon  = $def['icon'];
 
 		/**
@@ -65,7 +65,7 @@ class Badge {
 		 * @param int|null $post_id Post ID.
 		 * @since 1.0.0
 		 */
-		$label = apply_filters( 'questionhub_badge_label', $label, $type, $user_id, $post_id );
+		$label = apply_filters( 'askora_badge_label', $label, $type, $user_id, $post_id );
 
 		/**
 		 * Filters the badge icon dashicon class.
@@ -74,7 +74,7 @@ class Badge {
 		 * @param string $type    Badge type slug.
 		 * @since 1.0.0
 		 */
-		$icon = apply_filters( 'questionhub_badge_icon', $icon, $type );
+		$icon = apply_filters( 'askora_badge_icon', $icon, $type );
 
 		return sprintf(
 			'<span class="qh-badge qh-badge-%s"><span class="dashicons %s"></span>%s</span>',

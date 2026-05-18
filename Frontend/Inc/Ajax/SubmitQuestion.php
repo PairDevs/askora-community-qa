@@ -2,14 +2,14 @@
 /**
  * AJAX: Submit Question.
  *
- * @package QuestionHub\Frontend\Inc\Ajax
+ * @package ASKORA\Frontend\Inc\Ajax
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Ajax;
+namespace ASKORA\Frontend\Inc\Ajax;
 
-use QuestionHub\Frontend\Inc\Questions\QuestionService;
-use QuestionHub\Frontend\Inc\Helpers\Response;
+use ASKORA\Frontend\Inc\Questions\QuestionService;
+use ASKORA\Frontend\Inc\Helpers\Response;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class SubmitQuestion {
 
 	public function __construct() {
-		add_action( 'wp_ajax_questionhub_submit_question', [ $this, 'handle' ] );
+		add_action( 'wp_ajax_askora_submit_question', [ $this, 'handle' ] );
 	}
 
 	public function handle(): void {
-		check_ajax_referer( 'questionhub_nonce', 'nonce' );
+		check_ajax_referer( 'askora_nonce', 'nonce' );
 
 		if ( ! is_user_logged_in() ) {
-			Response::die_error( __( 'You must be logged in to ask a question.', 'questionhub' ) );
+			Response::die_error( __( 'You must be logged in to ask a question.', 'askora-community-qa' ) );
 		}
 
 		$title   = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : '';
@@ -34,7 +34,7 @@ class SubmitQuestion {
 		$tags    = isset( $_POST['tags'] ) ? sanitize_text_field( wp_unslash( $_POST['tags'] ) ) : '';
 
 		if ( empty( $title ) ) {
-			Response::die_error( __( 'Question title is required.', 'questionhub' ) );
+			Response::die_error( __( 'Question title is required.', 'askora-community-qa' ) );
 		}
 
 		$service = new QuestionService();
@@ -51,7 +51,7 @@ class SubmitQuestion {
 		}
 
 		Response::success(
-			__( 'Your question has been submitted successfully.', 'questionhub' ),
+			__( 'Your question has been submitted successfully.', 'askora-community-qa' ),
 			[ 'post_id' => $result ]
 		);
 	}

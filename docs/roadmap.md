@@ -1,4 +1,4 @@
-# QuestionHub — Roadmap
+# Askora Community Q&A — Roadmap
 
 ## v1.0.0 — Free MVP ✅
 - Questions CPT + categories + tags
@@ -32,7 +32,7 @@
 - Bookmark questions
 
 ## v2.0.0 — Pro Foundation
-- QuestionHub Pro plugin scaffold
+- Askora Pro plugin scaffold
 - License system integration
 - Pro settings tab
 - Advanced role-based permissions

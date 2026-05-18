@@ -2,13 +2,13 @@
 /**
  * Question service — business logic layer.
  *
- * @package QuestionHub\Frontend\Inc\Questions
+ * @package ASKORA\Frontend\Inc\Questions
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Questions;
+namespace ASKORA\Frontend\Inc\Questions;
 
-use QuestionHub\Frontend\Inc\Helpers\Permission;
+use ASKORA\Frontend\Inc\Helpers\Permission;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -24,15 +24,15 @@ class QuestionService {
 
 	public function submit( array $data ) {
 		if ( ! Permission::can_submit_question() ) {
-			return new \WP_Error( 'not_allowed', __( 'You must be logged in to ask a question.', 'questionhub' ) );
+			return new \WP_Error( 'not_allowed', __( 'You must be logged in to ask a question.', 'askora-community-qa' ) );
 		}
 		if ( empty( trim( $data['title'] ?? '' ) ) ) {
-			return new \WP_Error( 'empty_title', __( 'Question title is required.', 'questionhub' ) );
+			return new \WP_Error( 'empty_title', __( 'Question title is required.', 'askora-community-qa' ) );
 		}
 
-		do_action( 'questionhub_before_question_form' );
+		do_action( 'askora_before_question_form' );
 		$result = $this->repo->create_question( $data );
-		do_action( 'questionhub_after_question_form' );
+		do_action( 'askora_after_question_form' );
 
 		return $result;
 	}

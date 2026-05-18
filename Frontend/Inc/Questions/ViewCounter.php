@@ -2,11 +2,11 @@
 /**
  * View counter — tracks and deduplicates question views.
  *
- * @package QuestionHub\Frontend\Inc\Questions
+ * @package ASKORA\Frontend\Inc\Questions
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Questions;
+namespace ASKORA\Frontend\Inc\Questions;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -25,7 +25,7 @@ class ViewCounter {
 	 * @since 1.0.0
 	 */
 	public function track_view(): void {
-		$settings = get_option( 'questionhub_settings', [] );
+		$settings = get_option( 'askora_settings', [] );
 		if ( empty( $settings['enable_question_views'] ) ) {
 			return;
 		}
@@ -35,11 +35,11 @@ class ViewCounter {
 		}
 
 		$post_id    = get_the_ID();
-		$cookie_key = 'questionhub_viewed_' . $post_id;
+		$cookie_key = 'askora_viewed_' . $post_id;
 
-		$questionhub_viewed_cookie = isset( $_COOKIE[ $cookie_key ] ) ? sanitize_text_field( wp_unslash( $_COOKIE[ $cookie_key ] ) ) : '';
+		$askora_viewed_cookie = isset( $_COOKIE[ $cookie_key ] ) ? sanitize_text_field( wp_unslash( $_COOKIE[ $cookie_key ] ) ) : '';
 
-		if ( '1' === $questionhub_viewed_cookie ) {
+		if ( '1' === $askora_viewed_cookie ) {
 			return;
 		}
 
@@ -57,6 +57,6 @@ class ViewCounter {
 	 * @return int
 	 */
 	public static function get( int $post_id ): int {
-		return (int) get_post_meta( $post_id, '_questionhub_views', true );
+		return (int) get_post_meta( $post_id, '_askora_views', true );
 	}
 }

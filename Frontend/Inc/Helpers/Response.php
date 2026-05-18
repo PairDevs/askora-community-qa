@@ -2,11 +2,11 @@
 /**
  * Response helper.
  *
- * @package QuestionHub\Frontend\Inc\Helpers
+ * @package ASKORA\Frontend\Inc\Helpers
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Helpers;
+namespace ASKORA\Frontend\Inc\Helpers;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

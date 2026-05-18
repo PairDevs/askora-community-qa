@@ -2,14 +2,14 @@
 /**
  * Phone number login handler.
  *
- * @package QuestionHub\Frontend\Inc\Auth
+ * @package ASKORA\Frontend\Inc\Auth
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Auth;
+namespace ASKORA\Frontend\Inc\Auth;
 
-use QuestionHub\Frontend\Inc\Helpers\Sanitizer;
-use QuestionHub\Frontend\Inc\Helpers\Validator;
+use ASKORA\Frontend\Inc\Helpers\Sanitizer;
+use ASKORA\Frontend\Inc\Helpers\Validator;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class PhoneLogin {
 
-	const ATTEMPTS_TRANSIENT = 'questionhub_login_attempts_';
+	const ATTEMPTS_TRANSIENT = 'askora_login_attempts_';
 	const MAX_ATTEMPTS       = 5;
 	const LOCKOUT_SECONDS    = 900; // 15 minutes.
 
@@ -32,27 +32,27 @@ class PhoneLogin {
 		$phone = Sanitizer::phone( $phone );
 
 		if ( ! Validator::phone( $phone ) ) {
-			return new \WP_Error( 'invalid_phone', __( 'Please enter a valid phone number.', 'questionhub' ) );
+			return new \WP_Error( 'invalid_phone', __( 'Please enter a valid phone number.', 'askora-community-qa' ) );
 		}
 
 		// Brute force protection.
 		$transient_key = self::ATTEMPTS_TRANSIENT . md5( $phone );
 		$attempts      = (int) get_transient( $transient_key );
 		if ( $attempts >= self::MAX_ATTEMPTS ) {
-			return new \WP_Error( 'too_many_attempts', __( 'Too many login attempts. Please try again later.', 'questionhub' ) );
+			return new \WP_Error( 'too_many_attempts', __( 'Too many login attempts. Please try again later.', 'askora-community-qa' ) );
 		}
 
 		// Find user by phone.
 		$user_id = UserMeta::find_user_by_phone( $phone );
 		if ( ! $user_id ) {
 			$this->record_attempt( $transient_key, $attempts );
-			return new \WP_Error( 'invalid_credentials', __( 'Invalid phone number or password.', 'questionhub' ) );
+			return new \WP_Error( 'invalid_credentials', __( 'Invalid phone number or password.', 'askora-community-qa' ) );
 		}
 
 		$user = get_user_by( 'ID', $user_id );
 		if ( ! $user || ! wp_check_password( $password, $user->user_pass, $user_id ) ) {
 			$this->record_attempt( $transient_key, $attempts );
-			return new \WP_Error( 'invalid_credentials', __( 'Invalid phone number or password.', 'questionhub' ) );
+			return new \WP_Error( 'invalid_credentials', __( 'Invalid phone number or password.', 'askora-community-qa' ) );
 		}
 
 		// Clear attempts on success.
@@ -63,12 +63,12 @@ class PhoneLogin {
 		wp_set_auth_cookie( $user_id, true );
 
 		/**
-		 * Fires after successful QuestionHub phone login.
+		 * Fires after successful Askora phone login.
 		 *
 		 * @param int $user_id User ID.
 		 * @since 1.0.0
 		 */
-		do_action( 'questionhub_auth_after_login', $user_id );
+		do_action( 'askora_auth_after_login', $user_id );
 
 		return $user_id;
 	}

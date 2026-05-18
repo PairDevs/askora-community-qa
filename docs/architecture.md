@@ -1,15 +1,15 @@
-# QuestionHub — Architecture
+# Askora Community Q&A — Architecture
 
 ## Overview
 
-QuestionHub follows a **layered, PrimeKit-matched OOP architecture** with strict separation of concerns.
+Askora Community Q&A follows a **layered, PrimeKit-matched OOP architecture** with strict separation of concerns.
 
 ## Bootstrap Flow
 
 ```
-questionhub.php
-  └── final class QuestionHub (singleton)
-        ├── define_constants()    → QUESTIONHUB_VERSION, PATH, URL, FILE, BASENAME
+askora-community-qa.php
+  └── final class AskoraCommunityQA (singleton)
+        ├── define_constants()    → ASKORA_VERSION, PATH, URL, FILE, BASENAME
         ├── include_files()       → vendor/autoload.php (Composer PSR-4)
         └── init_hooks()
               ├── plugins_loaded → plugin_loaded() → new Manager()
@@ -22,9 +22,9 @@ questionhub.php
 
 | Namespace | Directory |
 |---|---|
-| `QuestionHub\` | `Inc/` |
-| `QuestionHub\Admin\` | `Admin/` |
-| `QuestionHub\Frontend\` | `Frontend/` |
+| `Askora Community Q&A\` | `Inc/` |
+| `Askora Community Q&A\Admin\` | `Admin/` |
+| `Askora Community Q&A\Frontend\` | `Frontend/` |
 
 ## Manager Layer (`Inc/`)
 
@@ -38,9 +38,9 @@ Manager
 
 ```
 AdminManager
-  ├── set_constants()   → QUESTIONHUB_ADMIN_ASSETS
+  ├── set_constants()   → ASKORA_ADMIN_ASSETS
   └── init()
-        ├── Dashboard/Menu/QuestionHub.php     → top-level admin menu
+        ├── Dashboard/Menu/Askora.php     → top-level admin menu
         ├── Dashboard/Settings/Settings.php    → settings + sub-menu
         ├── Assets/Assets.php                  → admin CSS/JS
         ├── Hooks/ActionHooks.php              → plugin row meta, action links
@@ -58,7 +58,7 @@ AdminManager
 Frontend
   └── initialize()
         ├── Inc/Assets/Assets.php             → wp_enqueue_scripts
-        ├── Inc/Shortcodes/Shortcodes.php     → all [questionhub_*] shortcodes
+        ├── Inc/Shortcodes/Shortcodes.php     → all [askora_*] shortcodes
         ├── Inc/Ajax/AjaxManager.php          → all wp_ajax_* handlers
         ├── Inc/Auth/AuthForms.php            → auth form renderer
         ├── Inc/Questions/QuestionService.php → business logic
@@ -77,11 +77,11 @@ Frontend
 
 ## Template Override
 
-Developers can override any template by placing a file in `{active-theme}/questionhub/`:
+Developers can override any template by placing a file in `{active-theme}/askora-community-qa/`:
 
 ```
 theme/
-└── questionhub/
+└── askora-community-qa/
     ├── question-card.php
     ├── single-question.php
     └── answer-item.php
@@ -89,8 +89,8 @@ theme/
 
 ## Pro Extension Points
 
-- `questionhub_is_pro_active` filter → return `true` from Pro plugin
-- `questionhub_pro_features` filter → return array of enabled feature slugs
+- `askora_is_pro_active` filter → return `true` from Pro plugin
+- `askora_pro_features` filter → return array of enabled feature slugs
 - `FeatureGate::can_use('feature_slug')` → gated code blocks
 - `SmsProviderInterface` → implement for real SMS providers
 - `AuthProviderInterface` → implement for alternative auth providers

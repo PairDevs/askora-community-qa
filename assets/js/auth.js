@@ -1,25 +1,25 @@
 /**
- * QuestionHub Auth JavaScript
+ * Askora Community Q&A Auth JavaScript
  * Handles: phone login, phone register, tab switching.
  */
-/* global jQuery, QuestionHubData */
+/* global jQuery, AskoraData */
 (function ($) {
   'use strict';
 
   var qhAuth = {
-    ajaxUrl: QuestionHubData.ajax_url,
-    nonce:   QuestionHubData.nonce,
+    ajaxUrl: AskoraData.ajax_url,
+    nonce:   AskoraData.nonce,
 
     // ============================
     // Auth Tabs
     // ============================
     initTabs: function () {
-      $(document).on('click', '.questionhub-auth-tab', function () {
+      $(document).on('click', '.askora-auth-tab', function () {
         var tab = $(this).data('tab');
-        $('.questionhub-auth-tab').removeClass('active');
+        $('.askora-auth-tab').removeClass('active');
         $(this).addClass('active');
-        $('.questionhub-auth-tab-content').hide();
-        $('#questionhub-tab-' + tab).show();
+        $('.askora-auth-tab-content').hide();
+        $('#askora-tab-' + tab).show();
       });
     },
 
@@ -27,14 +27,14 @@
     // Phone Login
     // ============================
     initLogin: function () {
-      $(document).on('submit', '#questionhub-login-form', function (e) {
+      $(document).on('submit', '#askora-login-form', function (e) {
         e.preventDefault();
         var $form = $(this);
         var $btn  = $form.find('button[type="submit"]');
-        var $text = $btn.find('.questionhub-btn-text');
-        var $spin = $btn.find('.questionhub-spinner');
-        var $ok   = $('#questionhub-login-success');
-        var $err  = $('#questionhub-login-error');
+        var $text = $btn.find('.askora-btn-text');
+        var $spin = $btn.find('.askora-spinner');
+        var $ok   = $('#askora-login-success');
+        var $err  = $('#askora-login-error');
 
         $ok.hide(); $err.hide();
         $btn.prop('disabled', true);
@@ -44,7 +44,7 @@
           url: qhAuth.ajaxUrl,
           type: 'POST',
           data: {
-            action:   'questionhub_phone_login',
+            action:   'askora_phone_login',
             nonce:    qhAuth.nonce,
             phone:    $form.find('[name="phone"]').val(),
             password: $form.find('[name="password"]').val()
@@ -74,14 +74,14 @@
     // Phone Register
     // ============================
     initRegister: function () {
-      $(document).on('submit', '#questionhub-register-form', function (e) {
+      $(document).on('submit', '#askora-register-form', function (e) {
         e.preventDefault();
         var $form    = $(this);
         var $btn     = $form.find('button[type="submit"]');
-        var $text    = $btn.find('.questionhub-btn-text');
-        var $spin    = $btn.find('.questionhub-spinner');
-        var $ok      = $('#questionhub-register-success');
-        var $err     = $('#questionhub-register-error');
+        var $text    = $btn.find('.askora-btn-text');
+        var $spin    = $btn.find('.askora-spinner');
+        var $ok      = $('#askora-register-success');
+        var $err     = $('#askora-register-error');
         var password = $form.find('[name="password"]').val();
         var confirm  = $form.find('[name="confirm_password"]').val();
 
@@ -104,7 +104,7 @@
           url: qhAuth.ajaxUrl,
           type: 'POST',
           data: {
-            action:           'questionhub_phone_register',
+            action:           'askora_phone_register',
             nonce:            qhAuth.nonce,
             name:             $form.find('[name="name"]').val(),
             phone:            $form.find('[name="phone"]').val(),

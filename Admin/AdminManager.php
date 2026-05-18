@@ -2,27 +2,27 @@
 /**
  * Admin orchestrator — mirrors PrimeKit's AdminManager.php exactly.
  *
- * @package QuestionHub\Admin
+ * @package ASKORA\Admin
  * @since   1.0.0
  */
 
-namespace QuestionHub\Admin;
+namespace ASKORA\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use QuestionHub\Admin\Assets\Assets;
-use QuestionHub\Admin\Inc\Dashboard\Menu\QuestionHub as MenuPage;
-use QuestionHub\Admin\Inc\Dashboard\Settings\Settings;
-use QuestionHub\Admin\Inc\Hooks\ActionHooks;
-use QuestionHub\Admin\Inc\Hooks\FilterHooks;
-use QuestionHub\Admin\Inc\PostTypes\QuestionPostType;
-use QuestionHub\Admin\Inc\Taxonomies\QuestionCategory;
-use QuestionHub\Admin\Inc\Taxonomies\QuestionTag;
-use QuestionHub\Admin\Inc\Columns\QuestionColumns;
-use QuestionHub\Admin\Inc\Notices\AdminNotices;
-use QuestionHub\Admin\Inc\Users\Profile;
+use ASKORA\Admin\Assets\Assets;
+use ASKORA\Admin\Inc\Dashboard\Menu\Askora as MenuPage;
+use ASKORA\Admin\Inc\Dashboard\Settings\Settings;
+use ASKORA\Admin\Inc\Hooks\ActionHooks;
+use ASKORA\Admin\Inc\Hooks\FilterHooks;
+use ASKORA\Admin\Inc\PostTypes\QuestionPostType;
+use ASKORA\Admin\Inc\Taxonomies\QuestionCategory;
+use ASKORA\Admin\Inc\Taxonomies\QuestionTag;
+use ASKORA\Admin\Inc\Columns\QuestionColumns;
+use ASKORA\Admin\Inc\Notices\AdminNotices;
+use ASKORA\Admin\Inc\Users\Profile;
 
 /**
  * Class AdminManager
@@ -54,7 +54,7 @@ class AdminManager {
 	 * @since 1.0.0
 	 */
 	public function set_constants() {
-		define( 'QUESTIONHUB_ADMIN_ASSETS', plugin_dir_url( __FILE__ ) . 'Assets' );
+		define( 'ASKORA_ADMIN_ASSETS', plugin_dir_url( __FILE__ ) . 'Assets' );
 	}
 
 	/**

@@ -1,14 +1,15 @@
 <?php
 /**
- * Plugin Name: QuestionHub
- * Plugin URI:  https://github.com/PairDevs/QuestionHub
+ * Plugin Name: Askora Community Q&A
+ * Plugin URI:  https://github.com/PairDevs/askora-community-qa
  * Description: A modern Question & Answer plugin for WordPress with frontend question submission, AJAX replies, phone number login, search, views, badges, and beautiful UI.
  * Version:     1.0.0
  * Author:      Md Abul Bashar
  * Author URI:  https://github.com/hmbashar
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: questionhub
+ * Text Domain: askora-community-qa
+ * Domain Path: /languages
  * Requires at least: 6.0
  * Requires PHP: 7.4
  */
@@ -19,21 +20,21 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Main QuestionHub class.
+ * Main Askora Community Q&A class.
  *
  * Uses the singleton pattern, defines constants, loads Composer autoload,
  * and initialises all hooks — mirroring PrimeKit Addons architecture.
  *
- * @package QuestionHub
+ * @package ASKORA
  * @since   1.0.0
  */
-final class QuestionHub
+final class AskoraCommunityQA
 {
 
 	/**
 	 * Singleton instance.
 	 *
-	 * @var QuestionHub|null
+	 * @var AskoraCommunityQA|null
 	 */
 	private static $instance = null;
 
@@ -53,7 +54,7 @@ final class QuestionHub
 	 * Returns the singleton instance.
 	 *
 	 * @since  1.0.0
-	 * @return QuestionHub
+	 * @return AskoraCommunityQA
 	 */
 	public static function get_instance()
 	{
@@ -70,12 +71,12 @@ final class QuestionHub
 	 */
 	private function define_constants()
 	{
-		define('QUESTIONHUB_VERSION', '1.0.0');
-		define('QUESTIONHUB_FILE', __FILE__);
-		define('QUESTIONHUB_PATH', plugin_dir_path(__FILE__));
-		define('QUESTIONHUB_URL', plugin_dir_url(__FILE__));
-		define('QUESTIONHUB_BASENAME', plugin_basename(__FILE__));
-		define('QUESTIONHUB_NAME', 'QuestionHub');
+		define('ASKORA_VERSION', '1.0.0');
+		define('ASKORA_FILE', __FILE__);
+		define('ASKORA_PATH', plugin_dir_path(__FILE__));
+		define('ASKORA_URL', plugin_dir_url(__FILE__));
+		define('ASKORA_BASENAME', plugin_basename(__FILE__));
+		define('ASKORA_NAME', 'Askora');
 	}
 
 	/**
@@ -85,8 +86,8 @@ final class QuestionHub
 	 */
 	private function include_files()
 	{
-		if (file_exists(QUESTIONHUB_PATH . 'vendor/autoload.php')) {
-			require_once QUESTIONHUB_PATH . 'vendor/autoload.php';
+		if (file_exists(ASKORA_PATH . 'vendor/autoload.php')) {
+			require_once ASKORA_PATH . 'vendor/autoload.php';
 		}
 	}
 
@@ -99,8 +100,8 @@ final class QuestionHub
 	{
 		add_action('plugins_loaded', [$this, 'plugin_loaded']);
 
-		register_activation_hook(QUESTIONHUB_FILE, [$this, 'activate']);
-		register_deactivation_hook(QUESTIONHUB_FILE, [$this, 'deactivate']);
+		register_activation_hook(ASKORA_FILE, [$this, 'activate']);
+		register_deactivation_hook(ASKORA_FILE, [$this, 'deactivate']);
 	}
 
 	/**
@@ -111,16 +112,16 @@ final class QuestionHub
 	 */
 	public function plugin_loaded()
 	{
-		if (class_exists('QuestionHub\\Manager')) {
-			new \QuestionHub\Manager();
+		if (class_exists('ASKORA\\Manager')) {
+			new \ASKORA\Manager();
 		}
 
 		/**
-		 * Fires after QuestionHub is fully loaded.
+		 * Fires after Askora Community Q&A is fully loaded.
 		 *
 		 * @since 1.0.0
 		 */
-		do_action('questionhub_loaded');
+		do_action('askora_loaded');
 	}
 
 
@@ -131,7 +132,7 @@ final class QuestionHub
 	 */
 	public function activate()
 	{
-		\QuestionHub\Activate::activate();
+		\ASKORA\Activate::activate();
 	}
 
 	/**
@@ -141,21 +142,21 @@ final class QuestionHub
 	 */
 	public function deactivate()
 	{
-		\QuestionHub\Deactivate::deactivate();
+		\ASKORA\Deactivate::deactivate();
 	}
 }
 
 /**
- * Initialises the QuestionHub plugin.
+ * Initialises the Askora Community Q&A plugin.
  *
  * @since  1.0.0
- * @return QuestionHub
+ * @return AskoraCommunityQA
  */
-if (!function_exists('questionhub_initialize')) {
-	function questionhub_initialize()
+if (!function_exists('askora_initialize')) {
+	function askora_initialize()
 	{
-		return QuestionHub::get_instance();
+		return AskoraCommunityQA::get_instance();
 	}
 
-	questionhub_initialize();
+	askora_initialize();
 }

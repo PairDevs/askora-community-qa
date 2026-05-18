@@ -1,12 +1,12 @@
 <?php
 /**
- * User meta helper for QuestionHub auth data.
+ * User meta helper for Askora Community Q&A auth data.
  *
- * @package QuestionHub\Frontend\Inc\Auth
+ * @package ASKORA\Frontend\Inc\Auth
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Auth;
+namespace ASKORA\Frontend\Inc\Auth;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -14,8 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class UserMeta {
 
-	const PHONE_KEY    = '_questionhub_phone_number';
-	const VERIFIED_KEY = '_questionhub_phone_verified';
+	const PHONE_KEY    = '_askora_phone_number';
+	const VERIFIED_KEY = '_askora_phone_verified';
 
 	public static function set_phone( int $user_id, string $phone ): void {
 		update_user_meta( $user_id, self::PHONE_KEY, $phone );

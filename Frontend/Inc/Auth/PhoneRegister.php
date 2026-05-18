@@ -2,14 +2,14 @@
 /**
  * Phone number registration handler.
  *
- * @package QuestionHub\Frontend\Inc\Auth
+ * @package ASKORA\Frontend\Inc\Auth
  * @since   1.0.0
  */
 
-namespace QuestionHub\Frontend\Inc\Auth;
+namespace ASKORA\Frontend\Inc\Auth;
 
-use QuestionHub\Frontend\Inc\Helpers\Sanitizer;
-use QuestionHub\Frontend\Inc\Helpers\Validator;
+use ASKORA\Frontend\Inc\Helpers\Sanitizer;
+use ASKORA\Frontend\Inc\Helpers\Validator;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -31,29 +31,29 @@ class PhoneRegister {
 
 		// Validate.
 		if ( ! Validator::required( $name ) ) {
-			return new \WP_Error( 'invalid_name', __( 'Full name is required.', 'questionhub' ) );
+			return new \WP_Error( 'invalid_name', __( 'Full name is required.', 'askora-community-qa' ) );
 		}
 		if ( ! Validator::phone( $phone ) ) {
-			return new \WP_Error( 'invalid_phone', __( 'Please enter a valid phone number.', 'questionhub' ) );
+			return new \WP_Error( 'invalid_phone', __( 'Please enter a valid phone number.', 'askora-community-qa' ) );
 		}
 		if ( ! Validator::min_length( $password, 6 ) ) {
-			return new \WP_Error( 'weak_password', __( 'Password must be at least 6 characters.', 'questionhub' ) );
+			return new \WP_Error( 'weak_password', __( 'Password must be at least 6 characters.', 'askora-community-qa' ) );
 		}
 		if ( UserMeta::is_phone_taken( $phone ) ) {
-			return new \WP_Error( 'phone_taken', __( 'This phone number is already registered.', 'questionhub' ) );
+			return new \WP_Error( 'phone_taken', __( 'This phone number is already registered.', 'askora-community-qa' ) );
 		}
 
 		// Build placeholder email if none provided.
 		if ( empty( $email ) ) {
 			$hash  = substr( md5( $phone . wp_generate_uuid4() ), 0, 12 );
 			$domain = wp_parse_url( get_site_url(), PHP_URL_HOST );
-			$email  = 'questionhub_' . $hash . '@' . $domain . '.local';
+			$email  = 'askora_' . $hash . '@' . $domain . '.local';
 		}
 
 		// Generate unique username from phone hash.
-		$username = 'qh_' . substr( md5( $phone ), 0, 10 );
+		$username = 'askora_' . substr( md5( $phone ), 0, 10 );
 		while ( username_exists( $username ) ) {
-			$username = 'qh_' . substr( md5( $phone . uniqid() ), 0, 10 );
+			$username = 'askora_' . substr( md5( $phone . uniqid() ), 0, 10 );
 		}
 
 		// Create user.
@@ -72,12 +72,12 @@ class PhoneRegister {
 		UserMeta::set_phone( $user_id, $phone );
 
 		/**
-		 * Fires after a user registers via QuestionHub phone registration.
+		 * Fires after a user registers via Askora phone registration.
 		 *
 		 * @param int $user_id Registered user ID.
 		 * @since 1.0.0
 		 */
-		do_action( 'questionhub_auth_after_register', $user_id );
+		do_action( 'askora_auth_after_register', $user_id );
 
 		return $user_id;
 	}

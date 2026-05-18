@@ -1,8 +1,8 @@
-# QuestionHub Pro — Plan
+# Askora Pro — Plan
 
 ## Overview
 
-QuestionHub Pro is the premium extension built on top of the free plugin.  
+Askora Pro is the premium extension built on top of the free plugin.  
 It extends the free version through WordPress filters, action hooks, and interfaces —
 no core files are modified.
 
@@ -11,8 +11,8 @@ no core files are modified.
 Pro registers itself via:
 
 ```php
-add_filter( 'questionhub_is_pro_active', '__return_true' );
-add_filter( 'questionhub_pro_features', function( $features ) {
+add_filter( 'askora_is_pro_active', '__return_true' );
+add_filter( 'askora_pro_features', function( $features ) {
     return array_merge( $features, [
         'sms_otp_login',
         'reputation',

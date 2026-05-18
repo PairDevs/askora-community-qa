@@ -1,28 +1,28 @@
 /**
- * QuestionHub Frontend JavaScript
+ * Askora Community Q&A Frontend JavaScript
  * Handles: question submission, answer submission, load more, sort/filter, vote, best answer.
  */
-/* global jQuery, QuestionHubData */
+/* global jQuery, AskoraData */
 (function ($) {
   'use strict';
 
   var qh = {
-    ajaxUrl: QuestionHubData.ajax_url,
-    nonce: QuestionHubData.nonce,
-    i18n: QuestionHubData.i18n,
+    ajaxUrl: AskoraData.ajax_url,
+    nonce: AskoraData.nonce,
+    i18n: AskoraData.i18n,
 
     // ============================
     // Question Submit Form
     // ============================
     initQuestionForm: function () {
-      $(document).on('submit', '#questionhub-submit-form', function (e) {
+      $(document).on('submit', '#askora-submit-form', function (e) {
         e.preventDefault();
         var $form   = $(this);
-        var $btn    = $form.find('#questionhub-submit-btn');
-        var $text   = $btn.find('.questionhub-btn-text');
-        var $spin   = $btn.find('.questionhub-spinner');
-        var $ok     = $('#questionhub-submit-success');
-        var $err    = $('#questionhub-submit-error');
+        var $btn    = $form.find('#askora-submit-btn');
+        var $text   = $btn.find('.askora-btn-text');
+        var $spin   = $btn.find('.askora-spinner');
+        var $ok     = $('#askora-submit-success');
+        var $err    = $('#askora-submit-error');
 
         $ok.hide(); $err.hide();
         $btn.prop('disabled', true);
@@ -32,7 +32,7 @@
           url: qh.ajaxUrl,
           type: 'POST',
           data: {
-            action: 'questionhub_submit_question',
+            action: 'askora_submit_question',
             nonce:  qh.nonce,
             title:  $form.find('[name="title"]').val(),
             content: $form.find('[name="content"]').val(),
@@ -62,16 +62,16 @@
     // Answer Submit Form
     // ============================
     initAnswerForm: function () {
-      $(document).on('submit', '#questionhub-answer-form', function (e) {
+      $(document).on('submit', '#askora-answer-form', function (e) {
         e.preventDefault();
         var $form = $(this);
         var $btn  = $form.find('button[type="submit"]');
-        // Support both old .questionhub-spinner and new .qh-btn-spinner
-        var $spin = $btn.find('.questionhub-spinner, .qh-btn-spinner');
-        var $text = $btn.find('.questionhub-btn-text, .qh-btn-text');
+        // Support both old .askora-spinner and new .qh-btn-spinner
+        var $spin = $btn.find('.askora-spinner, .qh-btn-spinner');
+        var $text = $btn.find('.askora-btn-text, .qh-btn-text');
         // Support both old and new alert IDs
-        var $ok   = $('#questionhub-answer-success');
-        var $err  = $('#questionhub-answer-error');
+        var $ok   = $('#askora-answer-success');
+        var $err  = $('#askora-answer-error');
 
         $ok.hide(); $err.hide();
         $btn.prop('disabled', true);
@@ -81,7 +81,7 @@
           url: qh.ajaxUrl,
           type: 'POST',
           data: {
-            action:   'questionhub_submit_answer',
+            action:   'askora_submit_answer',
             nonce:    qh.nonce,
             post_id:  $form.find('[name="post_id"]').val(),
             content:  $form.find('[name="content"]').val()
@@ -115,10 +115,10 @@
     // ============================
     initQuestionList: function () {
       // Load More button.
-      $(document).on('click', '.questionhub-load-more', function () {
+      $(document).on('click', '.askora-load-more', function () {
         var $btn      = $(this);
-        var $wrapper   = $btn.closest('.questionhub-list-wrapper');
-        var $spinner   = $wrapper.find('.questionhub-spinner').first();
+        var $wrapper   = $btn.closest('.askora-list-wrapper');
+        var $spinner   = $wrapper.find('.askora-spinner').first();
         var page       = parseInt($btn.data('page')) || 2;
         var maxPages   = parseInt($btn.data('max')) || 1;
         var category   = $wrapper.data('category') || '';
@@ -134,7 +134,7 @@
           url: qh.ajaxUrl,
           type: 'POST',
           data: {
-            action:     'questionhub_load_questions',
+            action:     'askora_load_questions',
             nonce:      qh.nonce,
             page:       page,
             category:   category,
@@ -145,14 +145,14 @@
           },
           success: function (res) {
             if (res.success && res.data.html) {
-              $wrapper.find('.questionhub-questions-list').append(res.data.html);
+              $wrapper.find('.askora-questions-list').append(res.data.html);
               if (res.data.has_more) {
                 $btn.data('page', page + 1).prop('disabled', false).text(qh.i18n.load_more);
               } else {
-                $btn.closest('.questionhub-load-more-wrap').html('<p class="questionhub-no-results">' + qh.i18n.no_more + '</p>');
+                $btn.closest('.askora-load-more-wrap').html('<p class="askora-no-results">' + qh.i18n.no_more + '</p>');
               }
             } else {
-              $btn.closest('.questionhub-load-more-wrap').html('<p class="questionhub-no-results">' + qh.i18n.no_more + '</p>');
+              $btn.closest('.askora-load-more-wrap').html('<p class="askora-no-results">' + qh.i18n.no_more + '</p>');
             }
           },
           error: function () {
@@ -166,8 +166,8 @@
 
       // Sort change. The "unanswered" option is a filter rather than a sort,
       // so route it to the unanswered flag and keep orderby on the default.
-      $(document).on('change', '.questionhub-sort', function () {
-        var $wrapper = $(this).closest('.questionhub-list-wrapper');
+      $(document).on('change', '.askora-sort', function () {
+        var $wrapper = $(this).closest('.askora-list-wrapper');
         var val = $(this).val();
         if (val === 'unanswered') {
           $wrapper.data('orderby', 'date').data('unanswered', 1).data('page', 1);
@@ -178,17 +178,17 @@
       });
 
       // Category filter change.
-      $(document).on('change', '.questionhub-filter-category', function () {
-        var $wrapper = $(this).closest('.questionhub-list-wrapper');
+      $(document).on('change', '.askora-filter-category', function () {
+        var $wrapper = $(this).closest('.askora-list-wrapper');
         $wrapper.data('category', $(this).val()).data('page', 1);
         qh.reloadList($wrapper);
       });
 
       // Inline search in list wrapper (show_search="true").
       var listSearchTimeout;
-      $(document).on('input', '.questionhub-list-search .questionhub-search-input', function () {
+      $(document).on('input', '.askora-list-search .askora-search-input', function () {
         var $input   = $(this);
-        var $wrapper = $input.closest('.questionhub-list-wrapper');
+        var $wrapper = $input.closest('.askora-list-wrapper');
         clearTimeout(listSearchTimeout);
         listSearchTimeout = setTimeout(function () {
           $wrapper.data('keyword', $input.val()).data('page', 1);
@@ -198,7 +198,7 @@
     },
 
     reloadList: function ($wrapper) {
-      var $list      = $wrapper.find('.questionhub-questions-list');
+      var $list      = $wrapper.find('.askora-questions-list');
       var category   = $wrapper.data('category') || '';
       var orderby    = $wrapper.data('orderby') || 'date';
       var keyword    = $wrapper.data('keyword') || '';
@@ -210,7 +210,7 @@
         url: qh.ajaxUrl,
         type: 'POST',
         data: {
-          action:     'questionhub_load_questions',
+          action:     'askora_load_questions',
           nonce:      qh.nonce,
           page:       1,
           category:   category,
@@ -221,13 +221,13 @@
         success: function (res) {
           if (res.success) {
             $list.html(res.data.html || '');
-            var $btn = $wrapper.find('.questionhub-load-more');
+            var $btn = $wrapper.find('.askora-load-more');
             if ($btn.length) {
               $btn.data('page', 2).prop('disabled', false).text(qh.i18n.load_more);
               if (!res.data.has_more) {
-                $btn.closest('.questionhub-load-more-wrap').hide();
+                $btn.closest('.askora-load-more-wrap').hide();
               } else {
-                $btn.closest('.questionhub-load-more-wrap').show();
+                $btn.closest('.askora-load-more-wrap').show();
               }
             }
           }
@@ -244,12 +244,12 @@
     initSearch: function () {
       var searchTimeout;
 
-      $(document).on('input', '#questionhub-search-input', function () {
+      $(document).on('input', '#askora-search-input', function () {
         var keyword  = $(this).val();
-        var $results = $('#questionhub-search-results');
-        var $list    = $('#questionhub-results-list');
-        var $spin    = $('#questionhub-search-spinner');
-        var category = $('.questionhub-search-category').val() || '';
+        var $results = $('#askora-search-results');
+        var $list    = $('#askora-results-list');
+        var $spin    = $('#askora-search-spinner');
+        var category = $('.askora-search-category').val() || '';
 
         clearTimeout(searchTimeout);
 
@@ -266,14 +266,14 @@
             url: qh.ajaxUrl,
             type: 'POST',
             data: {
-              action:   'questionhub_search_questions',
+              action:   'askora_search_questions',
               nonce:    qh.nonce,
               keyword:  keyword,
               category: category
             },
             success: function (res) {
               if (res.success) {
-                $list.html(res.data.html || '<p class="questionhub-no-results">' + qh.i18n.no_more + '</p>');
+                $list.html(res.data.html || '<p class="askora-no-results">' + qh.i18n.no_more + '</p>');
               }
             },
             complete: function () {
@@ -283,9 +283,9 @@
         }, 350);
       });
 
-      $(document).on('submit', '#questionhub-search-form', function (e) {
+      $(document).on('submit', '#askora-search-form', function (e) {
         e.preventDefault();
-        $('#questionhub-search-input').trigger('input');
+        $('#askora-search-input').trigger('input');
       });
     },
 
@@ -296,9 +296,9 @@
       // Handles old shortcode buttons AND new single-page qh-vote-upbtn buttons.
       $(document).on(
         'click',
-        '.questionhub-vote-btn, .questionhub-vote-answer-btn, .qh-vote-upbtn, .qh-vote-answer-btn',
+        '.askora-vote-btn, .askora-vote-answer-btn, .qh-vote-upbtn, .qh-vote-answer-btn',
         function () {
-          if (!QuestionHubData.is_logged_in) {
+          if (!AskoraData.is_logged_in) {
             alert(qh.i18n.login_required);
             return;
           }
@@ -315,7 +315,7 @@
             url: qh.ajaxUrl,
             type: 'POST',
             data: {
-              action: 'questionhub_vote',
+              action: 'askora_vote',
               nonce:  qh.nonce,
               id:     id,
               type:   type
@@ -324,9 +324,9 @@
               if (res.success) {
                 // Count span may be a CHILD (old shortcode) or SIBLING (new single-page).
                 // Try children first, then siblings, then the dedicated ID span.
-                var $count = $btn.find('.questionhub-vote-count, .qh-vote-count, .qh-vote-num');
+                var $count = $btn.find('.askora-vote-count, .qh-vote-count, .qh-vote-num');
                 if (!$count.length) {
-                  $count = $btn.siblings('.qh-vote-count, .qh-vote-num, .questionhub-vote-count');
+                  $count = $btn.siblings('.qh-vote-count, .qh-vote-num, .askora-vote-count');
                 }
                 $count.text(res.data.votes);
                 // On single-question page the question vote count lives in its own span.
@@ -350,7 +350,7 @@
     // Best Answer
     // ============================
     initBestAnswer: function () {
-      $(document).on('click', '.questionhub-mark-best-btn', function () {
+      $(document).on('click', '.askora-mark-best-btn', function () {
         var $btn       = $(this);
         var commentId  = $btn.data('comment-id');
         var postId     = $btn.data('post-id');
@@ -361,7 +361,7 @@
           url: qh.ajaxUrl,
           type: 'POST',
           data: {
-            action:     'questionhub_best_answer',
+            action:     'askora_best_answer',
             nonce:      qh.nonce,
             comment_id: commentId,
             post_id:    postId
@@ -385,7 +385,7 @@
       $(document).on('click', '.qh-verify-answer-btn', function () {
         var $btn       = $(this);
         var commentId  = $btn.data('comment-id');
-        var $item      = $btn.closest('.qh-answer-item, .questionhub-answer-item');
+        var $item      = $btn.closest('.qh-answer-item, .askora-answer-item');
 
         $btn.prop('disabled', true);
 
@@ -393,7 +393,7 @@
           url: qh.ajaxUrl,
           type: 'POST',
           data: {
-            action:     'questionhub_verify_answer',
+            action:     'askora_verify_answer',
             nonce:      qh.nonce,
             comment_id: commentId
           },

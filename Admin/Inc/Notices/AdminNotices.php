@@ -1,12 +1,12 @@
 <?php
 /**
- * Admin notices for QuestionHub.
+ * Admin notices for Askora Community Q&A.
  *
- * @package QuestionHub\Admin\Inc\Notices
+ * @package ASKORA\Admin\Inc\Notices
  * @since   1.0.0
  */
 
-namespace QuestionHub\Admin\Inc\Notices;
+namespace ASKORA\Admin\Inc\Notices;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,7 +22,7 @@ class AdminNotices {
 	/**
 	 * Option key for dismissed state.
 	 */
-	const DISMISSED_OPTION = 'questionhub_welcome_notice_dismissed';
+	const DISMISSED_OPTION = 'askora_welcome_notice_dismissed';
 
 	/**
 	 * Constructor.
@@ -31,7 +31,7 @@ class AdminNotices {
 	 */
 	public function __construct() {
 		add_action( 'admin_notices', [ $this, 'show_welcome_notice' ] );
-		add_action( 'wp_ajax_questionhub_dismiss_notice', [ $this, 'dismiss_notice' ] );
+		add_action( 'wp_ajax_askora_dismiss_notice', [ $this, 'dismiss_notice' ] );
 	}
 
 	/**
@@ -47,25 +47,25 @@ class AdminNotices {
 			return;
 		}
 		?>
-		<div class="notice notice-success is-dismissible questionhub-welcome-notice" data-nonce="<?php echo esc_attr( wp_create_nonce( 'questionhub_dismiss_notice' ) ); ?>">
+		<div class="notice notice-success is-dismissible askora-welcome-notice" data-nonce="<?php echo esc_attr( wp_create_nonce( 'askora_dismiss_notice' ) ); ?>">
 			<p>
-				<strong><?php esc_html_e( 'QuestionHub activated!', 'questionhub' ); ?></strong>
+				<strong><?php esc_html_e( 'Askora Community Q&A activated!', 'askora-community-qa' ); ?></strong>
 				<?php
 				printf(
 					/* translators: 1: link to settings, 2: link to questions */
-					esc_html__( 'Go to %1$s to configure the plugin, or %2$s to manage questions.', 'questionhub' ),
-					'<a href="' . esc_url( admin_url( 'admin.php?page=questionhub_settings' ) ) . '">' . esc_html__( 'Settings', 'questionhub' ) . '</a>',
-					'<a href="' . esc_url( admin_url( 'edit.php?post_type=questions' ) ) . '">' . esc_html__( 'All Questions', 'questionhub' ) . '</a>'
+					esc_html__( 'Go to %1$s to configure the plugin, or %2$s to manage questions.', 'askora-community-qa' ),
+					'<a href="' . esc_url( admin_url( 'admin.php?page=askora_settings' ) ) . '">' . esc_html__( 'Settings', 'askora-community-qa' ) . '</a>',
+					'<a href="' . esc_url( admin_url( 'edit.php?post_type=questions' ) ) . '">' . esc_html__( 'All Questions', 'askora-community-qa' ) . '</a>'
 				);
 				?>
 			</p>
 		</div>
 		<script>
 		(function($){
-			$(document).on('click', '.questionhub-welcome-notice .notice-dismiss', function(){
+			$(document).on('click', '.askora-welcome-notice .notice-dismiss', function(){
 				$.post(ajaxurl, {
-					action: 'questionhub_dismiss_notice',
-					nonce:  $(this).closest('.questionhub-welcome-notice').data('nonce')
+					action: 'askora_dismiss_notice',
+					nonce:  $(this).closest('.askora-welcome-notice').data('nonce')
 				});
 			});
 		})(jQuery);
@@ -79,7 +79,7 @@ class AdminNotices {
 	 * @since 1.0.0
 	 */
 	public function dismiss_notice() {
-		check_ajax_referer( 'questionhub_dismiss_notice', 'nonce' );
+		check_ajax_referer( 'askora_dismiss_notice', 'nonce' );
 		update_option( self::DISMISSED_OPTION, 1 );
 		wp_send_json_success();
 	}

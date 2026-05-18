@@ -1,4 +1,4 @@
-# QuestionHub — Features
+# Askora Community Q&A — Features
 
 ## Free Version Features
 
@@ -8,15 +8,15 @@
 - **Question Tags** — flat taxonomy (`question_tag`)
 
 ### Frontend Shortcodes
-- `[questionhub_submit_form]` — AJAX question submission (logged-in only)
-- `[questionhub_questions]` — responsive question list with sort/filter
-- `[questionhub_search]` — AJAX live search
-- `[questionhub_login]` — phone number login form
-- `[questionhub_register]` — phone number registration form
-- `[questionhub_auth]` — tabbed login + registration
-- `[questionhub_popular_questions]` — most upvoted questions
-- `[questionhub_unanswered_questions]` — questions with zero answers
-- `[questionhub_dashboard]` — user dashboard with their own questions
+- `[askora_submit_form]` — AJAX question submission (logged-in only)
+- `[askora_questions]` — responsive question list with sort/filter
+- `[askora_search]` — AJAX live search
+- `[askora_login]` — phone number login form
+- `[askora_register]` — phone number registration form
+- `[askora_auth]` — tabbed login + registration
+- `[askora_popular_questions]` — most upvoted questions
+- `[askora_unanswered_questions]` — questions with zero answers
+- `[askora_dashboard]` — user dashboard with their own questions
 
 ### Authentication
 - Phone number registration without requiring an email
@@ -48,10 +48,10 @@
 
 ### Badges
 - Admin, Moderator, Author, Member, Guest role badges
-- Filterable via `questionhub_badge_label` filter
+- Filterable via `askora_badge_label` filter
 
 ### Admin
-- Top-level QuestionHub admin menu
+- Top-level Askora admin menu
 - Settings page with General and Advanced tabs
 - Custom admin columns: Views, Replies, Votes
 - Dismissible activation notice
@@ -62,6 +62,6 @@
 - 12+ filters
 - PSR-4 Composer autoloading
 - Translation-ready (`.pot` file)
-- Template override system (theme/questionhub/)
+- Template override system (theme/askora-community-qa/)
 - SMS interface stubs for future Pro
 - Feature gate for Pro extension
