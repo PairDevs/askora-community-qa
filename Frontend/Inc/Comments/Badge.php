@@ -8,11 +8,12 @@
 
 namespace ASKORA\Frontend\Inc\Comments;
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit;
 }
 
-class Badge {
+class Badge
+{
 
 	/**
 	 * Badge definitions: type → [ label, icon dashicon class ]
@@ -20,11 +21,11 @@ class Badge {
 	 * @var array
 	 */
 	private static array $types = [
-		'guest'    => [ 'label' => 'Guest',    'icon' => 'dashicons-admin-users' ],
-		'admin'    => [ 'label' => 'Admin',    'icon' => 'dashicons-shield' ],
-		'moderator'=> [ 'label' => 'Moderator','icon' => 'dashicons-shield-alt' ],
-		'author'   => [ 'label' => 'Author',   'icon' => 'dashicons-star-filled' ],
-		'member'   => [ 'label' => 'Member',   'icon' => 'dashicons-groups' ],
+		'guest' => ['label' => 'Guest', 'icon' => 'dashicons-admin-users'],
+		'admin' => ['label' => 'Admin', 'icon' => 'dashicons-shield'],
+		'moderator' => ['label' => 'Moderator', 'icon' => 'dashicons-shield-alt'],
+		'author' => ['label' => 'Author', 'icon' => 'dashicons-star-filled'],
+		'member' => ['label' => 'Member', 'icon' => 'dashicons-groups'],
 	];
 
 	/**
@@ -38,38 +39,39 @@ class Badge {
 	 * @return string Escaped HTML badge element.
 	 * @since 1.0.0
 	 */
-	public static function get( int $user_id, ?int $post_id = null ): string {
+	public static function get(int $user_id, ?int $post_id = null): string
+	{
 
-		if ( 0 === $user_id ) {
+		if (0 === $user_id) {
 			$type = 'guest';
-		} elseif ( user_can( $user_id, 'manage_options' ) ) {
+		} elseif (user_can($user_id, 'manage_options')) {
 			$type = 'admin';
-		} elseif ( user_can( $user_id, 'edit_others_posts' ) ) {
+		} elseif (user_can($user_id, 'edit_others_posts')) {
 			$type = 'moderator';
-		} elseif ( $post_id && (int) get_post_field( 'post_author', $post_id ) === $user_id ) {
+		} elseif ($post_id && (int) get_post_field('post_author', $post_id) === $user_id) {
 			$type = 'author';
 		} else {
 			$type = 'member';
 		}
 
-		$icon = ( self::$types[ $type ] ?? self::$types['member'] )['icon'];
+		$icon = (self::$types[$type] ?? self::$types['member'])['icon'];
 
 		// Literal strings required by gettext — no variable text parameters.
-		switch ( $type ) {
+		switch ($type) {
 			case 'admin':
-				$label = __( 'Admin', 'askora-community-qa' );
+				$label = esc_html__('Admin', 'askora-community-qa');
 				break;
 			case 'moderator':
-				$label = __( 'Moderator', 'askora-community-qa' );
+				$label = esc_html__('Moderator', 'askora-community-qa');
 				break;
 			case 'author':
-				$label = __( 'Author', 'askora-community-qa' );
+				$label = esc_html__('Author', 'askora-community-qa');
 				break;
 			case 'guest':
-				$label = __( 'Guest', 'askora-community-qa' );
+				$label = esc_html__('Guest', 'askora-community-qa');
 				break;
 			default:
-				$label = __( 'Member', 'askora-community-qa' );
+				$label = esc_html__('Member', 'askora-community-qa');
 				break;
 		}
 
@@ -82,7 +84,7 @@ class Badge {
 		 * @param int|null $post_id Post ID.
 		 * @since 1.0.0
 		 */
-		$label = apply_filters( 'askora_badge_label', $label, $type, $user_id, $post_id );
+		$label = apply_filters('askora_badge_label', $label, $type, $user_id, $post_id);
 
 		/**
 		 * Filters the badge icon dashicon class.
@@ -91,13 +93,13 @@ class Badge {
 		 * @param string $type    Badge type slug.
 		 * @since 1.0.0
 		 */
-		$icon = apply_filters( 'askora_badge_icon', $icon, $type );
+		$icon = apply_filters('askora_badge_icon', $icon, $type);
 
 		return sprintf(
 			'<span class="qh-badge qh-badge-%s"><span class="dashicons %s"></span>%s</span>',
-			esc_attr( $type ),
-			esc_attr( $icon ),
-			esc_html( $label )
+			esc_attr($type),
+			esc_attr($icon),
+			esc_html($label)
 		);
 	}
 
@@ -107,7 +109,8 @@ class Badge {
 	 * @return array
 	 * @since 1.0.0
 	 */
-	public static function get_types(): array {
-		return array_keys( self::$types );
+	public static function get_types(): array
+	{
+		return array_keys(self::$types);
 	}
 }
