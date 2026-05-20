@@ -46,8 +46,19 @@ class PhoneRegister {
 
 		$settings = get_option( 'askora_settings', [] );
 		if ( ! empty( $settings['auto_login_after_reg'] ) ) {
-			wp_set_current_user( $result );
-			wp_set_auth_cookie( $result, true );
+			$user = get_user_by( 'ID', $result );
+			if ( $user ) {
+				// Use wp_signon() so all WordPress authentication hooks and
+				// security plugin filters are respected.
+				wp_signon(
+					[
+						'user_login'    => $user->user_login,
+						'user_password' => $password,
+						'remember'      => true,
+					],
+					is_ssl()
+				);
+			}
 		}
 
 		Response::success( __( 'Account created successfully.', 'askora-community-qa' ), [

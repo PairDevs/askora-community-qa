@@ -32,7 +32,7 @@ class Askora {
 			'askora_home',
 			[ $this, 'render_home_page' ],
 			'dashicons-editor-help',
-			25
+			85
 		);
 	}
 

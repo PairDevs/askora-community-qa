@@ -50,7 +50,7 @@ class PhoneLogin {
 		}
 
 		$user = get_user_by( 'ID', $user_id );
-		if ( ! $user || ! wp_check_password( $password, $user->user_pass, $user_id ) ) {
+		if ( ! $user ) {
 			$this->record_attempt( $transient_key, $attempts );
 			return new \WP_Error( 'invalid_credentials', __( 'Invalid phone number or password.', 'askora-community-qa' ) );
 		}
@@ -58,9 +58,23 @@ class PhoneLogin {
 		// Clear attempts on success.
 		delete_transient( $transient_key );
 
-		// Log the user in.
-		wp_set_current_user( $user_id );
-		wp_set_auth_cookie( $user_id, true );
+		/**
+		 * Use wp_signon() so that all WordPress authentication hooks and
+		 * security plugin filters (e.g. brute-force, 2FA) are respected.
+		 */
+		$signed_in = wp_signon(
+			[
+				'user_login'    => $user->user_login,
+				'user_password' => $password,
+				'remember'      => true,
+			],
+			is_ssl()
+		);
+
+		if ( is_wp_error( $signed_in ) ) {
+			$this->record_attempt( $transient_key, $attempts );
+			return new \WP_Error( 'invalid_credentials', __( 'Invalid phone number or password.', 'askora-community-qa' ) );
+		}
 
 		/**
 		 * Fires after successful Askora phone login.
