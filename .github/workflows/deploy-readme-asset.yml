@@ -3,6 +3,7 @@ name: Plugin asset and readme update
 on:
   push:
     branches:
+      - main
       - trunk
     paths:
       - .wordpress-org/**
@@ -20,3 +21,4 @@ jobs:
       env:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        SLUG: askora-community-qa

@@ -47,8 +47,32 @@ class Permission {
 		return is_user_logged_in();
 	}
 
+	/**
+	 * Whether a boolean feature toggle is on. Missing keys default to enabled,
+	 * matching the defaults written on activation.
+	 *
+	 * @param string $key Settings key.
+	 * @return bool
+	 */
+	private static function feature_enabled( $key ) {
+		$settings = self::settings();
+		return ! isset( $settings[ $key ] ) || ! empty( $settings[ $key ] );
+	}
+
+	public static function phone_auth_enabled() {
+		return self::feature_enabled( 'enable_phone_auth' );
+	}
+
+	public static function voting_enabled() {
+		return self::feature_enabled( 'enable_voting' );
+	}
+
+	public static function best_answer_enabled() {
+		return self::feature_enabled( 'enable_best_answer' );
+	}
+
 	public static function can_vote() {
-		return is_user_logged_in();
+		return is_user_logged_in() && self::voting_enabled();
 	}
 
 	public static function can_mark_best_answer( $post_id ) {
@@ -57,6 +81,9 @@ class Permission {
 		}
 		$user_id = get_current_user_id();
 		$post    = get_post( $post_id );
+		if ( ! $post || 'questions' !== $post->post_type ) {
+			return false;
+		}
 		if ( current_user_can( 'manage_options' ) ) {
 			return true;
 		}

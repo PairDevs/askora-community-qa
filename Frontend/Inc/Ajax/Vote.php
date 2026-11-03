@@ -8,6 +8,7 @@
 
 namespace ASKORA\Frontend\Inc\Ajax;
 
+use ASKORA\Frontend\Inc\Helpers\Permission;
 use ASKORA\Frontend\Inc\Questions\VoteManager;
 use ASKORA\Frontend\Inc\Helpers\Response;
 
@@ -28,6 +29,10 @@ class Vote {
 			Response::die_error( __( 'You must be logged in to vote.', 'askora-community-qa' ) );
 		}
 
+		if ( ! Permission::voting_enabled() ) {
+			Response::die_error( __( 'Voting is disabled.', 'askora-community-qa' ) );
+		}
+
 		$type       = isset( $_POST['type'] ) ? sanitize_key( wp_unslash( $_POST['type'] ) ) : 'question';
 		$id         = isset( $_POST['id'] ) ? absint( wp_unslash( $_POST['id'] ) ) : 0;
 		$user_id    = get_current_user_id();
@@ -35,8 +40,10 @@ class Vote {
 
 		if ( 'question' === $type ) {
 			$result = $manager->vote_question( $id, $user_id );
-		} else {
+		} elseif ( 'answer' === $type ) {
 			$result = $manager->vote_answer( $id, $user_id );
+		} else {
+			Response::die_error( __( 'Invalid vote type.', 'askora-community-qa' ) );
 		}
 
 		if ( is_wp_error( $result ) ) {

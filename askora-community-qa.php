@@ -3,7 +3,7 @@
  * Plugin Name: Askora Community Q&A
  * Plugin URI:  https://wordpress.org/plugins/askora-community-qa
  * Description: A modern Question & Answer plugin for WordPress with frontend question submission, AJAX replies, phone number login, search, views, badges, and beautiful UI.
- * Version:     1.0.0
+ * Version:     1.1.0
  * Author:      Md Abul Bashar
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -69,7 +69,7 @@ final class AskoraCommunityQA
 	 */
 	private function define_constants()
 	{
-		define('ASKORA_VERSION', '1.0.0');
+		define('ASKORA_VERSION', '1.1.0');
 		define('ASKORA_FILE', __FILE__);
 		define('ASKORA_PATH', plugin_dir_path(__FILE__));
 		define('ASKORA_URL', plugin_dir_url(__FILE__));

@@ -23,9 +23,43 @@ if ( ! $askora_delete ) {
 
 global $wpdb;
 
+// Delete every question (and, with it, its answers) plus the plugin's categories and tags.
+// The post type and taxonomies are not registered during uninstall, so register them
+// just enough for WordPress to delete their terms.
+$askora_question_ids = get_posts(
+	[
+		'post_type'      => 'questions',
+		'post_status'    => 'any',
+		'posts_per_page' => -1,
+		'fields'         => 'ids',
+		'no_found_rows'  => true,
+	]
+);
+foreach ( $askora_question_ids as $askora_question_id ) {
+	wp_delete_post( (int) $askora_question_id, true );
+}
+
+foreach ( [ 'question_category', 'question_tag' ] as $askora_taxonomy ) {
+	register_taxonomy( $askora_taxonomy, 'questions' );
+	$askora_term_ids = get_terms(
+		[
+			'taxonomy'   => $askora_taxonomy,
+			'hide_empty' => false,
+			'fields'     => 'ids',
+		]
+	);
+	if ( ! is_wp_error( $askora_term_ids ) ) {
+		foreach ( $askora_term_ids as $askora_term_id ) {
+			wp_delete_term( (int) $askora_term_id, $askora_taxonomy );
+		}
+	}
+}
+
 // Remove plugin options.
 delete_option( 'askora_settings' );
 delete_option( 'askora_version' );
+delete_option( 'askora_pages' );
+delete_option( 'askora_welcome_notice_dismissed' );
 
 // Remove transients — no WP API exists for bulk-deleting transients by prefix.
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -51,6 +85,9 @@ $askora_comment_meta_keys = [
 	'_askora_answer_votes',
 	'_askora_answer_voted_users',
 	'_askora_is_best_answer',
+	'_askora_verified',
+	'_askora_verified_by',
+	'_askora_verified_at',
 ];
 foreach ( $askora_comment_meta_keys as $askora_key ) {
 	delete_metadata( 'comment', 0, $askora_key, '', true );

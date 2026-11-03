@@ -359,6 +359,37 @@ class Settings {
 					</div>
 				</div>
 
+				<div class="qh-field-row">
+					<label class="qh-field-label" for="askora_category_color">
+						<?php esc_html_e( 'Category Color', 'askora-community-qa' ); ?>
+					</label>
+					<div class="qh-field-control">
+						<input type="color" name="<?php echo esc_attr( $key ); ?>[category_color]" id="askora_category_color" value="<?php echo esc_attr( $opts['category_color'] ); ?>" class="qh-field-color">
+						<p class="qh-field-desc"><?php esc_html_e( 'Color of category labels on question cards and pages.', 'askora-community-qa' ); ?></p>
+					</div>
+				</div>
+
+				<div class="qh-field-row">
+					<label class="qh-field-label" for="askora_tag_color">
+						<?php esc_html_e( 'Tag Color', 'askora-community-qa' ); ?>
+					</label>
+					<div class="qh-field-control">
+						<input type="color" name="<?php echo esc_attr( $key ); ?>[tag_color]" id="askora_tag_color" value="<?php echo esc_attr( $opts['tag_color'] ); ?>" class="qh-field-color">
+						<p class="qh-field-desc"><?php esc_html_e( 'Color of tag labels. Keep it different from the category color so they are easy to tell apart.', 'askora-community-qa' ); ?></p>
+					</div>
+				</div>
+
+				<div class="qh-field-row qh-field-toggle-row">
+					<div class="qh-field-toggle-info">
+						<span class="qh-field-label"><?php esc_html_e( 'Rich Text Editor', 'askora-community-qa' ); ?></span>
+						<p class="qh-field-desc"><?php esc_html_e( 'Use the WordPress visual editor (TinyMCE) for the question and answer forms. When off, a plain textarea is shown.', 'askora-community-qa' ); ?></p>
+					</div>
+					<label class="qh-toggle">
+						<input type="checkbox" name="<?php echo esc_attr( $key ); ?>[enable_rich_editor]" id="askora_enable_rich_editor" value="1" <?php checked( 1, (int) $opts['enable_rich_editor'] ); ?>>
+						<span class="qh-toggle-slider"></span>
+					</label>
+				</div>
+
 				<div class="qh-field-row qh-field-toggle-row qh-field-danger-row">
 					<div class="qh-field-toggle-info">
 						<span class="qh-field-label"><?php esc_html_e( 'Delete All Data on Uninstall', 'askora-community-qa' ); ?></span>

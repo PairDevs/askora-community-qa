@@ -74,13 +74,18 @@ class QuestionRepository {
 		$default_status = isset( $settings['question_status'] ) ? $settings['question_status'] : 'pending';
 		$status         = apply_filters( 'askora_question_status', $default_status );
 
-		$post_data = [
-			'post_title'   => sanitize_text_field( $data['title'] ?? '' ),
-			'post_content' => wp_kses_post( $data['content'] ?? '' ),
-			'post_type'    => 'questions',
-			'post_status'  => $status,
-			'post_author'  => absint( $data['author_id'] ?? get_current_user_id() ),
-		];
+		// wp_insert_post() expects slashed data and unslashes it, so slash the
+		// (already unslashed + sanitized) values or backslashes are lost.
+		$post_data = wp_slash( [
+			'post_title'     => sanitize_text_field( $data['title'] ?? '' ),
+			'post_content'   => wp_kses_post( $data['content'] ?? '' ),
+			'post_type'      => 'questions',
+			'post_status'    => $status,
+			'post_author'    => absint( $data['author_id'] ?? get_current_user_id() ),
+			// Answers are comments; do not inherit a site-wide "closed" default.
+			'comment_status' => 'open',
+			'ping_status'    => 'closed',
+		] );
 
 		$post_id = wp_insert_post( $post_data, true );
 
@@ -88,20 +93,74 @@ class QuestionRepository {
 			return $post_id;
 		}
 
-		// Assign categories.
+		// Seed counters so the question is included in meta-ordered queries.
+		update_post_meta( $post_id, '_askora_views', 0 );
+		update_post_meta( $post_id, '_askora_votes', 0 );
+
+		// Assign categories — only terms that actually exist.
 		if ( ! empty( $data['categories'] ) ) {
-			$cat_ids = array_map( 'absint', (array) $data['categories'] );
-			wp_set_object_terms( $post_id, $cat_ids, 'question_category' );
+			$cat_ids = array_filter(
+				array_map( 'absint', (array) $data['categories'] ),
+				static function ( $term_id ) {
+					return $term_id > 0 && term_exists( $term_id, 'question_category' );
+				}
+			);
+			if ( ! empty( $cat_ids ) ) {
+				wp_set_object_terms( $post_id, array_values( $cat_ids ), 'question_category' );
+			}
 		}
 
-		// Assign tags (comma-separated string or array).
+		// Assign tags (comma-separated string or array), capped to keep term spam in check.
 		if ( ! empty( $data['tags'] ) ) {
 			$tags = is_array( $data['tags'] ) ? $data['tags'] : explode( ',', $data['tags'] );
-			$tags = array_map( 'trim', $tags );
-			wp_set_object_terms( $post_id, $tags, 'question_tag' );
+			$tags = array_filter( array_map( 'trim', $tags ), 'strlen' );
+			$tags = array_slice( array_unique( $tags ), 0, (int) apply_filters( 'askora_max_tags', 5 ) );
+			if ( ! empty( $tags ) ) {
+				wp_set_object_terms( $post_id, wp_slash( array_values( $tags ) ), 'question_tag' );
+			}
 		}
 
 		return $post_id;
+	}
+
+	/**
+	 * Apply a whitelisted ordering to WP_Query args.
+	 *
+	 * Meta-based orders (views, votes) use an OR meta_query so questions that have
+	 * no counter row yet are still returned instead of being silently excluded.
+	 *
+	 * @param  array  $args    WP_Query args.
+	 * @param  string $orderby One of date | comment_count | meta_value_num (views) | votes.
+	 * @return array
+	 */
+	public static function apply_orderby( array $args, string $orderby ): array {
+		$meta_keys = [
+			'meta_value_num' => '_askora_views',
+			'votes'          => '_askora_votes',
+		];
+
+		if ( isset( $meta_keys[ $orderby ] ) ) {
+			$args['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'relation'     => 'OR',
+				'askora_has'   => [
+					'key'     => $meta_keys[ $orderby ],
+					'type'    => 'NUMERIC',
+					'compare' => 'EXISTS',
+				],
+				'askora_none'  => [
+					'key'     => $meta_keys[ $orderby ],
+					'compare' => 'NOT EXISTS',
+				],
+			];
+			$args['orderby'] = [
+				'askora_has' => 'DESC',
+				'date'       => 'DESC',
+			];
+			return $args;
+		}
+
+		$args['orderby'] = 'comment_count' === $orderby ? 'comment_count' : 'date';
+		return $args;
 	}
 
 	/**

@@ -16,7 +16,7 @@ use ASKORA\Frontend\Inc\Comments\Badge;
 
 $askora_user_id     = (int) $askora_comment->user_id;
 $askora_avatar      = get_avatar( $askora_comment, 40, '', '', [ 'class' => 'askora-avatar' ] );
-$askora_author      = esc_html( $askora_comment->comment_author );
+$askora_author      = $askora_comment->comment_author; // Escaped at output.
 $askora_badge       = Badge::get( $askora_user_id, $askora_post_id );
 $askora_votes       = (int) get_comment_meta( $askora_comment->comment_ID, '_askora_answer_votes', true );
 $askora_is_best     = (int) $askora_comment->comment_ID === $askora_best_id;
@@ -56,7 +56,7 @@ $askora_enable_best   = ! empty( $askora_settings['enable_best_answer'] );
 	</div>
 
 	<div class="askora-answer-content qh-answer-text">
-		<?php echo wp_kses_post( $askora_comment->comment_content ); ?>
+		<?php echo wp_kses_post( wpautop( $askora_comment->comment_content ) ); ?>
 	</div>
 
 	<div class="askora-answer-actions qh-answer-actions-row">

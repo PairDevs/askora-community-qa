@@ -110,7 +110,8 @@
             phone:            $form.find('[name="phone"]').val(),
             email:            $form.find('[name="email"]').val(),
             password:         password,
-            confirm_password: confirm
+            confirm_password: confirm,
+            askora_hp:        $form.find('[name="askora_hp"]').val() || ''
           },
           success: function (res) {
             if (res.success) {

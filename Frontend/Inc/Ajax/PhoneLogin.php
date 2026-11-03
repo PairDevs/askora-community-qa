@@ -9,6 +9,7 @@
 namespace ASKORA\Frontend\Inc\Ajax;
 
 use ASKORA\Frontend\Inc\Auth\PhoneLogin as PhoneLoginHandler;
+use ASKORA\Frontend\Inc\Helpers\Permission;
 use ASKORA\Frontend\Inc\Helpers\Response;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,10 +26,16 @@ class PhoneLogin {
 	public function handle(): void {
 		check_ajax_referer( 'askora_nonce', 'nonce' );
 
+		if ( ! Permission::phone_auth_enabled() ) {
+			Response::die_error( __( 'Phone login is disabled.', 'askora-community-qa' ) );
+		}
+
 		do_action( 'askora_auth_before_login' );
 
 		$phone    = isset( $_POST['phone'] ) ? preg_replace( '/[^0-9+\-() ]/', '', sanitize_text_field( wp_unslash( $_POST['phone'] ) ) ) : '';
-		$password = isset( $_POST['password'] ) ? sanitize_text_field( wp_unslash( $_POST['password'] ) ) : '';
+		// Passwords must reach the authenticator untouched: sanitize_text_field() would strip
+		// tags, %xx sequences and surrounding whitespace, corrupting valid passwords.
+		$password = isset( $_POST['password'] ) ? wp_unslash( $_POST['password'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- passwords are intentionally not sanitized.
 
 		$handler = new PhoneLoginHandler();
 		$result  = $handler->login( $phone, $password );

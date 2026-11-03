@@ -148,3 +148,36 @@ URL to redirect to after login.
 ### `askora_register_redirect`
 URL to redirect to after registration.
 **Parameters:** `$url` (string), `$user_id` (int)
+
+### `askora_enable_rich_editor`
+Whether the TinyMCE rich text editor is used on the question and answer forms. Defaults to the **Rich Text Editor** setting.
+**Parameters:** `$enabled` (bool)
+```php
+add_filter( 'askora_enable_rich_editor', '__return_false' ); // plain textarea
+```
+
+### `askora_editor_settings`
+Filter the `wp_editor()` settings used on the front-end forms (toolbar, quicktags, rows…).
+**Parameters:** `$settings` (array), `$editor_id` (string)
+```php
+add_filter( 'askora_editor_settings', function( $settings ) {
+    $settings['media_buttons'] = false;
+    $settings['tinymce']['toolbar1'] = 'bold,italic,bullist,numlist,link';
+    return $settings;
+} );
+```
+
+### `askora_allow_registration`
+Whether public phone registration is allowed. Return `false` to close it, for example to follow the core "Anyone can register" setting.
+**Parameters:** `$allowed` (bool, default `true`)
+```php
+add_filter( 'askora_allow_registration', fn() => (bool) get_option( 'users_can_register' ) );
+```
+
+### `askora_registrations_per_hour`
+Maximum phone registrations allowed per IP address per hour. Default: `5`. Return `0` to disable the limit.
+**Parameters:** `$max` (int)
+
+### `askora_max_tags`
+Maximum number of tags accepted with a submitted question. Default: `5`.
+**Parameters:** `$max` (int)

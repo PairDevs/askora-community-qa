@@ -47,6 +47,11 @@ $askora_email_required = ! empty( $askora_settings['email_required'] );
 				<input type="password" id="askora-reg-confirm" name="confirm_password" class="askora-input" placeholder="••••••••" required autocomplete="new-password">
 			</div>
 
+			<div class="askora-hp-field" aria-hidden="true">
+				<label for="askora-reg-hp"><?php esc_html_e( 'Leave this field empty', 'askora-community-qa' ); ?></label>
+				<input type="text" id="askora-reg-hp" name="askora_hp" value="" tabindex="-1" autocomplete="off">
+			</div>
+
 			<div class="askora-form-actions">
 				<button type="submit" class="askora-button askora-button-primary askora-full-width">
 					<span class="askora-btn-text"><?php esc_html_e( 'Create Account', 'askora-community-qa' ); ?></span>

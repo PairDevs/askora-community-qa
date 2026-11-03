@@ -14,6 +14,9 @@ $askora_per_page       = ! empty( $askora_atts['per_page'] ) ? absint( $askora_a
 $askora_category    = ! empty( $askora_atts['category'] ) ? absint( $askora_atts['category'] ) : 0;
 $askora_tag            = ! empty( $askora_atts['tag'] ) ? sanitize_text_field( $askora_atts['tag'] ) : '';
 $askora_orderby        = ! empty( $askora_atts['orderby'] ) ? sanitize_key( $askora_atts['orderby'] ) : 'date';
+if ( ! in_array( $askora_orderby, [ 'date', 'comment_count', 'meta_value_num', 'votes' ], true ) ) {
+	$askora_orderby = 'date';
+}
 $askora_unanswered  = ! empty( $askora_atts['unanswered'] );
 
 // Attr flags — accept 'true'/'false' strings or 1/0.
@@ -50,14 +53,14 @@ $askora_query_args = [
 	'post_type'      => 'questions',
 	'post_status'    => 'publish',
 	'posts_per_page' => $askora_per_page,
-	'orderby'        => $askora_orderby,
 	'order'          => 'DESC',
 ];
-if ( 'meta_value_num' === $askora_orderby ) {
-	$askora_query_args['meta_key'] = '_askora_views'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
-}
+$askora_query_args = \ASKORA\Frontend\Inc\Questions\QuestionRepository::apply_orderby( $askora_query_args, $askora_orderby );
 if ( $askora_category ) {
-	$askora_query_args['tax_query'] = [ [ 'taxonomy' => 'question_category', 'field' => 'term_id', 'terms' => $askora_category ] ]; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+	$askora_query_args['tax_query'][] = [ 'taxonomy' => 'question_category', 'field' => 'term_id', 'terms' => $askora_category ]; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+}
+if ( $askora_tag ) {
+	$askora_query_args['tax_query'][] = [ 'taxonomy' => 'question_tag', 'field' => 'slug', 'terms' => $askora_tag ]; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 }
 if ( $askora_unanswered ) {
 	$askora_query_args['comment_count'] = 0;
@@ -66,7 +69,7 @@ if ( $askora_unanswered ) {
 $askora_query      = new WP_Query( $askora_query_args );
 $askora_categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => true ] );
 ?>
-<div class="askora-wrapper askora-list-wrapper" data-page="1" data-category="<?php echo esc_attr( $askora_category ); ?>" data-tag="<?php echo esc_attr( $askora_tag ); ?>" data-orderby="<?php echo esc_attr( $askora_orderby ); ?>">
+<div class="askora-wrapper askora-list-wrapper" data-page="1" data-category="<?php echo esc_attr( $askora_category ); ?>" data-tag="<?php echo esc_attr( $askora_tag ); ?>" data-orderby="<?php echo esc_attr( $askora_orderby ); ?>" data-unanswered="<?php echo esc_attr( $askora_unanswered ? 1 : 0 ); ?>">
 
 	<?php if ( $askora_show_search ) : ?>
 	<div class="askora-search-wrap askora-list-search">
@@ -92,6 +95,7 @@ $askora_categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty
 			<option value="date"           <?php selected( $askora_orderby, 'date' ); ?>><?php esc_html_e( 'Newest', 'askora-community-qa' ); ?></option>
 			<option value="comment_count"  <?php selected( $askora_orderby, 'comment_count' ); ?>><?php esc_html_e( 'Most Answered', 'askora-community-qa' ); ?></option>
 			<option value="meta_value_num" <?php selected( $askora_orderby, 'meta_value_num' ); ?>><?php esc_html_e( 'Most Viewed', 'askora-community-qa' ); ?></option>
+			<option value="votes"          <?php selected( $askora_orderby, 'votes' ); ?>><?php esc_html_e( 'Most Voted', 'askora-community-qa' ); ?></option>
 		</select>
 
 		<?php if ( $askora_show_ask_btn && $askora_ask_url ) : ?>

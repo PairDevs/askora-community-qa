@@ -27,8 +27,19 @@ class BestAnswer {
 		$post_id    = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
 		$comment_id = isset( $_POST['comment_id'] ) ? absint( wp_unslash( $_POST['comment_id'] ) ) : 0;
 
+		if ( ! Permission::best_answer_enabled() ) {
+			Response::die_error( __( 'Best answer is disabled.', 'askora-community-qa' ) );
+		}
+
+		// can_mark_best_answer() also confirms $post_id is a real question.
 		if ( ! Permission::can_mark_best_answer( $post_id ) ) {
 			Response::die_error( __( 'You are not allowed to mark the best answer.', 'askora-community-qa' ) );
+		}
+
+		// The answer must be an approved comment on this very question.
+		$comment = $comment_id ? get_comment( $comment_id ) : null;
+		if ( ! $comment || (int) $comment->comment_post_ID !== $post_id || '1' !== (string) $comment->comment_approved ) {
+			Response::die_error( __( 'Invalid answer.', 'askora-community-qa' ) );
 		}
 
 		// Clear previous best answer.

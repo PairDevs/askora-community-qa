@@ -31,11 +31,54 @@ class Assets {
 			ASKORA_VERSION
 		);
 
-		// Inject dynamic primary color as CSS variable.
+		// Inject dynamic colors as CSS variables. Categories and tags get their own
+		// colors (with a tinted background) so the two label types are easy to tell apart.
 		$settings = get_option( 'askora_settings', [] );
-		$color    = isset( $settings['primary_color'] ) ? $settings['primary_color'] : '#6C63FF';
-		$inline   = ':root { --askora-primary: ' . sanitize_hex_color( $color ) . '; }';
+		$primary  = $this->color( $settings, 'primary_color', '#6C63FF' );
+		$category = $this->color( $settings, 'category_color', '#6C63FF' );
+		$tag      = $this->color( $settings, 'tag_color', '#0E9F8E' );
+
+		$inline = sprintf(
+			':root { --askora-primary: %1$s; --askora-category: %2$s; --askora-category-bg: %3$s; --askora-tag: %4$s; --askora-tag-bg: %5$s; }',
+			$primary,
+			$category,
+			$this->tint( $category ),
+			$tag,
+			$this->tint( $tag )
+		);
 		wp_add_inline_style( 'askora-frontend', $inline );
+	}
+
+	/**
+	 * Read a validated hex color from the settings array.
+	 *
+	 * @param array  $settings Plugin settings.
+	 * @param string $key      Settings key.
+	 * @param string $default  Fallback hex color.
+	 * @return string
+	 */
+	private function color( array $settings, string $key, string $default ): string {
+		$color = isset( $settings[ $key ] ) ? sanitize_hex_color( $settings[ $key ] ) : '';
+		return $color ? $color : $default;
+	}
+
+	/**
+	 * Mix a hex color with white to get a soft background tint.
+	 *
+	 * @param string $hex    Hex color (#rgb or #rrggbb).
+	 * @param float  $amount Share of white, 0-1.
+	 * @return string
+	 */
+	private function tint( string $hex, float $amount = 0.88 ): string {
+		$hex = ltrim( $hex, '#' );
+		if ( 3 === strlen( $hex ) ) {
+			$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+		}
+		$rgb = [ hexdec( substr( $hex, 0, 2 ) ), hexdec( substr( $hex, 2, 2 ) ), hexdec( substr( $hex, 4, 2 ) ) ];
+		foreach ( $rgb as $i => $channel ) {
+			$rgb[ $i ] = (int) round( $channel + ( 255 - $channel ) * $amount );
+		}
+		return sprintf( '#%02x%02x%02x', $rgb[0], $rgb[1], $rgb[2] );
 	}
 
 	public function enqueue_scripts(): void {
@@ -50,7 +93,7 @@ class Assets {
 		wp_enqueue_script(
 			'askora-auth',
 			ASKORA_URL . 'assets/js/auth.js',
-			[ 'jquery' ],
+			[ 'jquery', 'askora-frontend' ], // askora-frontend provides the AskoraData global.
 			ASKORA_VERSION,
 			true
 		);

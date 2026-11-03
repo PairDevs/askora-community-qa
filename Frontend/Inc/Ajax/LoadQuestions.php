@@ -10,6 +10,7 @@ namespace ASKORA\Frontend\Inc\Ajax;
 
 use ASKORA\Frontend\Inc\Helpers\Response;
 use ASKORA\Frontend\Inc\Helpers\Template;
+use ASKORA\Frontend\Inc\Questions\QuestionRepository;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -28,14 +29,14 @@ class LoadQuestions {
 		$settings = get_option( 'askora_settings', [] );
 		$per_page = isset( $settings['questions_per_page'] ) ? absint( $settings['questions_per_page'] ) : 10;
 
-		$page     = isset( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 1;
+		$page     = isset( $_POST['page'] ) ? max( 1, absint( wp_unslash( $_POST['page'] ) ) ) : 1;
 		$category = isset( $_POST['category'] ) ? absint( wp_unslash( $_POST['category'] ) ) : 0;
 		$tag      = isset( $_POST['tag'] ) ? sanitize_text_field( wp_unslash( $_POST['tag'] ) ) : '';
 		$orderby  = isset( $_POST['orderby'] ) ? sanitize_text_field( wp_unslash( $_POST['orderby'] ) ) : 'date';
 		$keyword  = isset( $_POST['keyword'] ) ? sanitize_text_field( wp_unslash( $_POST['keyword'] ) ) : '';
 
 		// Whitelist orderby values.
-		$allowed_orderby = [ 'date', 'comment_count', 'meta_value_num' ];
+		$allowed_orderby = [ 'date', 'comment_count', 'meta_value_num', 'votes' ];
 		if ( ! in_array( $orderby, $allowed_orderby, true ) ) {
 			$orderby = 'date';
 		}
@@ -45,13 +46,11 @@ class LoadQuestions {
 			'post_status'    => 'publish',
 			'posts_per_page' => apply_filters( 'askora_questions_per_page', $per_page ),
 			'paged'          => $page,
-			'orderby'        => $orderby,
 			'order'          => 'DESC',
 		];
 
-		if ( 'meta_value_num' === $orderby ) {
-			$args['meta_key'] = '_askora_views'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
-		}
+		// Meta-based orders keep questions that have no counter row yet.
+		$args = QuestionRepository::apply_orderby( $args, $orderby );
 
 		if ( $category ) {
 			$args['tax_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query

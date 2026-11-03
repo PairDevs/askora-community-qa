@@ -112,7 +112,7 @@ class Askora {
 	}
 
 	public function render_home_page() {
-		$version  = defined( 'ASKORA_VERSION' ) ? ASKORA_VERSION : '1.0.0';
+		$version  = defined( 'ASKORA_VERSION' ) ? ASKORA_VERSION : '1.1.0';
 		$stats    = $this->get_stats();
 		$recents  = $this->get_recent_questions();
 		$settings = get_option( 'askora_settings', [] );

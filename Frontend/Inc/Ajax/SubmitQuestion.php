@@ -8,6 +8,7 @@
 
 namespace ASKORA\Frontend\Inc\Ajax;
 
+use ASKORA\Frontend\Inc\Helpers\Permission;
 use ASKORA\Frontend\Inc\Questions\QuestionService;
 use ASKORA\Frontend\Inc\Helpers\Response;
 
@@ -18,13 +19,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 class SubmitQuestion {
 
 	public function __construct() {
-		add_action( 'wp_ajax_askora_submit_question', [ $this, 'handle' ] );
+		add_action( 'wp_ajax_askora_submit_question',        [ $this, 'handle' ] );
+		// Guests are only let through when "Require Login to Ask" is switched off
+		// (enforced by Permission::can_submit_question() below).
+		add_action( 'wp_ajax_nopriv_askora_submit_question', [ $this, 'handle' ] );
 	}
 
 	public function handle(): void {
 		check_ajax_referer( 'askora_nonce', 'nonce' );
 
-		if ( ! is_user_logged_in() ) {
+		if ( ! Permission::can_submit_question() ) {
 			Response::die_error( __( 'You must be logged in to ask a question.', 'askora-community-qa' ) );
 		}
 

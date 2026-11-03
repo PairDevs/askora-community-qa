@@ -33,6 +33,7 @@ class Profile {
 	 */
 	public function render_phone_field( $user ): void {
 		$phone = UserMeta::get_phone( $user->ID );
+		wp_nonce_field( 'askora_save_user_phone', 'askora_user_phone_nonce' );
 		?>
 		<h2><?php esc_html_e( 'Askora Profile', 'askora-community-qa' ); ?></h2>
 		<table class="form-table">

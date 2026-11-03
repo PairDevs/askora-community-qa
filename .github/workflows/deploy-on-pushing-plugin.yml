@@ -5,20 +5,34 @@ on:
     types:
       - published
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     name: Deploy to WordPress.org
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Verify release tag matches plugin version and Stable tag
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          VERSION_RE='[0-9]+\.[0-9]+\.[0-9]+[0-9A-Za-z.-]*'
+          HEADER=$(grep -m1 -E '^[[:space:]]*\*[[:space:]]*Version:' askora-community-qa.php | grep -oE "$VERSION_RE" | head -1)
+          CONSTANT=$(grep -m1 "'ASKORA_VERSION'" askora-community-qa.php | grep -oE "$VERSION_RE" | head -1)
+          STABLE=$(grep -m1 -E '^Stable tag:' readme.txt | grep -oE "$VERSION_RE" | head -1)
+          echo "release tag=$TAG, plugin header=$HEADER, ASKORA_VERSION=$CONSTANT, readme stable tag=$STABLE"
+          if [ "$TAG" != "$HEADER" ] || [ "$TAG" != "$CONSTANT" ] || [ "$TAG" != "$STABLE" ]; then
+            echo "::error::Release tag ($TAG) must equal the plugin Version ($HEADER), ASKORA_VERSION ($CONSTANT) and readme Stable tag ($STABLE)."
+            exit 1
+          fi
+
       - name: Install PHP dependencies
-        uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a
+        uses: ramsey/composer-install@v3
         with:
-          composer-options: '--prefer-dist --no-dev'
+          composer-options: '--prefer-dist --no-dev --optimize-autoloader'
 
       - name: Remove source files from assets
         run: rm -rf .wordpress-org/hd
@@ -31,8 +45,12 @@ jobs:
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: askora-community-qa
 
       - name: Upload release asset
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
           files: ${{ steps.deploy.outputs.zip-path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

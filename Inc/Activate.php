@@ -48,6 +48,9 @@ class Activate {
 				'email_required'          => 0,
 				'auto_login_after_reg'    => 1,
 				'primary_color'           => '#6C63FF',
+				'category_color'          => '#6C63FF',
+				'tag_color'               => '#0E9F8E',
+				'enable_rich_editor'      => 1,
 				'delete_data_on_uninstall' => 0,
 			];
 			update_option( 'askora_settings', $defaults );
@@ -58,7 +61,14 @@ class Activate {
 			self::create_pages();
 		}
 
-		// Register CPT and flush rewrite rules.
+		// The plugin boots on `plugins_loaded`, which has already fired by the time
+		// the activation hook runs, so the post type and taxonomies are not
+		// registered yet. Register them now or their rewrite rules are missing from
+		// the flush and single question URLs 404 until permalinks are re-saved.
+		( new \ASKORA\Admin\Inc\PostTypes\QuestionPostType() )->register();
+		( new \ASKORA\Admin\Inc\Taxonomies\QuestionCategory() )->register();
+		( new \ASKORA\Admin\Inc\Taxonomies\QuestionTag() )->register();
+
 		flush_rewrite_rules();
 	}
 

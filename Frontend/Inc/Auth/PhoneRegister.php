@@ -24,7 +24,9 @@ class PhoneRegister {
 	 * @return int|\WP_Error User ID on success, WP_Error on failure.
 	 */
 	public function register( array $data ) {
-		$name     = Sanitizer::text( $data['name'] ?? '' );
+		// $data arrives already unslashed from the AJAX handler. Sanitizer::text() unslashes
+		// again, which would eat legitimate backslashes, so use the core sanitizer directly.
+		$name     = sanitize_text_field( (string) ( $data['name'] ?? '' ) );
 		$phone    = Sanitizer::phone( $data['phone'] ?? '' );
 		$password = $data['password'] ?? '';
 		$email    = isset( $data['email'] ) ? Sanitizer::email( $data['email'] ) : '';
@@ -36,9 +38,18 @@ class PhoneRegister {
 		if ( ! Validator::phone( $phone ) ) {
 			return new \WP_Error( 'invalid_phone', __( 'Please enter a valid phone number.', 'askora-community-qa' ) );
 		}
-		if ( ! Validator::min_length( $password, 6 ) ) {
+		// Passwords are not sanitized (that would corrupt them). Core trims surrounding
+		// whitespace when creating the user and when authenticating, so measure the
+		// trimmed value or a whitespace-only password would slip through.
+		if ( mb_strlen( trim( (string) $password ) ) < 6 ) {
 			return new \WP_Error( 'weak_password', __( 'Password must be at least 6 characters.', 'askora-community-qa' ) );
 		}
+
+		$settings = get_option( 'askora_settings', [] );
+		if ( ! empty( $settings['email_required'] ) && empty( $email ) ) {
+			return new \WP_Error( 'email_required', __( 'A valid email address is required.', 'askora-community-qa' ) );
+		}
+
 		if ( UserMeta::is_phone_taken( $phone ) ) {
 			return new \WP_Error( 'phone_taken', __( 'This phone number is already registered.', 'askora-community-qa' ) );
 		}
@@ -50,11 +61,11 @@ class PhoneRegister {
 			$email  = 'askora_' . $hash . '@' . $domain . '.local';
 		}
 
-		// Generate unique username from phone hash.
-		$username = 'askora_' . substr( md5( $phone ), 0, 10 );
-		while ( username_exists( $username ) ) {
-			$username = 'askora_' . substr( md5( $phone . uniqid() ), 0, 10 );
-		}
+		// Random username. It must NOT be derived from the phone number: a hash of a
+		// phone number is reversible by brute force and would leak it via author URLs.
+		do {
+			$username = 'askora_' . strtolower( wp_generate_password( 12, false, false ) );
+		} while ( username_exists( $username ) );
 
 		// Create user.
 		$user_id = wp_create_user( $username, $password, $email );
@@ -62,11 +73,11 @@ class PhoneRegister {
 			return $user_id;
 		}
 
-		// Store display name and phone.
+		// Store display name and phone. wp_update_user() expects slashed data.
 		wp_update_user( [
 			'ID'           => $user_id,
-			'display_name' => $name,
-			'first_name'   => $name,
+			'display_name' => wp_slash( $name ),
+			'first_name'   => wp_slash( $name ),
 		] );
 
 		UserMeta::set_phone( $user_id, $phone );

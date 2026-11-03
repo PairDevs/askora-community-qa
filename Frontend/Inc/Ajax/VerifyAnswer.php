@@ -33,7 +33,8 @@ class VerifyAnswer {
 
 		$comment_id = isset( $_POST['comment_id'] ) ? absint( wp_unslash( $_POST['comment_id'] ) ) : 0;
 
-		if ( ! $comment_id || ! get_comment( $comment_id ) ) {
+		$comment = $comment_id ? get_comment( $comment_id ) : null;
+		if ( ! $comment || 'questions' !== get_post_type( (int) $comment->comment_post_ID ) ) {
 			Response::die_error( __( 'Invalid answer ID.', 'askora-community-qa' ) );
 		}
 

@@ -12,6 +12,32 @@
     i18n: AskoraData.i18n,
 
     // ============================
+    // Rich text editor helpers (TinyMCE with a plain-textarea fallback)
+    // ============================
+    editorContent: function ($textarea) {
+      var id = $textarea.attr('id');
+      if (window.tinymce && id) {
+        var ed = window.tinymce.get(id);
+        // Visual mode: read from TinyMCE. Text mode / no editor: read the textarea.
+        if (ed && !ed.isHidden()) {
+          return ed.getContent();
+        }
+      }
+      return $textarea.val();
+    },
+
+    resetEditor: function ($textarea) {
+      var id = $textarea.attr('id');
+      if (window.tinymce && id) {
+        var ed = window.tinymce.get(id);
+        if (ed) {
+          ed.setContent('');
+        }
+      }
+      $textarea.val('');
+    },
+
+    // ============================
     // Question Submit Form
     // ============================
     initQuestionForm: function () {
@@ -35,7 +61,7 @@
             action: 'askora_submit_question',
             nonce:  qh.nonce,
             title:  $form.find('[name="title"]').val(),
-            content: $form.find('[name="content"]').val(),
+            content: qh.editorContent($form.find('[name="content"]')),
             'categories[]': $form.find('[name="categories[]"]').val(),
             tags:   $form.find('[name="tags"]').val()
           },
@@ -43,6 +69,7 @@
             if (res.success) {
               $ok.text(res.data.message).fadeIn();
               $form[0].reset();
+              qh.resetEditor($form.find('[name="content"]'));
             } else {
               $err.text(res.data.message).fadeIn();
             }
@@ -84,14 +111,22 @@
             action:   'askora_submit_answer',
             nonce:    qh.nonce,
             post_id:  $form.find('[name="post_id"]').val(),
-            content:  $form.find('[name="content"]').val()
+            content:  qh.editorContent($form.find('[name="content"]')),
+            // Only present for guests (when guest answers are allowed).
+            author:   $form.find('[name="author"]').val() || '',
+            email:    $form.find('[name="email"]').val() || ''
           },
           success: function (res) {
             if (res.success) {
               $ok.text(res.data.message).fadeIn();
-              $form.find('textarea').val('');
-              // Reload page after short delay to show new answer.
-              setTimeout(function () { location.reload(); }, 1500);
+              qh.resetEditor($form.find('[name="content"]'));
+              // Reload to show the new answer, unless it is held for moderation.
+              if (!res.data.held) {
+                setTimeout(function () { location.reload(); }, 1500);
+              } else {
+                $btn.prop('disabled', false);
+                $text.show(); $spin.hide();
+              }
             } else {
               $err.text(res.data.message).fadeIn();
               $btn.prop('disabled', false);
@@ -164,16 +199,11 @@
         });
       });
 
-      // Sort change. The "unanswered" option is a filter rather than a sort,
-      // so route it to the unanswered flag and keep orderby on the default.
+      // Sort change. "Unanswered" is a filter rather than a sort, so the wrapper's
+      // data-unanswered flag (set by the shortcode) is left untouched here.
       $(document).on('change', '.askora-sort', function () {
         var $wrapper = $(this).closest('.askora-list-wrapper');
-        var val = $(this).val();
-        if (val === 'unanswered') {
-          $wrapper.data('orderby', 'date').data('unanswered', 1).data('page', 1);
-        } else {
-          $wrapper.data('orderby', val).data('unanswered', 0).data('page', 1);
-        }
+        $wrapper.data('orderby', $(this).val()).data('page', 1);
         qh.reloadList($wrapper);
       });
 
@@ -200,6 +230,7 @@
     reloadList: function ($wrapper) {
       var $list      = $wrapper.find('.askora-questions-list');
       var category   = $wrapper.data('category') || '';
+      var tag        = $wrapper.data('tag') || '';
       var orderby    = $wrapper.data('orderby') || 'date';
       var keyword    = $wrapper.data('keyword') || '';
       var unanswered = parseInt($wrapper.data('unanswered'), 10) || 0;
@@ -214,6 +245,7 @@
           nonce:      qh.nonce,
           page:       1,
           category:   category,
+          tag:        tag,
           orderby:    orderby,
           keyword:    keyword,
           unanswered: unanswered

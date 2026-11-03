@@ -8,6 +8,7 @@
 
 namespace ASKORA\Frontend\Inc\Shortcodes;
 
+use ASKORA\Frontend\Inc\Helpers\Permission;
 use ASKORA\Frontend\Inc\Helpers\Template;
 use ASKORA\Frontend\Inc\Auth\AuthForms;
 use ASKORA\Frontend\Inc\Questions\QuestionRepository;
@@ -42,10 +43,19 @@ class Shortcodes {
 
 	/** [askora_submit_form] */
 	public function render_submit_form( $atts ): string {
-		if ( ! is_user_logged_in() ) {
+		if ( ! Permission::can_submit_question() ) {
 			return Template::get( 'auth-prompt.php' );
 		}
 		return Template::get( 'question-form.php' );
+	}
+
+	/**
+	 * Notice shown in place of the phone auth forms when phone auth is switched off.
+	 *
+	 * @return string
+	 */
+	private function phone_auth_disabled_notice(): string {
+		return '<p class="askora-alert askora-alert-info">' . esc_html__( 'Phone login and registration are currently disabled.', 'askora-community-qa' ) . '</p>';
 	}
 
 	/** [askora_questions] */
@@ -73,6 +83,9 @@ class Shortcodes {
 			$logout_url = wp_logout_url( get_permalink() );
 			return '<p class="askora-alert askora-alert-info">' . esc_html__( 'You are already logged in.', 'askora-community-qa' ) . ' <a href="' . esc_url( $logout_url ) . '">' . esc_html__( 'Log out', 'askora-community-qa' ) . '</a></p>';
 		}
+		if ( ! Permission::phone_auth_enabled() ) {
+			return $this->phone_auth_disabled_notice();
+		}
 		$auth = new AuthForms();
 		return $auth->render_login();
 	}
@@ -82,6 +95,9 @@ class Shortcodes {
 		if ( is_user_logged_in() ) {
 			$logout_url = wp_logout_url( get_permalink() );
 			return '<p class="askora-alert askora-alert-info">' . esc_html__( 'You already have an account.', 'askora-community-qa' ) . ' <a href="' . esc_url( $logout_url ) . '">' . esc_html__( 'Log out', 'askora-community-qa' ) . '</a></p>';
+		}
+		if ( ! Permission::phone_auth_enabled() ) {
+			return $this->phone_auth_disabled_notice();
 		}
 		$auth = new AuthForms();
 		return $auth->render_register();
@@ -93,6 +109,9 @@ class Shortcodes {
 			$logout_url = wp_logout_url( get_permalink() );
 			return '<p class="askora-alert askora-alert-info">' . esc_html__( 'You are already logged in.', 'askora-community-qa' ) . ' <a href="' . esc_url( $logout_url ) . '">' . esc_html__( 'Log out', 'askora-community-qa' ) . '</a></p>';
 		}
+		if ( ! Permission::phone_auth_enabled() ) {
+			return $this->phone_auth_disabled_notice();
+		}
 		$auth = new AuthForms();
 		return $auth->render_combined();
 	}
@@ -100,7 +119,7 @@ class Shortcodes {
 	/** [askora_popular_questions] */
 	public function render_popular( $atts ): string {
 		return Template::get( 'question-list.php', [
-			'atts' => [ 'orderby' => 'meta_value_num', 'category' => '', 'tag' => '', 'per_page' => 5 ],
+			'atts' => [ 'orderby' => 'votes', 'category' => '', 'tag' => '', 'per_page' => 5 ],
 		] );
 	}
 

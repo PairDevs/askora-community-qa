@@ -38,6 +38,9 @@ class Advanced {
 			'email_required'           => 0,
 			'auto_login_after_reg'     => 1,
 			'primary_color'            => '#6C63FF',
+			'category_color'           => '#6C63FF',
+			'tag_color'                => '#0E9F8E',
+			'enable_rich_editor'       => 1,
 			'delete_data_on_uninstall' => 0,
 		];
 	}
@@ -104,7 +107,13 @@ class Advanced {
 		$existing['enable_phone_auth']        = isset( $input['enable_phone_auth'] ) ? 1 : 0;
 		$existing['email_required']           = isset( $input['email_required'] ) ? 1 : 0;
 		$existing['auto_login_after_reg']     = isset( $input['auto_login_after_reg'] ) ? 1 : 0;
-		$existing['primary_color']            = isset( $input['primary_color'] ) ? sanitize_hex_color( $input['primary_color'] ) : '#6C63FF';
+		$defaults = $this->defaults();
+		foreach ( [ 'primary_color', 'category_color', 'tag_color' ] as $color_key ) {
+			// An invalid value falls back to the default instead of storing null.
+			$color                   = isset( $input[ $color_key ] ) ? sanitize_hex_color( $input[ $color_key ] ) : '';
+			$existing[ $color_key ]  = $color ? $color : $defaults[ $color_key ];
+		}
+		$existing['enable_rich_editor']       = isset( $input['enable_rich_editor'] ) ? 1 : 0;
 		$existing['delete_data_on_uninstall'] = isset( $input['delete_data_on_uninstall'] ) ? 1 : 0;
 
 		add_settings_error( 'askora_settings', 'advanced_saved', esc_html__( 'Advanced settings saved.', 'askora-community-qa' ), 'updated' );

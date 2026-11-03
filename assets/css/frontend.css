@@ -144,15 +144,39 @@
   font-weight: 500;
   padding: 2px 10px;
   border-radius: 999px;
-  background: var(--askora-primary-light);
-  color: var(--askora-primary);
   text-decoration: none;
   margin: 2px 3px 2px 0;
   transition: background var(--askora-transition), color var(--askora-transition);
 }
 
-.askora-tag:hover {
-  background: var(--askora-primary);
+/* Categories: solid, tinted pill in the category color. */
+.askora-category-tag {
+  font-weight: 600;
+  background: var(--askora-category-bg, var(--askora-primary-light));
+  color: var(--askora-category, var(--askora-primary));
+}
+
+.askora-category-tag:hover {
+  background: var(--askora-category, var(--askora-primary));
+  color: #fff;
+}
+
+/* Tags: outlined chip in the tag color with a "#" prefix, so they never read as categories. */
+.askora-tag:not(.askora-category-tag) {
+  background: transparent;
+  border: 1px solid var(--askora-tag, #0e9f8e);
+  color: var(--askora-tag, #0e9f8e);
+  padding: 1px 9px;
+}
+
+.askora-tag:not(.askora-category-tag)::before {
+  content: "#";
+  opacity: 0.7;
+  margin-right: 1px;
+}
+
+.askora-tag:not(.askora-category-tag):hover {
+  background: var(--askora-tag, #0e9f8e);
   color: #fff;
 }
 
@@ -1231,14 +1255,14 @@
   font-weight: 600;
   padding: 2px 10px;
   border-radius: 999px;
-  background: var(--askora-primary-light);
-  color: var(--askora-primary);
+  background: var(--askora-category-bg, var(--askora-primary-light));
+  color: var(--askora-category, var(--askora-primary));
   text-decoration: none;
   transition: background var(--askora-transition), color var(--askora-transition);
 }
 
 .qh-cat-pill:hover {
-  background: var(--askora-primary);
+  background: var(--askora-category, var(--askora-primary));
   color: #fff;
 }
 
@@ -1434,16 +1458,23 @@
   display: inline-block;
   font-size: 0.72rem;
   font-weight: 500;
-  padding: 3px 11px;
+  padding: 2px 10px;
   border-radius: 999px;
-  background: var(--askora-primary-light);
-  color: var(--askora-primary);
+  background: transparent;
+  border: 1px solid var(--askora-tag, #0e9f8e);
+  color: var(--askora-tag, #0e9f8e);
   text-decoration: none;
   transition: background var(--askora-transition), color var(--askora-transition);
 }
 
+.qh-tag::before {
+  content: "#";
+  opacity: 0.7;
+  margin-right: 1px;
+}
+
 .qh-tag:hover {
-  background: var(--askora-primary);
+  background: var(--askora-tag, #0e9f8e);
   color: #fff;
 }
 
@@ -1913,8 +1944,8 @@
 .qh-sidebar-cat:last-child { border-bottom: none; }
 
 .qh-sidebar-cat:hover {
-  background: var(--askora-primary-light);
-  color: var(--askora-primary);
+  background: var(--askora-category-bg, var(--askora-primary-light));
+  color: var(--askora-category, var(--askora-primary));
 }
 
 .qh-sidebar-cat-count {
@@ -2120,4 +2151,72 @@
 .qh-verify-answer-btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+}
+
+/* ============================================
+   Rich text editor (question & answer forms)
+   ============================================ */
+.askora-editor-wrap {
+  width: 100%;
+  max-width: 100%;
+}
+
+.askora-editor-wrap .wp-editor-container {
+  border: 1px solid var(--askora-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.askora-editor-wrap .wp-editor-container:focus-within {
+  border-color: var(--askora-primary);
+}
+
+.askora-editor-wrap .wp-editor-tabs {
+  float: none;
+}
+
+.askora-editor-wrap textarea.wp-editor-area {
+  min-height: 160px;
+  border: 0;
+  box-shadow: none;
+  padding: 10px 12px;
+}
+
+.askora-editor-wrap .mce-panel,
+.askora-editor-wrap .mce-container-body {
+  max-width: 100%;
+}
+
+/* Guest name/email row above the answer editor. */
+.qh-guest-fields {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.qh-guest-fields .askora-input {
+  flex: 1 1 200px;
+}
+
+/* Anti-spam honeypot — invisible to people. */
+.askora-hp-field {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Rich-text content inside answers. */
+.qh-answer-text p,
+.askora-answer-content p {
+  margin: 0 0 0.8em;
+}
+
+.qh-answer-text ul,
+.qh-answer-text ol,
+.askora-answer-content ul,
+.askora-answer-content ol {
+  margin: 0 0 0.8em 1.4em;
 }

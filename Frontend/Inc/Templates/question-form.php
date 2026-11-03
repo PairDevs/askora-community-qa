@@ -27,7 +27,18 @@ $askora_categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty
 
 			<div class="askora-form-group">
 				<label for="askora-content"><?php esc_html_e( 'Question Details', 'askora-community-qa' ); ?></label>
-				<textarea id="askora-content" name="content" class="askora-textarea" rows="6" placeholder="<?php esc_attr_e( 'Provide more details about your question…', 'askora-community-qa' ); ?>"></textarea>
+				<?php
+				// Visual (TinyMCE) editor, or a plain textarea when disabled in Askora → Settings.
+				\ASKORA\Frontend\Inc\Helpers\Editor::render(
+					'askora-content',
+					'content',
+					'',
+					[
+						'rows'        => 8,
+						'placeholder' => __( 'Provide more details about your question…', 'askora-community-qa' ),
+					]
+				);
+				?>
 			</div>
 
 			<?php if ( ! empty( $askora_categories ) && ! is_wp_error( $askora_categories ) ) : ?>

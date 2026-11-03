@@ -251,7 +251,7 @@ if ( $askora_questions_list_page_id > 0 && 'publish' === get_post_status( $askor
 
 								<!-- Answer text -->
 								<div class="qh-answer-text">
-									<?php echo wp_kses_post( $askora_comment->comment_content ); ?>
+									<?php echo wp_kses_post( wpautop( $askora_comment->comment_content ) ); ?>
 								</div>
 
 								<!-- Action row -->
@@ -305,12 +305,26 @@ if ( $askora_questions_list_page_id > 0 && 'publish' === get_post_status( $askor
 				<form id="askora-answer-form" class="qh-answer-form" novalidate>
 					<?php wp_nonce_field( 'askora_nonce', 'askora_nonce_field' ); ?>
 					<input type="hidden" name="post_id" value="<?php echo esc_attr( $askora_post_id ); ?>">
+					<?php if ( ! is_user_logged_in() ) : ?>
+					<div class="qh-guest-fields">
+						<input type="text" name="author" class="askora-input" autocomplete="name" placeholder="<?php esc_attr_e( 'Your name', 'askora-community-qa' ); ?>" required>
+						<input type="email" name="email" class="askora-input" autocomplete="email" placeholder="<?php esc_attr_e( 'Your email (not published)', 'askora-community-qa' ); ?>" required>
+					</div>
+					<?php endif; ?>
 					<div class="qh-form-group">
-						<textarea name="content"
-								  class="qh-textarea"
-								  rows="7"
-								  placeholder="<?php esc_attr_e( 'Write a detailed, helpful answer…', 'askora-community-qa' ); ?>"
-								  required></textarea>
+						<?php
+						// Visual (TinyMCE) editor, or a plain textarea when disabled in Askora → Settings.
+						\ASKORA\Frontend\Inc\Helpers\Editor::render(
+							'askora-answer-content',
+							'content',
+							'',
+							[
+								'rows'        => 8,
+								'class'       => 'qh-textarea',
+								'placeholder' => __( 'Write a detailed, helpful answer…', 'askora-community-qa' ),
+							]
+						);
+						?>
 					</div>
 					<div class="qh-form-footer">
 						<?php if ( is_user_logged_in() ) :
