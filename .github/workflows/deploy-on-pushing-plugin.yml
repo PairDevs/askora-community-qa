@@ -9,8 +9,14 @@ permissions:
   contents: write
 
 jobs:
+  # The release is only deployed if the whole test suite passes.
+  test:
+    name: Run test suite
+    uses: ./.github/workflows/tests.yml
+
   deploy:
     name: Deploy to WordPress.org
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,6 +42,28 @@ jobs:
 
       - name: Remove source files from assets
         run: rm -rf .wordpress-org/hd
+
+      - name: Verify the package contains no development or test files
+        run: |
+          # Same exclusion the deploy action applies (.distignore), checked after
+          # `composer install --no-dev` so vendor/ holds runtime dependencies only.
+          PKG="$(mktemp -d)"
+          rsync -rc --exclude-from=.distignore ./ "$PKG/"
+
+          for required in askora-community-qa.php readme.txt uninstall.php vendor/autoload.php Frontend/Inc/Helpers/Editor.php; do
+            [ -e "$PKG/$required" ] || { echo "::error::Package is missing $required"; exit 1; }
+          done
+
+          LEAKED=""
+          for forbidden in tests bin .github docs phpunit.xml phpunit.xml.dist .phpunit.result.cache \
+                           vendor/phpunit vendor/yoast vendor/sebastian vendor/myclabs vendor/nikic vendor/phar-io vendor/theseer vendor/doctrine; do
+            [ -e "$PKG/$forbidden" ] && LEAKED="$LEAKED $forbidden"
+          done
+          if [ -n "$LEAKED" ]; then
+            echo "::error::These must not be published to WordPress.org:$LEAKED"
+            exit 1
+          fi
+          echo "Package OK: $(find "$PKG" -type f | wc -l | tr -d ' ') files, no test or development files."
 
       - name: WordPress Plugin Deploy
         id: deploy

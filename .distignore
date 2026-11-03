@@ -24,6 +24,8 @@ package.json
 package-lock.json
 phpunit.xml
 phpunit.xml.dist
+.phpunit.result.cache
+.phpunit.cache
 multisite.xml
 multisite.xml.dist
 .phpcs.xml

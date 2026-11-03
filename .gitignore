@@ -13,3 +13,6 @@ composer.lock
 
 # Claude local settings (project-shared settings.json IS committed; .local is per-user)
 .claude/settings.local.json
+# PHPUnit
+.phpunit.result.cache
+.phpunit.cache
